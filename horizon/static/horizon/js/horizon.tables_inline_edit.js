@@ -85,13 +85,19 @@ horizon.inline_edit = {
             if (redir_url){
               location.href = redir_url;
             } else {
-              horizon.alert("error", gettext("Not authorized to do this operation."));
+              horizon.msg.alert(
+                gettext("Not authorized to do this operation."),
+                "error"
+              );
             }
           }
           else {
             if (!horizon.ajax.get_messages(jqXHR)) {
               // Generic error handler. Really generic.
-              horizon.alert("error", gettext("An error occurred. Please try again later."));
+              horizon.msg.alert(
+                gettext("An error occurred. Please try again later."),
+                "error"
+              );
             }
           }
         },
@@ -166,13 +172,20 @@ horizon.inline_edit = {
             if (redir_url){
               location.href = redir_url;
             } else {
-              horizon.alert("error", gettext("Not authorized to do this operation."));
+              horizon.msg.alert(
+                gettext("Not authorized to do this operation."),
+                "error"
+              );
+
             }
           }
           else {
             if (!horizon.ajax.get_messages(jqXHR)) {
               // Generic error handler. Really generic.
-              horizon.alert("error", gettext("An error occurred. Please try again later."));
+              horizon.msg.alert(
+                gettext("An error occurred. Please try again later."),
+                "error"
+              );
             }
           }
         },

@@ -14,6 +14,7 @@ import math
 
 from django.conf import settings
 from django.contrib.auth import logout  # noqa
+from django.contrib.messages.storage import cookie
 from django import http
 from django.utils.encoding import force_unicode
 from django.utils.functional import lazy  # noqa
@@ -35,6 +36,13 @@ class JSONSafeEncoder(json.JSONEncoder):
     def default(self, o):
         """Override this method to encode specific object
         """
+        if isinstance(o, cookie.CookieStorage):
+            return [
+                {
+                    "type": html.escape(message.tags),
+                    "msg": html.escape(message)
+                } for message in o]
+
         return json.JSONEncoder.default(self, o)
 
     def _encode(self, o):

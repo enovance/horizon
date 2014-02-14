@@ -125,7 +125,11 @@ horizon.addInitFunction(function() {
           location.href = jqXHR.getResponseHeader("X-Horizon-Location");
         } else {
           $form.closest(".modal").modal("hide");
-          horizon.alert("error", gettext("There was an error submitting the form. Please try again."));
+          horizon.msg.alert(
+            gettext("There was an error submitting the form. " +
+              "Please try again."),
+            "error"
+          );
         }
       }
     });
@@ -296,7 +300,10 @@ horizon.addInitFunction(function() {
         else {
           if (!horizon.ajax.get_messages(jqXHR)) {
             // Generic error handler. Really generic.
-            horizon.alert("error", gettext("An error occurred. Please try again later."));
+            horizon.msg.alert(
+              gettext("An error occurred. Please try again later."),
+              "error"
+            );
           }
         }
       },

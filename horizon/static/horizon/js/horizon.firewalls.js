@@ -26,8 +26,12 @@ horizon.firewalls = {
       },
       error: function(response) {
         if(via_user_submit) {
-          horizon.clearErrorMessages();
-          horizon.alert('error', gettext('There was a problem communicating with the server, please try again.'));
+          horizon.msg.clearErrorMessages();
+          horizon.msg.alert(
+            gettext('There was a problem communicating with the server, ' +
+              'please try again.'),
+            'error'
+          );
         }
       }
     });

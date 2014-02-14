@@ -502,6 +502,16 @@ table form {
   top: 20px;
   right: 20px;
   width: 300px;
+
+  .alert-block.ng-enter,
+  .alert-block.ng-leave.ng-leave-active {
+    opacity:0;
+  }
+  .alert-block.ng-leave,
+  .alert-block.ng-enter.ng-enter-active {
+    opacity:1;
+  }
+
   .alert-block {
     -webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
     -moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);

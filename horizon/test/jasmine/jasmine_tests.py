@@ -16,6 +16,10 @@ from horizon.test import helpers as test
 class ServicesTests(test.JasmineTests):
     sources = [
         'horizon/js/angular/horizon.conf.js',
-        'horizon/js/angular/services/horizon.utils.js'
+        'horizon/js/angular/services/horizon.utils.js',
+        'horizon/js/angular/services/horizon.messages.js'
     ]
-    specs = ['horizon/tests/jasmine/utilsSpec.js']
+    specs = [
+        'horizon/tests/jasmine/utilsSpec.js',
+        'horizon/tests/jasmine/messagesSpec.js'
+    ]

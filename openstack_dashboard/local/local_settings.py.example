@@ -57,7 +57,7 @@ HORIZON_CONFIG = {
     'auto_fade_alerts': {
         'delay': 3000,
         'fade_duration': 1500,
-        'types': ['alert-success', 'alert-info']
+        'types': ['success', 'info']
     },
     'help_url': "http://docs.openstack.org",
     'exceptions': {'recoverable': exceptions.RECOVERABLE,

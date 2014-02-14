@@ -102,8 +102,7 @@ horizon.network_topology = {
       .on('message',function(e){
         var message = $.parseJSON(e.originalEvent.data);
         if (self.previous_message !== message.message) {
-          horizon.alert(message.type, message.message);
-          horizon.autoDismissAlerts();
+          horizon.msg.alert(message.message, message.type);
           self.previous_message = message.message;
           self.delete_post_message(message.iframe_id);
           self.load_network_info();

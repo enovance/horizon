@@ -6,10 +6,15 @@
 
 {% comment %} Compress jQuery, Angular, Plugins, Bootstrap, Hogan.js and Horizon-specific JS. {% endcomment %}
 {% compress js %}
+<script src='{{ STATIC_URL }}horizon/lib/angular/ui-bootstrap-tpls-0.8.0.js' type='text/javascript' charset='utf-8'></script>
+<script src='{{ STATIC_URL }}horizon/lib/angular/angular-animate.js' type='text/javascript' charset='utf-8'></script>
+<script src='{{ STATIC_URL }}horizon/lib/angular/angular-sanitize.js' type='text/javascript' charset='utf-8'></script>
+
 <script src='{{ STATIC_URL }}horizon/js/angular/controllers/dummy.js' type='text/javascript' charset='utf-8'></script>
 <script src='{{ STATIC_URL }}horizon/js/angular/directives/forms.js' type='text/javascript' charset='utf-8'></script>
 <script src='{{ STATIC_URL }}horizon/js/angular/horizon.conf.js' type='text/javascript' charset='utf-8'></script>
 <script src='{{ STATIC_URL }}horizon/js/angular/services/horizon.utils.js' type='text/javascript' charset='utf-8'></script>
+<script src='{{ STATIC_URL }}horizon/js/angular/services/horizon.messages.js' type='text/javascript' charset='utf-8'></script>
 
 <script src='{{ STATIC_URL }}horizon/lib/jquery/jquery.cookie.js' type='text/javascript' charset="utf-8"></script>
 <script src='{{ STATIC_URL }}horizon/lib/jquery/jquery.quicksearch.js' type='text/javascript' charset="utf-8"></script>
@@ -32,7 +37,6 @@
 <script src='{{ STATIC_URL }}horizon/js/horizon.forms.js' type='text/javascript' charset='utf-8'></script>
 <script src='{{ STATIC_URL }}horizon/js/horizon.formset_table.js' type='text/javascript' charset='utf-8'></script>
 <script src='{{ STATIC_URL }}horizon/js/horizon.instances.js' type='text/javascript' charset='utf-8'></script>
-<script src='{{ STATIC_URL }}horizon/js/horizon.messages.js' type='text/javascript' charset='utf-8'></script>
 <script src='{{ STATIC_URL }}horizon/js/horizon.modals.js' type='text/javascript' charset='utf-8'></script>
 <script src='{{ STATIC_URL }}horizon/js/horizon.quota.js' type='text/javascript' charset='utf-8'></script>
 <script src='{{ STATIC_URL }}horizon/js/horizon.tables.js' type='text/javascript' charset='utf-8'></script>
@@ -59,5 +63,18 @@
 {% comment %}Go!{% endcomment %}
 <script type='text/javascript' charset='utf-8'>
   // Call init on DOM ready.
-  $(document).ready(horizon.init);
+  $(document).ready(function () {
+    horizon.init();
+
+    /*
+    fallback, waiting for the implementation of the ajax queue in angular to
+    intercept ajax calls.
+     */
+    $("body").ajaxComplete(function(event, request){
+      var message_array = $.parseJSON(horizon.ajax.get_messages(request));
+      $(message_array).each(function (index, item) {
+        horizon.msg.alert(item[1], item[0]);
+      });
+    });
+  });
 </script>
