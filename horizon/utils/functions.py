@@ -17,7 +17,47 @@ from django.contrib.auth import logout  # noqa
 from django import http
 from django.utils.encoding import force_unicode
 from django.utils.functional import lazy  # noqa
+from django.utils import html
 from django.utils import translation
+import json
+import six
+
+
+class JSONSafeEncoder(json.JSONEncoder):
+    """Safe encode an object into JSON, using django escape and mark the result
+    as safe in order to avoid template escaping.
+    """
+
+    def __init__(self, *args, **kwargs):
+        super(JSONSafeEncoder, self).__init__(*args, **kwargs)
+        self.flag = True
+
+    def default(self, o):
+        """Override this method to encode specific object
+        """
+        return json.JSONEncoder.default(self, o)
+
+    def _encode(self, o):
+        if isinstance(o, basestring):
+            return html.escape(o)
+        else:
+            return self.encode(o)
+
+    def encode(self, o):
+        """Overrides encode in order to escape every string in types handled by
+        default.
+        """
+        flag = self.flag
+        self.flag = False
+        if isinstance(o, basestring):
+            o = html.escape(o)
+        if isinstance(o, (list, tuple)):
+            o = [self._encode(obj) for obj in o]
+        if isinstance(o, dict):
+            o = dict([(key, self._encode(value))
+                      for key, value in six.iteritems(o)])
+
+        return html.mark_safe(json.JSONEncoder.encode(self, o)) if flag else o
 
 
 def _lazy_join(separator, strings):
