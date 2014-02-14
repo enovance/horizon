@@ -1,0 +1,53 @@
+.sidebar {
+  @background: @body-bg;
+  @active-background: @brand-danger;
+  @color: @text-color;
+  @active-color: @body-bg;
+
+  background-color: @background;
+  position: fixed;
+
+  h1.brand a {
+    background: url(/static/dashboard/img/logo-splash.png) center no-repeat;
+    height: 125px;
+    margin: 10px 0 15px -5px;
+    display: block;
+    color: transparent;
+  }
+
+  & > ul {
+    font-size: 14px;
+  }
+
+  .accordion-group {
+    border: none;
+    .accordion-heading a.accordion-toggle {
+
+      padding: 8px 10px 8px 10px;
+      display: block;
+      cursor: pointer;
+      text-decoration: none;
+      color: @color;
+      border-bottom: 1px solid @color;
+      font-weight: normal;
+    }
+    .accordion-inner {
+      margin-left: 10px;
+      border-width: 0 0 0 1px;
+      border-style: solid;
+      padding: 0;
+    }
+  }
+
+  .nav-pills > li > a {
+    .border-radius(0);
+    color: @text-color;
+    margin: 0;
+  }
+
+  .nav-pills .active > a,
+  .nav-pills .active > a:hover {
+    color: @active-color;
+    background-color: @active-background;
+  }
+}

@@ -1,0 +1,82 @@
+{% load i18n %}
+<div data-tab data-active="tabs[3].active" data-select="select(3)">
+  <div data-tab-heading ng-class="{done: !tabs[3].active && tabs[3].valid}" class="heading">
+    {% trans "Step" %} {$ 3 + !tabs[1].disabled $} - {% trans "Access & Security" %}
+  </div>
+
+  <div ng-form="AccessAndSecurityForm" class="row-fluid" ng-controller="AccessAndSecurityCtrl">
+    <div class="control-group span8">
+      <div class="row">
+        <div class="span6">
+          <div class="control-group" ng-show="!launchInstance.create_key_pair && !launchInstance.import_key_pair">
+            <label for="key_pair_id">{% trans "Keypair" %}</label>
+            <select id="key_pair_id" class="span6" name="key_pair_id" ng-model="launchInstance.key_pair_id" ng-options="key_pair.id as key_pair.name for key_pair in key_pairs" ></select>
+            <a href="#" class="btn btn-primary" ng-model="launchInstance.create_key_pair" data-btn-checkbox>{% trans "Create Key Pair" %}</a>
+            <a href="#" class="btn btn-primary" ng-model="launchInstance.import_key_pair" data-btn-checkbox>{% trans "Import Key Pair" %}</a>
+          </div>
+
+          <div class="control-group" ng-show="launchInstance.create_key_pair" ng-class="{'error': AccessAndSecurityForm.new_key_pair_name.$invalid}">
+            <label for="new_key_pair_name" ng-if="AccessAndSecurityForm.new_key_pair_name.$valid">{% trans "Key Pair Name" %}</label>
+            <label for="new_key_pair_name" ng-if="AccessAndSecurityForm.new_key_pair_name.$error.into">{% trans "Key Pair Name already exists" %}</label>
+
+            <input id="new_key_pair_name" type="text" class="span6" name="new_key_pair_name" ng-model="launchInstance.key_pair_name" data-into="key_pairs_name">
+
+
+            <a class="btn" ng-model="launchInstance.create_key_pair" data-btn-checkbox ng-click="launchInstance.key_pair_name = '' ">{% trans "Cancel" %}</a>
+          </div>
+
+          <div class="control-group" ng-show="launchInstance.import_key_pair" ng-class="{'error': AccessAndSecurityForm.import_key_pair_name.$invalid}">
+
+
+            <label for="import_key_pair_name" ng-if="AccessAndSecurityForm.import_key_pair_name.$valid">{% trans "Key Pair Name" %}</label>
+            <label for="import_key_pair_name" ng-if="AccessAndSecurityForm.import_key_pair_name.$error.into">{% trans "Key Pair Name already exists" %}</label>
+            <input id="import_key_pair_name" type="text" class="span6" name="import_key_pair_name" ng-model="launchInstance.key_pair_name" data-into="key_pairs_name">
+
+            <label for="public_key">{% trans "Public Key" %}</label>
+            <textarea id="public_key" rows="2" class="span6" ng-model="launchInstance.public_key" name="public_key"></textarea>
+            <a class="btn" ng-model="launchInstance.import_key_pair" data-btn-checkbox ng-click="launchInstance.key_pair_name = '' ">{% trans "Cancel" %}</a>
+          </div>
+
+          <label for="admin_pass">{% trans "Admin Pass:" %}</label>
+          <input id="admin_pass" class="span6" type="password" name="admin_pass" ng-model="launchInstance.admin_pass" >
+          <div ng-class="{'error': AccessAndSecurityForm.confirm_admin_pass.$invalid}">
+            <label for="confirm_admin_pass" ng-if="AccessAndSecurityForm.confirm_admin_pass.$valid ">{% trans "Confirm Admin Pass:" %}</label>
+            <label for="confirm_admin_pass" ng-if="AccessAndSecurityForm.confirm_admin_pass.$error.identity">{% trans "Admin Pass does not correspond:" %}</label>
+            <input id="confirm_admin_pass" class="span6" type="password" ng-model="launchInstance.confirm_admin_pass" data-identity="launchInstance.admin_pass" name="confirm_admin_pass">
+          </div>
+        </div>
+        <div class="span6" ng-class="{'error': AccessAndSecurityForm.networks.$invalid && !AccessAndSecurityForm.networks.$pristine}">
+          <label for="networks" ng-if="AccessAndSecurityForm.networks.$valid || AccessAndSecurityForm.networks.$pristine">{% trans "Networks" %}</label>
+          <label for="networks" ng-if="AccessAndSecurityForm.networks.$error.notBlank && !AccessAndSecurityForm.networks.$pristine">{% trans "Networks required"  %}</label>
+          <div data-selection data-elts="networks_list" data-id="networks" ng-model="launchInstance.networks" data-name="networks" class="control-group" data-not-blank>
+            <div><a class="btn btn-primary"></a>{$ elt.name $} <em class="network_id pull-right">({$ elt.id $})</em></div>
+          </div>
+        </div>
+        <div class="span6" ng-class="{'error': AccessAndSecurityForm.sec_groups.$invalid && !AccessAndSecurityForm.sec_groups.$pristine}">
+          <label for="sec_groups" ng-if="AccessAndSecurityForm.sec_groups.$valid || AccessAndSecurityForm.sec_groups.$pristine">{% trans "Security Groups" %}</label>
+          <label for="sec_groups" ng-if="AccessAndSecurityForm.sec_groups.$error.notBlank && !AccessAndSecurityForm.sec_groups.$pristine">{% trans "Security Groups required" %}</label>
+          <div data-selection data-elts="sec_groups_list" data-id="sec_groups" ng-model="launchInstance.sec_groups" data-name="sec_groups" class="control-group" data-not-blank>
+            <div><a class="btn btn-primary"></a>{$ elt $}</div>
+          </div>
+        </div>
+
+        <div class="span6">
+          <label for="customization_script">{% trans "Customization Script:" %}</label>
+          <textarea id="customization_script" rows="3" ng-model="launchInstance.customization_script" name="customization_script" class="span6"></textarea>
+        </div>
+        <div class="span6">
+          <label for="disk_partition">{% trans "Disk Partition:" %}</label>
+          <select id="disk_partition" ng-model="launchInstance.disk_partition" name="disk_partition" class="span6">
+            <option value="AUTO" selected>{% trans "Automatic" %}</option>
+            <option value="MANUAL">{% trans "Manual" %}</option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+    <div class="span4">
+      <h3>{% trans "Step" %} {$ 3 + !tabs[1].disabled $} - {% trans "Access & Security" %}</h3>
+      {% blocktrans %}Access & Security help{% endblocktrans %}
+    </div>
+  </div>
+</div>

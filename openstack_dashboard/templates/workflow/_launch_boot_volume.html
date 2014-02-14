@@ -1,0 +1,42 @@
+{% load i18n %}
+<div data-tab data-active="tabs[1].active" data-select="select(1)" data-disabled="tabs[1].disabled">
+  <div data-tab-heading ng-class="{done: !tabs[1].active && tabs[1].valid}" class="heading" >
+    {% trans "Step 2" %} - {% trans "Boot Volume" %}
+  </div>
+
+  <div ng-form="BootVolumeForm" class="row-fluid" ng-controller="BootVolumeCtrl">
+    <fieldset class="span8">
+
+      <div class="control-group">
+        <div class="row">
+          <div class="span5" ng-class="{'error': BootVolumeForm.name.$invalid && !BootVolumeForm.name.$pristine}">
+            <label for="device_name" ng-if="BootVolumeForm.name.$valid || BootVolumeForm.name.$pristine">{% trans "Device Name" %}</label>
+            <label for="device_name" ng-if="BootVolumeForm.name.$invalid && !BootVolumeForm.name.$pristine">{% trans "Device Name required" %}</label>
+            <input id="device_name" class="span5" type="text" name="name" ng-model="launchInstance.device_name" maxlength="80" ng-required="!tabs[1].disabled">
+          </div>
+          <div class="span3" ng-class="{'error': BootVolumeForm.volume_size.$invalid && !BootVolumeForm.volume_size.$pristine}">
+            <label for="volume_size" ng-if="BootVolumeForm.volume_size.$valid || BootVolumeForm.volume_size.$pristine">{% trans "Device Size (GB)" %}</label>
+            <label for="volume_size" ng-if="BootVolumeForm.volume_size.$error.required">{% trans "Device Size required" %}</label>
+            <label for="volume_size" ng-if="BootVolumeForm.volume_size.$error.min">{% trans "Device Size minimum is 1" %}</label>
+            <input id="volume_size" class="span3" type="number" name="volume_size" ng-model="launchInstance.volume_size" ng-required="!tabs[1].disabled" min="1" ng-disabled="launchInstance.source_type === 'volumes' || launchInstance.source_type === 'volumes_snapshot' ">
+          </div>
+
+
+        </div>
+        <div class="row-fluid form-inline">
+          <hr class="span12">
+          <label for="delete" class="checkbox"><input id="delete" type="checkbox" name="delete" checked>{% trans "Delete on Terminate" %}</label>
+        </div>
+      </div>
+      <div class="control-group">
+        <div class="alert alert-warning"><strong>{% trans "Warning!" %}</strong>{% trans "By checking this option, the boot disk will act like an ephemeral disk when you terminate the instance: it will be deleted." %}</div>
+      </div>
+      <a class="btn btn-primary pull-right" ng-disabled="!BootVolumeForm.$valid" ng-click="next()">{% trans "Choose Flavor" %} »</a>
+
+    </fieldset>
+    <div class="span4">
+      <h3>{% trans "Step 2" %} - {% trans "Boot Volume" %}</h3>
+      {% blocktrans %}Boot volume help{% endblocktrans %}
+    </div>
+  </div>
+</div>

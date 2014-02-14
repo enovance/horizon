@@ -124,4 +124,36 @@ describe('hz.utils', function () {
       });
     });
   });
+
+  describe('hz.utils.JSONCache', function () {
+    beforeEach(function () {
+      angular.mock.module('hz.utils.JSONCache');
+    });
+
+    describe('JSONCache', function () {
+      var JSONCache, $compile;
+
+      beforeEach(function () {
+        angular.mock.inject(function ($injector) {
+          JSONCache = $injector.get('JSONCache');
+          $compile = $injector.get('$compile');
+        });
+      });
+
+      it('should populate JSONCache with contents of a application/json ' +
+        'script element and make an eval on it', function () {
+          $compile(
+            '<div>foo' +
+              '  <script id="ignore">ignore me</script>' +
+              '  <script type="application/json" id="my-json">' +
+              '    {"foo": "bar"}' +
+              '  </script>' +
+              '</div>'
+          );
+          expect(JSONCache.get('my-json')).toEqual({"foo": "bar"});
+          expect(JSONCache.get('ignore')).toBeUndefined();
+        });
+    });
+  });
+
 });

@@ -1,0 +1,53 @@
+@border: @text-color;
+@color: @text-color;
+@active-color: @brand-primary;
+@background: @body-bg;
+
+.nav {
+  &.nav-tabs {
+    border-color: @border;
+    border-width: 0 0 1px 0;
+    background: @background;
+    margin: 0;
+
+    a {
+      color: @color;
+      text-align: center;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+
+    & > li.active > a,
+    & > li > a:hover {
+      border-width: 0;
+      color: @active-color;
+      border-bottom: 3px solid @active-color;
+      margin-bottom: -1px;
+      font-weight: bold;
+      background: @background;
+    }
+
+
+    & > li {
+      margin: 0;
+    }
+
+    & > li > a {
+      padding-top: 8px;
+      padding-bottom: 8px;
+      min-width: 120px;
+      margin: 2px 0 0 0;
+      border-width: 0;
+      .border-radius(0)
+    }
+  }
+}
+
+.tab-content {
+  padding: 20px;
+  margin: 0 0 0 20px;
+  border-color: @border;
+  border-style: solid;
+  border-width: 0 0 0 1px;
+}

@@ -23,7 +23,6 @@ from django.conf.urls import url  # noqa
 
 from openstack_dashboard.dashboards.project.instances import views
 
-
 INSTANCES = r'^(?P<instance_id>[^/]+)/%s$'
 INSTANCES_KEYPAIR = r'^(?P<instance_id>[^/]+)/(?P<keypair_name>[^/]+)/%s$'
 VIEW_MOD = 'openstack_dashboard.dashboards.project.instances.views'
@@ -31,7 +30,6 @@ VIEW_MOD = 'openstack_dashboard.dashboards.project.instances.views'
 
 urlpatterns = patterns(VIEW_MOD,
     url(r'^$', views.IndexView.as_view(), name='index'),
-    url(r'^launch$', views.LaunchInstanceView.as_view(), name='launch'),
     url(r'^(?P<instance_id>[^/]+)/$',
         views.DetailView.as_view(), name='detail'),
     url(INSTANCES % 'update', views.UpdateView.as_view(), name='update'),

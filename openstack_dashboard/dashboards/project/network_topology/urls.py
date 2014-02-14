@@ -24,7 +24,6 @@ from django.conf.urls import url  # noqa
 
 from openstack_dashboard.dashboards.project.network_topology import views
 
-
 urlpatterns = patterns(
     'openstack_dashboard.dashboards.project.network_topology.views',
     url(r'^$', views.NetworkTopologyView.as_view(), name='index'),
@@ -33,8 +32,6 @@ urlpatterns = patterns(
     url(r'^router/(?P<router_id>[^/]+)/$', views.RouterDetailView.as_view(),
         name='detail'),
     url(r'^json$', views.JSONView.as_view(), name='json'),
-    url(r'^launchinstance$', views.NTLaunchInstanceView.as_view(),
-        name='launchinstance'),
     url(r'^createnetwork$', views.NTCreateNetworkView.as_view(),
         name='createnetwork'),
     url(r'^createrouter$', views.NTCreateRouterView.as_view(),

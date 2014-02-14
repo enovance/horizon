@@ -1,0 +1,75 @@
+{% load i18n %}
+<div data-tab data-active="tabs[0].active" data-select="select(0)" >
+  <div data-tab-heading ng-class="{done: !tabs[0].active && tabs[0].valid}" class="heading">
+    {% trans "Step 1 " %} - {% trans "Instance & Image" %}
+  </div>
+  <div class="form-horizontal row-fluid" ng-form="SelectSourceForm" ng-controller="SelectSourceCtrl">
+    <fieldset class="span8">
+
+      <div class="control-group" ng-form="SubSelectSourceForm">
+        <div class="row">
+          <div class="span4" ng-class="{'error': SubSelectSourceForm.name.$invalid && !SubSelectSourceForm.name.$pristine}">
+            <label for="name" ng-if="SubSelectSourceForm.name.$valid || SubSelectSourceForm.name.$pristine">{% trans "Instance Name" %}</label>
+            <label for="name" ng-if="SubSelectSourceForm.name.$invalid && !SubSelectSourceForm.name.$pristine">{% trans "Instance Name is required" %}</label>
+            <input id="name" class="span4" type="text" name="name" ng-model="launchInstance.name" required maxlength="80" >
+          </div>
+          <div class="span2" ng-class="{'error': SubSelectSourceForm.count.$invalid && !SubSelectSourceForm.count.$pristine}">
+            <label for="count" ng-if="SubSelectSourceForm.count.$valid || SubSelectSourceForm.count.$pristine">{% trans "Instance Count" %}</label>
+            <label for="count" ng-if="SubSelectSourceForm.count.$error.required">{% trans "Count required" %}</label>
+            <label for="count" ng-if="SubSelectSourceForm.count.$error.min">{% trans "Count minimum is 1" %}</label>
+            <label for="count" ng-if="SubSelectSourceForm.count.$error.max">{% trans "Count maximum is" %} {$ max_count $}</label>
+            <input id="count" class="span2" type="number" name="count" ng-model="launchInstance.count" required min="1" max="{$ max_count $}" >
+          </div>
+
+
+          <div class="span4">
+            <label for="availability_zone">{% trans "Availability Zone" %}</label>
+            <select id="availability_zone" class="span4" name="availability_zone" ng-model="launchInstance.availability_zone" required ng-options="zone for zone in zones"></select>
+          </div>
+        </div>
+      </div>
+      <div class="control-group">
+        <div class="btn-group">
+          <a href="#" class="btn btn-default" data-ng-model="launchInstance.type" data-btn-radio="'ephemeral'">{% trans "Ephemeral Root Disk" %}</a>
+          <a href="#" class="btn btn-default" data-ng-model="launchInstance.type" data-btn-radio="'persistent'">{% trans "Persistent Root Disk" %}</a>
+        </div>
+      </div>
+      <input type="hidden" name="source_type" ng-model="launchInstance.source_type" required>
+      <input type="hidden" name="source_id" ng-model="launchInstance.source_id" required>
+      <div class="control-group">
+        <div data-tabset>
+          <div data-tab ng-repeat="elt in elts" >
+            <div data-tab-heading>
+              {$ elt.title $} <span class="badge">{$ elt.total $}</span>
+            </div>
+            <table class="table table-bordered source-table" ng-show="elt.total">
+              <tbody ng-repeat="(source_type_entitled, source_type) in elt.source_types" ng-init="odd = $odd">
+              <tr ng-repeat="value in source_type.values" ng-class="{odd: odd}">
+                <td ng-if="$first" rowspan="{$ source_type.total $}" class="span2">
+                  <h5>{$ source_type.title $}</h5>
+                  <h6>{$ source_type.legend $}</h6>
+                </td>
+                <td ng-class="{active: value.active}">{$ value | name $}</td>
+                <td class="span2" ng-class="{active: value.active}">
+                  <a href="#" class="btn"
+                    ng-class="{'btn-primary': !value.active}"
+                    data-ng-disabled="!SubSelectSourceForm.$valid || SubSelectSourceForm.$pristine"
+                    ng-click="select(source_type_entitled, value)">
+                    {% trans "Select" %} »
+                  </a>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <h4 ng-show="!elt.total">{$ elt.empty $}</h4>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+    <div class="span4">
+
+      <h3>{% trans "Step 1" %} - {% trans "Instance Details" %}</h3>
+      {% blocktrans %} Select source help{% endblocktrans %}
+    </div>
+  </div>
+</div>

@@ -38,8 +38,6 @@ from openstack_dashboard.dashboards.project.network_topology.routers \
 
 from openstack_dashboard.dashboards.project.instances import\
     views as i_views
-from openstack_dashboard.dashboards.project.instances.workflows import\
-    create_instance as i_workflows
 from openstack_dashboard.dashboards.project.networks import\
     views as n_views
 from openstack_dashboard.dashboards.project.networks import\
@@ -65,12 +63,12 @@ class NTCreateNetworkView (n_views.CreateView):
     workflow_class = NTCreateNetwork
 
 
-class NTLaunchInstance (i_workflows.LaunchInstance):
-    success_url = "horizon:project:network_topology:index"
-
-
-class NTLaunchInstanceView (i_views.LaunchInstanceView):
-    workflow_class = NTLaunchInstance
+# class NTLaunchInstance (i_workflows.LaunchInstance):
+#     success_url = "horizon:project:network_topology:index"
+#
+#
+# class NTLaunchInstanceView (i_views.LaunchInstanceView):
+#     workflow_class = NTLaunchInstance
 
 
 class InstanceView (i_views.IndexView):

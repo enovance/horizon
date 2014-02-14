@@ -26,6 +26,7 @@ from django.template import Template  # noqa
 from django.utils.text import normalize_newlines  # noqa
 
 from horizon.test import helpers as test
+from horizon.utils.filters import to_json_safe  # noqa
 
 
 def single_line(text):
@@ -107,4 +108,38 @@ class TemplateTagTests(test.TestCase):
         rendered_str = self.render_template(tag_require='horizon',
                                             template_text=text,
                                             context={'test': ctx_string})
+        self.assertEqual(rendered_str, expected)
+
+    def test_json_angular(self):
+        ctx_string = ['foo', 'bar']
+
+        text = '{% json_angular test "test-id" %}'
+
+        rendered_str = self.render_template(tag_require='horizon',
+                                            template_text=text,
+                                            context={'test': ctx_string})
+        expected = u' <script type="application/json" id="test-id" >\n' \
+                   u'  ["foo", "bar"]\n' \
+                   u'</script>\n'
+        self.assertEqual(rendered_str, expected)
+
+        text = '{% json_angular test %}'
+        rendered_str = self.render_template(tag_require='horizon',
+                                            template_text=text,
+                                            context={'test': ctx_string})
+        expected = u' <script type="application/json" id="test" >\n' \
+                   u'  ["foo", "bar"]\n' \
+                   u'</script>\n'
+        self.assertEqual(rendered_str, expected)
+
+        text = '{% json_angular test name %}'
+        rendered_str = self.render_template(tag_require='horizon',
+                                            template_text=text,
+                                            context={
+                                                'test': ctx_string,
+                                                'name': 'name'
+                                            })
+        expected = u' <script type="application/json" id="name" >\n' \
+                   u'  ["foo", "bar"]\n' \
+                   u'</script>\n'
         self.assertEqual(rendered_str, expected)

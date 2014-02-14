@@ -21,6 +21,7 @@
 """
 Views for managing instances.
 """
+
 from django.core.urlresolvers import reverse
 from django.core.urlresolvers import reverse_lazy
 from django import http
@@ -121,16 +122,6 @@ class IndexView(tables.DataTableView):
                     msg = _('Unable to retrieve instance size information.')
                     exceptions.handle(self.request, msg)
         return instances
-
-
-class LaunchInstanceView(workflows.WorkflowView):
-    workflow_class = project_workflows.LaunchInstance
-
-    def get_initial(self):
-        initial = super(LaunchInstanceView, self).get_initial()
-        initial['project_id'] = self.request.user.tenant_id
-        initial['user_id'] = self.request.user.id
-        return initial
 
 
 def console(request, instance_id):

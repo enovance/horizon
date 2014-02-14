@@ -42,34 +42,43 @@ def has_permissions_on_list(components, user):
                 in components if has_permissions(user, component)]
 
 
-@register.inclusion_tag('horizon/_accordion_nav.html', takes_context=True)
+@register.inclusion_tag('horizon/_sidebar.html', takes_context=True)
 def horizon_nav(context):
-    if 'request' not in context:
-        return {}
+    def is_navigable(current_user, component):
+        return has_permissions(current_user, component) and (
+            (callable(component.nav) and component.nav(context)) or
+            (not callable(component.nav) and component.nav)
+        )
+
     current_dashboard = context['request'].horizon.get('dashboard', None)
     current_panel = context['request'].horizon.get('panel', None)
-    dashboards = []
+    sidebar = []
+    user = context['request'].user
     for dash in Horizon.get_dashboards():
-        panel_groups = dash.get_panel_groups()
+        if not is_navigable(user, dash):
+            continue
+
+        panel_groups = dash.get_panel_groups().values()
         non_empty_groups = []
-        for group in panel_groups.values():
-            allowed_panels = []
-            for panel in group:
-                if callable(panel.nav) and panel.nav(context):
-                    allowed_panels.append(panel)
-                elif not callable(panel.nav) and panel.nav:
-                    allowed_panels.append(panel)
+
+        for group in panel_groups:
+            allowed_panels = [
+                panel for panel in group if is_navigable(user, panel)]
+
             if allowed_panels:
-                non_empty_groups.append((group.name, allowed_panels))
-        if callable(dash.nav) and dash.nav(context):
-            dashboards.append((dash, SortedDict(non_empty_groups)))
-        elif not callable(dash.nav) and dash.nav:
-            dashboards.append((dash, SortedDict(non_empty_groups)))
-    return {'components': dashboards,
-            'user': context['request'].user,
-            'current': current_dashboard,
-            'current_panel': current_panel.slug if current_panel else '',
-            'request': context['request']}
+                non_empty_groups.append({
+                    "name": group.name,
+                    "panels": allowed_panels,
+                    "currentPanel": -1 if current_panel not in allowed_panels
+                    else allowed_panels.index(current_panel)})
+
+        sidebar.append({
+            "name": dash.name,
+            "currentDashboard": dash == current_dashboard,
+            "panelsGroups": non_empty_groups
+        })
+
+    return {"sidebar": sidebar}
 
 
 @register.inclusion_tag('horizon/_nav_list.html', takes_context=True)
@@ -164,3 +173,47 @@ def jstemplate(parser, token):
 @register.assignment_tag
 def load_config():
     return conf.HORIZON_CONFIG
+
+
+@register.tag
+def json_angular(parser, token):
+    """provide a json_angular template tag which inject JSON data in a safe way
+    and use an angular directive to retrieve it in the client.
+
+    Usage is {% json_angular <object_to_dump> [<id_of_the_object>]%} where the
+    object will be dumped by :class: `~horizon.utils.functions.JSONSafeEncoder`
+    and the id could be a string or a value which will be interpolated by the
+    django template renderer. If the id is not specified the object key will be
+    used as the id
+    """
+    token = token.split_contents()
+    if len(token) == 2:
+        return JSONTemplateNode(token[1], token[1])
+    elif len(token) == 3:
+        return JSONTemplateNode(token[1], token[2])
+    else:
+        raise template.TemplateSyntaxError(
+            "%r tag requires three arguments" % token.contents.split()[0])
+
+
+class JSONTemplateNode(template.Node):
+
+    def __init__(self, context_key, id_json):
+        self.context_key = context_key
+        self.id_json = id_json
+
+    def id_json_render(self):
+        if self.id_json == self.context_key:
+            return '"%s"' % self.id_json
+        elif self.id_json[0] == self.id_json[-1] == '"':
+            return self.id_json
+        else:
+            return '"{{ %s }}"' % self.id_json
+
+    def render(self, context):
+        t = template.Template(
+            '<script type="application/json" id=%s >\n'
+            '  {{ %s|to_json_safe }}\n'
+            '</script>\n' % (self.id_json_render(), self.context_key)
+        )
+        return t.render(context)

@@ -1,0 +1,83 @@
+.wizard {
+  @active-color: @body-bg;
+  @active-background: @brand-primary;
+  @color: @text-color;
+  @background: @gray-lighter;
+
+  & > ul.nav-tabs {
+
+    border: none;
+    background: @body-bg;
+    padding: 0;
+
+    li {
+      position: relative;
+      display: block;
+
+      &.disabled {
+        display: none;
+      }
+
+      a, a:hover {
+        border:none;
+        border-radius: 0;
+        background: @background;
+        font-weight: normal;
+        color: @color;
+        padding: 0;
+        min-width: 60px;
+      }
+
+      a .heading {
+        padding: 8px 15px 8px 35px;
+      }
+
+      a .done, a:hover .done{
+        color: @color;
+        background: @active-background;
+      }
+
+      &:first-child a .heading{
+        padding-left: 15px;
+      }
+      & .heading:before {
+        position: absolute;
+        top: 2px;
+        right: -15px;
+        z-index: 2;
+        border: 15px solid transparent;
+        border-right: 0;
+        border-left-color: @background;
+        content:"";
+      }
+      & .heading:after {
+        position: absolute;
+        top: 0px;
+        right: -18px;
+        z-index: 1;
+        border: 17px solid transparent;
+        border-right: 0;
+        border-left-color: #fff;
+        content:"";
+      }
+
+
+      &.active .heading:before, & .heading.done:before {
+        border-left: 15px solid @active-background;
+      }
+    }
+
+    .active > a,
+    .active > a:hover {
+      background: @active-background;
+      color:#fff;
+      border: none;
+      font-weight: normal;
+    }
+  }
+
+  & > .tab-content {
+    border-width: 0;
+    margin: 0;
+  }
+}

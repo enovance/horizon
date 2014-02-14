@@ -28,8 +28,6 @@ from openstack_dashboard import api
 
 from openstack_dashboard.dashboards.project.instances \
     import utils as instance_utils
-from openstack_dashboard.dashboards.project.instances.workflows \
-    import create_instance
 
 
 class SetFlavorChoiceAction(workflows.Action):
@@ -88,6 +86,27 @@ class SetFlavorChoice(workflows.Step):
     contributes = ("old_flavor_id", "old_flavor_name", "flavors", "flavor")
 
 
+class SetAdvancedAction(workflows.Action):
+    disk_config = forms.ChoiceField(label=_("Disk Partition"),
+                                    required=False)
+
+    def __init__(self, request, *args, **kwargs):
+        super(SetAdvancedAction, self).__init__(request, *args, **kwargs)
+        # Set our disk_config choices
+        config_choices = [("AUTO", _("Automatic")), ("MANUAL", _("Manual"))]
+        self.fields['disk_config'].choices = config_choices
+
+    class Meta:
+        name = _("Advanced Options")
+        help_text_template = ("project/instances/"
+                              "_launch_advanced_help.html")
+
+
+class SetAdvanced(workflows.Step):
+    action_class = SetAdvancedAction
+    contributes = ("disk_config",)
+
+
 class ResizeInstance(workflows.Workflow):
     slug = "resize_instance"
     name = _("Resize Instance")
@@ -95,7 +114,7 @@ class ResizeInstance(workflows.Workflow):
     success_message = _('Scheduled resize of instance "%s".')
     failure_message = _('Unable to resize instance "%s".')
     success_url = "horizon:project:instances:index"
-    default_steps = (SetFlavorChoice, create_instance.SetAdvanced)
+    default_steps = (SetFlavorChoice, SetAdvanced)
 
     def format_status_message(self, message):
         return message % self.context.get('name', 'unknown instance')

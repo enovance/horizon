@@ -1,0 +1,19 @@
+{% load i18n %}
+<div class="modal-header">
+  <h3>{% trans "Launch Instance"%}</h3>
+</div>
+<form class="modal-body" name="LaunchInstanceForm">
+<div data-tabset class="wizard">
+
+{% include 'workflow/_launch_select_source.html' %}
+{% include 'workflow/_launch_boot_volume.html' %}
+{% include 'workflow/_launch_flavor.html' %}
+{% include 'workflow/_launch_access_and_security.html' %}
+</div>
+</form>
+
+<div class="modal-footer">
+  <a class="btn btn-warning" ng-click="cancel()">{% trans "Cancel" %}</a>
+  <a class="btn btn-primary" ng-show="tabs[index].valid && index < tabs.length - 1" ng-click="next()">{% trans "Next" %} »</a>
+  <a class="btn btn-info span2" ng-show="LaunchInstanceForm.$valid || index === tabs.length - 1" ng-click="launch(LaunchInstanceForm)" ng-disabled="LaunchInstanceForm.$invalid">{% trans "Launch" %}</a>
+</div>

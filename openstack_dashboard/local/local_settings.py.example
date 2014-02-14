@@ -57,12 +57,17 @@ HORIZON_CONFIG = {
     'auto_fade_alerts': {
         'delay': 3000,
         'fade_duration': 1500,
-        'types': ['alert-success', 'alert-info']
+        'types': ['success', 'info']
     },
     'help_url': "http://docs.openstack.org",
     'exceptions': {'recoverable': exceptions.RECOVERABLE,
                    'not_found': exceptions.NOT_FOUND,
                    'unauthorized': exceptions.UNAUTHORIZED},
+    'debug': DEBUG,
+    'nav_accordion': {
+        'all_open': False,
+        'one_at_a_time': True
+    },
 }
 
 # Specify a regular expression to validate user passwords.

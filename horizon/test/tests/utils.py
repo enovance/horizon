@@ -26,9 +26,11 @@ from horizon.utils import fields
 from horizon.utils import filters
 # we have to import the filter in order to register it
 from horizon.utils.filters import parse_isotime  # noqa
+from horizon.utils.filters import to_json_safe  # noqa
 from horizon.utils import memoized
 from horizon.utils import secret_key
 from horizon.utils import validators
+import json
 
 
 class ValidatorsTests(test.TestCase):
@@ -286,6 +288,37 @@ class FiltersTests(test.TestCase):
         adate = '2007-01-25T12:00:00Z'
         result = filters.parse_isotime(adate)
         self.assertIsInstance(result, datetime.datetime)
+
+    def test_to_json_safe_filter(self):
+        # try to inject malicious code in the template
+        code = "foo</script><script>alert('pwnd!');</script><script>bar;"
+
+        obj = code
+        c = django.template.Context({'object': obj})
+        t = django.template.Template('{{object|to_json_safe}}')
+        self.assertNotIn(t.render(c), '<script>')
+
+        obj = {"object": code}
+        c = django.template.Context({'object': obj})
+        t = django.template.Template('{{object|to_json_safe}}')
+        self.assertNotIn(t.render(c), '<script>')
+
+        obj = [code]
+        c = django.template.Context({'object': obj})
+        t = django.template.Template('{{object|to_json_safe}}')
+        self.assertNotIn(t.render(c), '<script>')
+
+        # try nested injection
+        obj = {"foo": {"bar": code}}
+        c = django.template.Context({'object': obj})
+        t = django.template.Template('{{object|to_json_safe}}')
+        self.assertNotIn(t.render(c), json.dumps(obj))
+
+        #default behaviour
+        obj = {"type": "error", "msg": "A message", "nested": {"foo": "bar"}}
+        c = django.template.Context({'object': obj})
+        t = django.template.Template('{{object|to_json_safe}}')
+        self.assertEqual(t.render(c), json.dumps(obj))
 
 
 class TimeSinceNeverFilterTests(test.TestCase):

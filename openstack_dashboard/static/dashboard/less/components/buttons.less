@@ -1,0 +1,30 @@
+// BUTTON STYLES
+// -------------
+
+.btn {
+  .button-variant(@text-color, @body-bg, darken(@body-bg, 20%));
+}
+
+.btn-primary {
+  .button-variant(@body-bg, @brand-primary, darken(@brand-primary, 20%));
+}
+// Warning appears are orange
+.btn-warning {
+  .button-variant(@body-bg, @brand-warning, darken(@brand-warning, 20%));
+}
+// Danger and error appear as red
+.btn-danger {
+  .button-variant(@body-bg, @brand-danger, darken(@brand-danger, 20%));
+}
+// Success appears as green
+.btn-success {
+  .button-variant(@body-bg, @brand-success, darken(@brand-success, 20%));
+}
+// Info appears as a neutral blue
+.btn-info {
+  .button-variant(@body-bg, @brand-info, darken(@brand-info, 20%));
+}
+// Inverse appears as dark gray
+.btn-inverse {
+  .button-variant(@body-bg, @gray-dark, darken(@gray-dark, 20%));
+}

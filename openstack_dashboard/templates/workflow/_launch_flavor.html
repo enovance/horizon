@@ -1,0 +1,36 @@
+{% load i18n %}
+<div data-tab data-active="tabs[2].active" data-select="select(2)">
+  <div data-tab-heading ng-class="{done: !tabs[2].active && tabs[2].valid}" class="heading">
+    {% trans "Step" %} {$ 2 + !tabs[1].disabled $} - {% trans "Flavor" %}
+  </div>
+  <div ng-form="FlavorForm" class="row-fluid" ng-controller="FlavorCtrl">
+    <table class="table table-striped span8">
+      <thead><tr>
+        <th class="span2">{% trans "Name" %}</th>
+        <th class="span2">{% trans "VCPUs" %}</th>
+        <th class="span2">{% trans "Root" %} / Ephemeral</th>
+        <th class="span2">{% trans "RAM" %}</th>
+        <th class="span2"></th>
+      </tr></thead>
+      <tbody>
+      <tr ng-repeat="f in flavors" ng-class="{active: f.active}">
+        <td>{$ f.name $}</td>
+        <td>{$ f.vcpus $}</td>
+        <td>{$ f.disk $} GB / {$ f.ephemeral $} GB</td>
+        <td>{$ f.ram $}</td>
+        <td>
+          <a href="#" ng-class="{'btn-primary': !f.active}" class="btn" ng-click="select(f)">
+            {% trans "Select" %}»
+          </a>
+        </td>
+      </tr>
+      </tbody>
+      <input type="hidden" name="flavor" ng-model="launchInstance.flavor" required>
+    </table>
+
+    <div class="span4">
+      <h3>{% trans "Step" %} {$ 2 + !tabs[1].disabled $} - {% trans "Flavor" %}</h3>
+      <p>{% blocktrans %}An instance can be launched with varying types of attached storage. You may select from those options here.{% endblocktrans %}</p>
+    </div>
+  </div>
+</div>

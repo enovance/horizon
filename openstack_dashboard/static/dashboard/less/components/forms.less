@@ -1,0 +1,15 @@
+@error-color: @brand-danger;
+
+.control-group.error,
+.error {
+  & > label {
+    color: @error-color;
+  }
+
+  input {
+    border-color: @error-color;
+    -webkit-box-shadow: 0 0 6px lighten(@error-color, 15%);
+    -moz-box-shadow: 0 0 6px lighten(@error-color, 15%);
+    box-shadow: 0 0 6px lighten(@error-color, 15%);
+  }
+}

@@ -6,6 +6,7 @@
 
 <link rel="shortcut icon" type="image/png" href="">
   <link rel="stylesheet" type="text/css" href="">
+  <script type="text/javascript" src="{% url 'horizon:jsi18n' 'horizon' %}"></script>
 
   <link rel="shortcut icon" type="image/png" href="{{ STATIC_URL }}horizon/lib/jasmine-1.3.1/jasmine.css">
   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}horizon/lib/jasmine-1.3.1/jasmine.css">
@@ -15,6 +16,10 @@
 
   <script type="text/javascript" src="{{ STATIC_URL }}horizon/lib/angular/angular.js"></script>
   <script type="text/javascript" src="{{ STATIC_URL }}horizon/lib/angular/angular-mock.js"></script>
+
+  {% block scripts %}
+  {% endblock  %}
+
   {% for source in sources %}
     <script type="application/javascript" src="{{ STATIC_URL }}{{ source }}"></script>
   {% endfor %}

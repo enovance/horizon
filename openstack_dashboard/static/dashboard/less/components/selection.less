@@ -1,0 +1,42 @@
+/* Styling for draged network object */
+.selection {
+  @li-background: @body-bg;
+  @border: @border-color;
+  @em-color: @gray;
+
+  border: 1px solid @border;
+  padding: 6px;
+  .border-radius(4px);
+  .box-sizing(border-box);
+
+  li {
+    list-style-type: none;
+    margin: 0 auto;
+    padding: 10px;
+    background: @li-background;
+    cursor: pointer;
+
+
+    em {
+      font-size: 0.7em;
+      color: @em-color;
+      font-style: normal;
+    }
+
+    a.btn {
+      .box-sizing(border-box);
+      font-size: 11px;
+      line-height: 12px;
+      padding: 2px 5px;
+      margin: 0 6px 1px 0;
+      width: 18px;
+    }
+  }
+  .available a.btn:before {
+    content: "+";
+  }
+
+  .selected a.btn:before {
+    content: "-";
+  }
+}
