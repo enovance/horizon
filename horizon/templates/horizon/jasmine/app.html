@@ -1,0 +1,15 @@
+{% extends "horizon/jasmine/jasmine.html" %}
+
+{% block scripts %}
+  {% include "horizon/_conf.html" %}
+  <script src='{{ STATIC_URL }}horizon/lib/angular/ui-bootstrap-tpls-0.8.0.js' type='text/javascript' charset='utf-8'></script>
+  <script src='{{ STATIC_URL }}horizon/lib/angular/angular-animate.js' type='text/javascript' charset='utf-8'></script>
+  <script src='{{ STATIC_URL }}horizon/lib/angular/angular-sanitize.js' type='text/javascript' charset='utf-8'></script>
+
+  <script src='{{ STATIC_URL }}horizon/js/angular/controllers/dummy.js' type='text/javascript' charset='utf-8'></script>
+  <script src='{{ STATIC_URL }}horizon/js/angular/controllers/sidebar.js' type='text/javascript' charset='utf-8'></script>
+  <script src='{{ STATIC_URL }}horizon/js/angular/directives/forms.js' type='text/javascript' charset='utf-8'></script>
+  <script src='{{ STATIC_URL }}horizon/js/angular/horizon.conf.js' type='text/javascript' charset='utf-8'></script>
+  <script src='{{ STATIC_URL }}horizon/js/angular/services/horizon.utils.js' type='text/javascript' charset='utf-8'></script>
+  <script src='{{ STATIC_URL }}horizon/js/angular/services/horizon.messages.js' type='text/javascript' charset='utf-8'></script>
+{% endblock %}

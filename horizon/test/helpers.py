@@ -209,7 +209,7 @@ class JasmineTests(SeleniumTestCase):
     """
     sources = []
     specs = []
-    template_name = None
+    template_name = "horizon/jasmine/jasmine.html"
 
     def run_jasmine(self):
         self.selenium.get(

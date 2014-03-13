@@ -15,7 +15,7 @@
 
 horizonApp
   .config(['hzConfig', function (hzConfig) {
-    hzConfig.debug = {{ debug|yesno:"true,false" }};
+    hzConfig.debug = {{ HORIZON_CONFIG.debug|yesno:"true,false" }};
     hzConfig.static_url = "{{ STATIC_URL }}";
     hzConfig.ajax = {
       queue_limit: {{ HORIZON_CONFIG.ajax_queue_limit|default:"null" }}
@@ -25,6 +25,10 @@ horizonApp
       fade_duration: {{ HORIZON_CONFIG.auto_fade_alerts.fade_duration|default:"1500" }},
       types: {{ HORIZON_CONFIG.auto_fade_alerts.types|default:"[]"|safe }},
       default_type: 'info'
+    };
+    hzConfig.nav_accordion = {
+      all_open: {{ HORIZON_CONFIG.nav_accordion.all_open|yesno:"true,false"|default:"false" }},
+      one_at_a_time: {{ HORIZON_CONFIG.nav_accordion.one_at_a_time|yesno:"true,false"|default:"true" }}
     };
 }]);
 

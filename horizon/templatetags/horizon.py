@@ -42,34 +42,43 @@ def has_permissions_on_list(components, user):
                 in components if has_permissions(user, component)]
 
 
-@register.inclusion_tag('horizon/_accordion_nav.html', takes_context=True)
+@register.inclusion_tag('horizon/_sidebar.html', takes_context=True)
 def horizon_nav(context):
-    if 'request' not in context:
-        return {}
+    def is_navigable(current_user, component):
+        return has_permissions(current_user, component) and (
+            (callable(component.nav) and component.nav(context)) or
+            (not callable(component.nav) and component.nav)
+        )
+
     current_dashboard = context['request'].horizon.get('dashboard', None)
     current_panel = context['request'].horizon.get('panel', None)
-    dashboards = []
+    sidebar = []
+    user = context['request'].user
     for dash in Horizon.get_dashboards():
-        panel_groups = dash.get_panel_groups()
+        if not is_navigable(user, dash):
+            continue
+
+        panel_groups = dash.get_panel_groups().values()
         non_empty_groups = []
-        for group in panel_groups.values():
-            allowed_panels = []
-            for panel in group:
-                if callable(panel.nav) and panel.nav(context):
-                    allowed_panels.append(panel)
-                elif not callable(panel.nav) and panel.nav:
-                    allowed_panels.append(panel)
+
+        for group in panel_groups:
+            allowed_panels = [
+                panel for panel in group if is_navigable(user, panel)]
+
             if allowed_panels:
-                non_empty_groups.append((group.name, allowed_panels))
-        if callable(dash.nav) and dash.nav(context):
-            dashboards.append((dash, SortedDict(non_empty_groups)))
-        elif not callable(dash.nav) and dash.nav:
-            dashboards.append((dash, SortedDict(non_empty_groups)))
-    return {'components': dashboards,
-            'user': context['request'].user,
-            'current': current_dashboard,
-            'current_panel': current_panel.slug if current_panel else '',
-            'request': context['request']}
+                non_empty_groups.append({
+                    "name": group.name,
+                    "panels": allowed_panels,
+                    "currentPanel": -1 if current_panel not in allowed_panels
+                    else allowed_panels.index(current_panel)})
+
+        sidebar.append({
+            "name": dash.name,
+            "currentDashboard": dash == current_dashboard,
+            "panelsGroups": non_empty_groups
+        })
+
+    return {"sidebar": sidebar}
 
 
 @register.inclusion_tag('horizon/_nav_list.html', takes_context=True)

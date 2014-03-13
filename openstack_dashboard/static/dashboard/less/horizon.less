@@ -1,6 +1,10 @@
 @import "../../bootstrap/less/bootstrap.less";
 @import "../../bootstrap/less/datepicker.less";
-@import "accordion_nav.less";
+@import "variables.less";
+@import "mixins.less";
+@import "sprites.less";
+@import "sidebar.less";
+@import "topbar.less";
 
 /* new clearfix */
 .clearfix:after {
@@ -38,97 +42,21 @@ dt {
   font-weight: bold;
 }
 
-.topbar {
-  background: #f2f2f2;
-  #gradient > .vertical(#FFFFFF, #d8d8d8);
-  border-bottom: 1px solid #cccccc;
-  padding: 10px 0px 15px 0px;
-}
-
-.topbar .switcher_bar {
-  display: inline-block;
-  height: auto;
-  width: 160px;
-  background-position: 140px center;
-  margin-bottom: 0;
-  margin-right: 10px;
-  padding: 0;
-  background-image: url(/static/dashboard/img/drop_arrow.png);
-  background-color: #eee;
-  background-repeat: no-repeat;
-  border: 1px solid #ccc;
-  border-bottom-color: #bbb;
-  .border-radius(4px);
-  .box-shadow(e('inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05)'));
-}
-
-.topbar .switcher_bar a {
-  margin-left: 0;
-  display: block;
-}
-
-.topbar .switcher_bar ul {
-  width: 130px;
-}
-
-.topbar .switcher_bar h3 {
-  padding: 2px 10px 1px;
-  font-size: 13px !important;
-  line-height: 20px;
-  color: #6e6e6e;
-  text-decoration: none;
-}
-
-.topbar .switcher_bar div {
-  padding: 2px 10px 1px;
-  font-size: 11px !important;
-  line-height: 20px;
-  color: #6e6e6e;
-  text-decoration: none;
-  overflow: hidden;
-  padding-right: 32px;
-  text-overflow: ellipsis;
-}
-
-.topbar .context-box {
-  display: inline;
-}
-
-#profile_editor_switcher {
-  width:auto;
-  max-width: 200px;
-  vertical-align: top;
-  white-space: nowrap;
-  background-image: url(/static/dashboard/img/profile_drop.png);
-  background-repeat: no-repeat;
-  background-position: right center;
-}
-
-#user_info {
-  color: #888;
-  margin: auto 10px;
-  padding-bottom: 15px;
-  padding-right: 25px;
-}
-
-#user_info > a {
-  color: #6e6e6e;
-  margin-left: 15px;
-  line-height: 20px;
-  font-size: 13px !important;
+.content {
+  padding: 60px 25px 0 280px;
 }
 
 .page-header {
   margin: 0 0 5px 0;
   padding: 0 0 5px 0;
-  border-bottom: 2px solid #e5e5e5;
+  border-bottom: 2px solid @horizonHeadings;
   font-family: anivers;
   height: auto;
   width: 100%;
 }
 
 h2 {
-    color: #6a6a6a;
+    color: @horizonHeadings;
     font-size: 30px;
     font-weight: normal;
 }
@@ -185,52 +113,9 @@ body {
     margin-top: 190px;
 }
 
-.nav li a {
-    color: #8EACB7;
-    text-shadow: none;
-}
-
 .container-fluid {
     padding-left: 0;
 }
-
-.sidebar {
-    background-color: #f9f9f9;
-    border-right: 5px solid #e5e5e5;
-    border-bottom: 5px solid #e5e5e5;
-    .border-radius(0 0 5px 0);
-    float: left;
-    min-width: 231px;
-}
-
-.sidebar h4 {
-    margin-left: 14px;
-    color: #999;
-}
-
-.sidebar .nav-tabs {
-    margin-top: -34px;
-}
-
-.sidebar .nav-tabs li.active a {
-    background-color: #edf9ff;
-}
-
-h1.brand {
-    width: 100%;
-    margin: 0;
-}
-
-h1.brand a {
-    background: url(/static/dashboard/img/logo.png) top left no-repeat;
-    display: block;
-    float: left;
-    width: 216px;
-    height: 35px;
-    text-indent: -9999px;
-    margin-left: 16px;
-}
-
 
 /* Tenant Dropdown */
 
@@ -248,70 +133,6 @@ a.current_item:hover h3, a.current_item:hover h4 {
     color: #39738c;
     .border-radius(4px)
 }
-
-.sidebar .switcher_bar {
-    width: 190px;
-    height: 38px;
-    padding: 5px 0;
-    margin-left: 14px;
-    margin-bottom: 15px;
-}
-
-.sidebar .switcher_bar a.dropdown-toggle {
-  display: block;
-  padding: 5px 0;
-  background-image: url(/static/dashboard/img/drop_arrow.png);
-  border: 1px solid #c0d9e4;
-  background-color: #e9f5fa;
-  background-repeat: no-repeat;
-  background-position: 167px 23px;
-}
-
-.sidebar .switcher_bar a.dropdown-toggle:hover {
-  text-decoration: none;
-  background-color: #cde8f4;
-}
-
-.sidebar .switcher_bar:focus {
-  outline: none;
-}
-
-.sidebar .switcher_bar h3 {
-    color: #4790ae;
-    font-size: 16px;
-    margin: -6px 0 0 14px;
-    padding: 0;
-    overflow: hidden;
-    text-overflow:ellipsis;
-    white-space: nowrap;
-    &:hover {
-      white-space: normal;
-      overflow: visible;
-      text-overflow: none;
-      padding-right: 1em;
-      word-wrap: break-word;
-    }
-}
-
-.sidebar .switcher_bar h4 {
-    color: #6fabc4;
-    font-size: 10px;
-    text-transform: uppercase;
-    font-weight: normal;
-    padding: 0;
-}
-
-
-.sidebar .switcher_bar ul {
-    border: 1px solid #c0d9e4;
-    margin-left: -1px;
-    width: 190px;
-}
-
-.sidebar .switcher_bar li a:hover{
-  background: #92d6f1;
-}
-
 
 #usage {
     margin-bottom: 25px;
@@ -1312,55 +1133,6 @@ tr.terminated {
   color: #999999;
 }
 
-#instance_tabs {
-  float: left;
-  width: 100%;
-  border-bottom: 1px solid #e1e1e1;
-}
-
-#instance_tabs li a {
-  background: #f2f2f2;
-  display: block;
-  font-size: 14px;
-  float: left;
-  padding: 5px 10px;
-  margin-right: 10px;
-  border: 1px solid #e1e1e1;
-  border-bottom: none;
-}
-
-#instance_tabs li.active a {
-  background: #fff;
-  padding-bottom: 8px;
-  margin-bottom: -5px;
-}
-
-#main_content .nav-tabs {
-  margin-bottom: 0;
-}
-
-#main_content .tab-content {
-  border: 1px solid #ddd;
-  border-top: 0 none;
-  padding: 10px;
-}
-
-#main_content .workflow .modal-body {
-  padding-left: 0;
-  padding-right: 0;
-}
-
-#main_content .workflow .modal-body .tab-content {
-  border-left: 0 none;
-  border-right: 0 none;
-  border-bottom: 0 none;
-}
-
-#content_body {
-  padding-left: 255px;
-  padding-right: 25px;
-}
-
 .tab_wrapper {
   padding-top: 50px;
 }
@@ -1530,14 +1302,6 @@ div .flavor_table {
   text-align: left;
   padding: 7px 12px 7px 7px;
   width: 160px;
-}
-
-#main_content .row-fluid {
-  margin: 10px 0 20px;
-}
-
-#main_content .row-fluid:last-child {
-  margin-bottom: 0;
 }
 
 .header_rule {

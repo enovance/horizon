@@ -1,0 +1,28 @@
+{% load horizon branding %}
+
+{% json_angular sidebar %}
+
+<div class="sidebar span3" data-ng-controller="SidebarCtrl">
+  <h1 class="brand"><a href="{% site_branding_link %}">{% site_branding %}</a></h1>
+
+  <ul class="nav nav-pills nav-stacked">
+    <li data-ng-repeat="nav in navs" data-ng-class="{active: nav.currentDashboard}">
+      <a href="#" data-ng-click="active(nav)">{$ nav.name $}</a>
+    </li>
+  </ul>
+
+  <div data-accordion data-close-others="oneAtATime">
+    <div data-accordion-group data-is-open="panelsGroup.isopen" data-ng-repeat="panelsGroup in panelsGroups">
+      <div data-accordion-heading>
+        {$ panelsGroup.name $}
+        <i class="pull-right" ng-class="{'horizon-icon-chevron-down': panelsGroup.isopen, 'horizon-icon-chevron-right': !panelsGroup.isopen}"></i>
+      </div>
+
+      <ul class="nav nav-pills nav-stacked">
+        <li data-ng-repeat="panel in panelsGroup.panels" data-ng-class="{active: $index == panelsGroup.currentPanel}">
+          <a data-ng-href="{$ panel.url $}">{$ panel.name $}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

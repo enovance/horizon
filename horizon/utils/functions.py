@@ -15,11 +15,13 @@ import math
 from django.conf import settings
 from django.contrib.auth import logout  # noqa
 from django.contrib.messages.storage import cookie
+from django.core import urlresolvers
 from django import http
 from django.utils.encoding import force_unicode
-from django.utils.functional import lazy  # noqa
+from django.utils import functional  # noqa
 from django.utils import html
 from django.utils import translation
+from horizon import base
 import json
 import six
 
@@ -42,6 +44,17 @@ class JSONSafeEncoder(json.JSONEncoder):
                     "type": html.escape(message.tags),
                     "msg": html.escape(message)
                 } for message in o]
+        if isinstance(o, base.Panel):
+            try:
+                url = o.get_absolute_url()
+            except urlresolvers.NoReverseMatch:
+                url = "#"
+            return {
+                "name": o.name,
+                "url": url
+            }
+        if isinstance(o, functional.Promise):
+            return unicode(o)
 
         return json.JSONEncoder.default(self, o)
 
@@ -72,7 +85,7 @@ def _lazy_join(separator, strings):
     return separator.join([force_unicode(s)
                            for s in strings])
 
-lazy_join = lazy(_lazy_join, unicode)
+lazy_join = functional.lazy(_lazy_join, unicode)
 
 
 def bytes_to_gigabytes(bytes):

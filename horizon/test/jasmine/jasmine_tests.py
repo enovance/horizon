@@ -23,3 +23,11 @@ class ServicesTests(test.JasmineTests):
         'horizon/tests/jasmine/utilsSpec.js',
         'horizon/tests/jasmine/messagesSpec.js'
     ]
+
+
+class ControllersTests(test.JasmineTests):
+    template_name = "horizon/jasmine/app.html"
+
+    specs = [
+        'horizon/tests/jasmine/controllersSpec.js'
+    ]
