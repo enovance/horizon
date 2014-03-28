@@ -12,21 +12,16 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from django.core import urlresolvers
+from django.utils.translation import ugettext_lazy as _  # noqa
 
-from horizon import tabs
-from openstack_dashboard.dashboards.project.metering import tabs as project_tabs
-
-
-class GlobalStatsTab(project_tabs.GlobalStatsTab):
-    template_name = ("admin/metering/stats.html")
-
-    @staticmethod
-    def _get_sample_url():
-        return urlresolvers.reverse('horizon:admin:metering:samples')
+import horizon
+from openstack_dashboard.dashboards.project import dashboard
 
 
-class CeilometerOverviewTabs(tabs.TabGroup):
-    slug = "ceilometer_overview"
-    tabs = (GlobalStatsTab,)
-    sticky = True
+class Metering(horizon.Panel):
+    name = _("Resource Usage")
+    slug = 'metering'
+    permissions = ('openstack.services.metering',)
+
+
+dashboard.Project.register(Metering)

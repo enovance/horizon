@@ -12,21 +12,11 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from django.core import urlresolvers
+from django.conf.urls import patterns  # noqa
+from django.conf.urls import url  # noqa
 
-from horizon import tabs
-from openstack_dashboard.dashboards.project.metering import tabs as project_tabs
+from openstack_dashboard.dashboards.project.metering import views
 
-
-class GlobalStatsTab(project_tabs.GlobalStatsTab):
-    template_name = ("admin/metering/stats.html")
-
-    @staticmethod
-    def _get_sample_url():
-        return urlresolvers.reverse('horizon:admin:metering:samples')
-
-
-class CeilometerOverviewTabs(tabs.TabGroup):
-    slug = "ceilometer_overview"
-    tabs = (GlobalStatsTab,)
-    sticky = True
+urlpatterns = patterns('openstack_dashboard.dashboards.project.metering.views',
+    url(r'^$', views.IndexView.as_view(), name='index'),
+    url(r'^samples$', views.SamplesView.as_view(), name='samples'))

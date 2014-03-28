@@ -24,6 +24,7 @@ class BasePanels(horizon.PanelGroup):
     name = _("Manage Compute")
     panels = ('overview',
               'instances',
+              'metering',
               'volumes',
               'images_and_snapshots',
               'access_and_security',)
