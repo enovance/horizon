@@ -214,12 +214,14 @@ class ToggleSuspend(tables.BatchAction):
             self.current_past_action = SUSPEND
 
 
-class LaunchLink(tables.LinkAction):
+class LaunchAction(tables.BaseAction):
     name = "launch"
+    method = "GET"
+    url = "#"
+    classes = ("btn-launch",)
     verbose_name = _("Launch Instance")
-    url = "horizon:project:instances:launch"
-    classes = ("btn-launch", "ajax-modal")
     policy_rules = (("compute", "compute:create"),)
+    attrs = {'data-ng-click': 'open()'}
 
     def allowed(self, request, datum):
         try:
@@ -759,7 +761,7 @@ class InstancesTable(tables.DataTable):
         verbose_name = _("Instances")
         status_columns = ["status", "task"]
         row_class = UpdateRow
-        table_actions = (LaunchLink, SoftRebootInstance, TerminateInstance,
+        table_actions = (LaunchAction, SoftRebootInstance, TerminateInstance,
                          InstancesFilterAction)
         row_actions = (StartInstance, ConfirmResize, RevertResize,
                        CreateSnapshot, SimpleAssociateIP, AssociateIP,

@@ -1,0 +1,63 @@
+.wizard {
+  @active-color: @white;
+  @active-background: @red;
+  @color: @black;
+  @background: #ddd;
+
+  ul.nav-tabs {
+
+    border: none;
+    background: #efefef;
+    padding: 0;
+
+    li {
+      position: relative;
+      display: block;
+
+      a {
+        border:none;
+        border-radius: 0;
+        background: @background;
+        color: @color;
+        padding: 0 15px 0 35px;
+        line-height: 40px;
+        min-width: 60px;
+        margin: 0;
+      }
+      &:first-child a {
+        padding-left: 15px;
+      }
+      &:before {
+        position: absolute;
+        top: 0;
+        right: -20px;
+        z-index: 2;
+        border: 20px solid transparent;
+        border-right: 0;
+        border-left-color: @background;
+        content:"";
+      }
+      &:after {
+        position: absolute;
+        top: -2px;
+        right: -22px;
+        z-index: 1;
+        border: 22px solid transparent;
+        border-right: 0;
+        border-left-color: #fff;
+        content:"";
+      }
+
+      &.active:before {
+        border-left: 20px solid @active-background;
+      }
+    }
+
+    .active > a,
+    .active > a:hover {
+      background: @active-background;
+      color:#fff;
+      border: none;
+    }
+  }
+}

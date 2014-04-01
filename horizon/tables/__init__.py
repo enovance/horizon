@@ -18,6 +18,7 @@
 # Importing non-modules that are not used explicitly
 
 from horizon.tables.actions import Action  # noqa
+from horizon.tables.actions import BaseAction  # noqa
 from horizon.tables.actions import BatchAction  # noqa
 from horizon.tables.actions import DeleteAction  # noqa
 from horizon.tables.actions import FilterAction  # noqa
