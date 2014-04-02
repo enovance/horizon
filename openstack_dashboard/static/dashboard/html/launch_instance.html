@@ -1,3 +1,6 @@
+<div class="modal-header">
+  <h3>Launch Instance</h3>
+</div>
 <div class="modal-body">
   <div data-tabset class="wizard">
     <div data-tab>
@@ -5,38 +8,66 @@
         Step 1 - Instance & Image
       </div>
 
-      <div class="btn-group control-group">
-        <button type="button" class="btn btn-default" data-ng-model="type" data-btn-radio="'ephemeral'">Ephemeral Root Disk</button>
-        <button type="button" class="btn btn-default" data-ng-model="type" data-btn-radio="'persistent'">Persistent Root Disk</button>
-      </div>
+      <div>
+        <form class="form-horizontal">
+          <fieldset class="row">
 
-      <div class="form-group">
-        <div data-tabset>
-          <div data-tab>
-            <a href="#" data-tab-heading>
-              Public
-            </a>
-            <div>prout</div>
-          </div>
+            <div class="control-group">
+              <div class="span4">
+                <label for="id_name">Instance Name</label>
+                <input id="id_name" class="span4" maxlength="80" name="name" ng-model="name" required type="text">
+              </div>
+              <div class="span2">
+                <label for="id_count">Instance Count</label>
+                <input id="id_count" class="span2" name="count" ng-model="count" type="text" value="1">
+              </div>
 
-          <div data-tab>
-            <a href="#" data-tab-heading>
-              Project
-            </a>
-            <div>
-              Prout
+              <div class="span4">
+                <label for="id_availability_zone">Availability Zone</label>
+                <select id="id_availability_zone" class="span4" name="availability_zone">
+                  <option value="az1">az1</option>
+                </select>
+              </div>
             </div>
-          </div>
 
-          <div data-tab>
-            <a href="#" data-tab-heading>
-              Shared with me
-            </a>
-            <div>
-              No image shared with you.
+
+            <div class="span12 control-group">
+              <div class="btn-group">
+                <button type="button" class="btn btn-default" data-ng-model="type" data-btn-radio="'ephemeral'">Ephemeral Root Disk</button>
+                <button type="button" class="btn btn-default" data-ng-model="type" data-btn-radio="'persistent'">Persistent Root Disk</button>
+              </div>
             </div>
-          </div>
-        </div>
+
+            <div class="span12 control-group">
+              <div data-tabset>
+                <div data-tab>
+                  <a href="#" data-tab-heading>
+                    Public
+                  </a>
+                  <div>prout</div>
+                </div>
+
+                <div data-tab>
+                  <a href="#" data-tab-heading>
+                    Project
+                  </a>
+                  <div>
+                    Prout
+                  </div>
+                </div>
+
+                <div data-tab>
+                  <a href="#" data-tab-heading>
+                    Shared with me
+                  </a>
+                  <div>
+                    No image shared with you.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+        </form>
       </div>
     </div>
 
