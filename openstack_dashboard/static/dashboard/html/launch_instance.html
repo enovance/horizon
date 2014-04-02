@@ -1,0 +1,58 @@
+<div class="modal-body">
+  <div data-tabset class="wizard">
+    <div data-tab>
+      <div data-tab-heading>
+        Step 1 - Instance & Image
+      </div>
+
+      <div class="btn-group control-group">
+        <button type="button" class="btn btn-default" data-ng-model="type" data-btn-radio="'ephemeral'">Ephemeral Root Disk</button>
+        <button type="button" class="btn btn-default" data-ng-model="type" data-btn-radio="'persistent'">Persistent Root Disk</button>
+      </div>
+
+      <div class="form-group">
+        <div data-tabset>
+          <div data-tab>
+            <a href="#" data-tab-heading>
+              Public
+            </a>
+            <div>prout</div>
+          </div>
+
+          <div data-tab>
+            <a href="#" data-tab-heading>
+              Project
+            </a>
+            <div>
+              Prout
+            </div>
+          </div>
+
+          <div data-tab>
+            <a href="#" data-tab-heading>
+              Shared with me
+            </a>
+            <div>
+              No image shared with you.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div data-tab>
+      <div data-tab-heading>
+        Step 2 - Flavor
+      </div>
+    </div>
+    <div data-tab>
+      <div data-tab-heading>
+        Step 3 - Access & Security
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" ng-click="ok()">OK</button>
+  <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</div>

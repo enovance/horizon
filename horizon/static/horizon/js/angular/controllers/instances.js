@@ -61,13 +61,13 @@
 
 
   horizonApp
-    .controller('InstancesCtrl', ['$scope', '$modal', '$http', 'hzMessages',
-      function ($scope, $modal, $http, hzMessages) {
+    .controller('InstancesCtrl', ['$scope', '$modal', '$http', 'hzMessages', 'hzConfig',
+      function ($scope, $modal, $http, hzMessages, hzConfig) {
         $scope.open = function () {
           var modalInstance = $modal.open({
             windowClass: ['fullscreen'],
             keyboard: false,
-            templateUrl: 'InstanceModal.html',
+            templateUrl: hzConfig.static_url + '/dashboard/html/launch_instance.html',
             resolve: {
               response: function () {
                 return $http.get('launch');
