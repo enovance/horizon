@@ -64,6 +64,10 @@
     .controller('InstancesCtrl', ['$scope', '$modal', '$http', 'hzMessages', 'hzConfig',
       function ($scope, $modal, $http, hzMessages, hzConfig) {
         $scope.open = function () {
+
+
+
+
           var modalInstance = $modal.open({
             windowClass: ['fullscreen'],
             keyboard: false,
@@ -92,8 +96,16 @@
               };
             }
           });
+
+
+
           modalInstance.result.then(function () {
+
+
             console.log('success');
+
+
+
           }, function (error) {
             if (error === 'cancel') {
               console.log(error);

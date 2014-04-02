@@ -22,8 +22,8 @@
       display: block;
       cursor: pointer;
       text-decoration: none;
-      color: @black;
-      border-bottom: 1px solid @black;
+      color: @text-color;
+      border-bottom: 1px solid @text-color;
       font-weight: normal;
     }
     .accordion-inner {
@@ -36,13 +36,13 @@
 
   .nav-pills > li > a {
     .border-radius(0);
-    color: @black;
+    color: @text-color;
     margin: 0;
   }
 
   .nav-pills .active > a,
   .nav-pills .active > a:hover {
-    color: @white;
-    background-color: @red;
+    color: @body-bg;
+    background-color: @brand-primary;
   }
 }
