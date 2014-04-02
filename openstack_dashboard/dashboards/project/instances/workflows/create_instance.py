@@ -754,3 +754,4 @@ class LaunchInstance(workflows.Workflow):
         except Exception:
             exceptions.handle(request)
             return False
+

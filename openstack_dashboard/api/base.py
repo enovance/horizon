@@ -88,11 +88,11 @@ class APIResourceWrapper(object):
             return getattr(self._apiresource, attr)
 
     def __repr__(self):
-        return "<%s: %s>" % (self.__class__.__name__,
-                             dict((attr, getattr(self, attr))
-                                  for attr in self._attrs
-                                  if hasattr(self, attr)))
+        return "<%s: %s>" % (self.__class__.__name__, self.to_dict())
 
+    def to_dict(self):
+        return dict((attr, getattr(self, attr))
+                    for attr in self._attrs if hasattr(self, attr))
 
 class APIDictWrapper(object):
     """Simple wrapper for api dictionaries

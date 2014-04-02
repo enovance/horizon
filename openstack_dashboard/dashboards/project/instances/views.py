@@ -21,10 +21,13 @@
 """
 Views for managing instances.
 """
+import json
+
 from django.core.urlresolvers import reverse
 from django.core.urlresolvers import reverse_lazy
 from django import http
 from django import shortcuts
+from django.views import generic
 from django.utils.datastructures import SortedDict
 from django.utils.translation import ugettext_lazy as _
 
@@ -123,14 +126,23 @@ class IndexView(tables.DataTableView):
         return instances
 
 
-class LaunchInstanceView(workflows.WorkflowView):
-    workflow_class = project_workflows.LaunchInstance
+class LaunchInstanceView(generic.View):
 
-    def get_initial(self):
-        initial = super(LaunchInstanceView, self).get_initial()
-        initial['project_id'] = self.request.user.tenant_id
-        initial['user_id'] = self.request.user.id
-        return initial
+    def get(self, request):
+        return http.HttpResponse(json.dumps({
+            'images': [
+                image.to_dict() for image in
+                api.glance.image_list_detailed(self.request)[0]
+            ],
+            'volumes': [volume.to_dict() for volume in
+                        api.cinder.volume_list(
+                            self.request,
+                            search_opts={'status': 'available'})],
+            'volumes_snapshots': [
+                volume.to_dict() for volume in
+                api.cinder.volume_snapshot_list(self.request)],
+            'tenant': request.user.tenant_id
+        }), "application/json")
 
 
 def console(request, instance_id):
