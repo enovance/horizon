@@ -5,3 +5,21 @@
        -o-transform-origin: @pos;
           transform-origin: @pos;
 }
+
+.button-variant(@text, @background, @border) {
+  color: @text;
+  background-color: @background;
+  .buttonBackground(@background, @background);
+  border-color: @border;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &.active {
+    .transition(none);
+    background-position: 0 -30px;
+    color: @text;
+    background-color: darken(@background, 10%);
+        border-color: darken(@border, 12%);
+  }
+}
