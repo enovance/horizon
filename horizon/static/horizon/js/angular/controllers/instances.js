@@ -89,51 +89,55 @@
           response.data.tenant
         );
 
-        $scope.ok = function () {
-          $modalInstance.close('ok');
-        };
-
-        $scope.cancel = function () {
-          $modalInstance.dismiss('cancel');
-        };
-      },
-      'InstancesCtrl': ['$scope', '$modal', '$http', 'hzMessages', 'hzConfig',
-        function ($scope, $modal, $http, hzMessages, hzConfig) {
-          $scope.open = function () {
-
-            var modalInstance = $modal.open({
-              windowClass: ['fullscreen'],
-              keyboard: false,
-              templateUrl: hzConfig.static_url + '/dashboard/html/launch_instance.html',
-              resolve: {
-                response: function () {
-                  return $http.get('launch');
-                }
-              },
-              controller: 'ModalLaunchInstanceCtrl'
-            });
-
-            modalInstance.result.then(function () {
-              console.log('success');
-            }, function (error) {
-              if (error === 'cancel') {
-                console.log(error);
-              } else if (error.status && error.status === 500) {
-                hzMessages.alert(gettext('An error occurs server side'), 'error');
+          var modalInstance = $modal.open({
+            windowClass: ['fullscreen'],
+            keyboard: false,
+            templateUrl: hzConfig.static_url + '/dashboard/html/launch_instance.html',
+            resolve: {
+              response: function () {
+                return $http.get('launch');
               }
-            });
-          };
-        }],
-      'SelectSourceCtrl': ['$scope', function ($scope) {
-        $scope.type = 'ephemeral';
-        $scope.elts = $scope.datas[$scope.type];
+            },
+            controller: function ($scope, $modalInstance, response) {
+              $scope.datas = image_categories(
+                response.data.images,
+                {
+                  volumes: response.data.volumes,
+                  volumes_snapshots: response.data.volumes_snapshots
+                },
+                response.data.tenant
+              );
+
+              $scope.ok = function () {
+                $modalInstance.close('ok');
+              };
 
         $scope.$watch('type', function () {
           $scope.elts = $scope.datas[$scope.type];
         });
 
-      }]
-    }).config(['$filterProvider', function ($filterProvider) {
+          modalInstance.result.then(function () {
+            console.log('success');
+          }, function (error) {
+            if (error === 'cancel') {
+              console.log(error);
+            } else if (error.status && error.status === 500) {
+              hzMessages.alert(gettext('An error occurs server side'), 'error');
+            }
+          });
+        };
+      }])
+    .controller('SelectSourceCtrl', ['$scope', function ($scope) {
+      $scope.type = 'ephemeral';
+      $scope.elts = $scope.datas[$scope.type];
+
+      $scope.$watch('type', function () {
+
+        $scope.elts = $scope.datas[$scope.type];
+      });
+
+    }])
+    .config(['$filterProvider', function ($filterProvider) {
       $filterProvider.register('name', function () {
         return function (obj) {
           return obj.name || obj.display_name || 'Name could not be retrieved';
