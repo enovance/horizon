@@ -57,79 +57,90 @@
       title: gettext('Volumes'),
       values: volumes.volumes,
       instance_type: 'volume_id',
-      legend: gettext('use this volume')
+      legend: gettext('use this volume'),
+      total: volumes.volumes.length
     };
 
     persistent.project.volumes_snapshots = {
       title: gettext('Volumes'),
       values: volumes.volumes_snapshots,
       instance_type: 'volume_id',
-      legend: gettext('use this volume')
+      legend: gettext('use this volume'),
+      total: volumes.volumes_snapshots.length
     };
+
+    persistent.project.total += persistent.project.volumes_snapshots.total +
+      persistent.project.volumes.total;
     return {
       ephemeral: ephemeral,
       persistent: persistent
     };
   }
 
-
   horizonApp
-    .controller('InstancesCtrl', ['$scope', '$modal', '$http', 'hzMessages', 'hzConfig',
-      function ($scope, $modal, $http, hzMessages, hzConfig) {
-        $scope.open = function () {
+    .controller({
+      'ModalLaunchInstanceCtrl': function ($scope, $modalInstance, response) {
+        $scope.datas = image_categories(
+          response.data.images,
+          {
+            volumes: response.data.volumes,
+            volumes_snapshots: response.data.volumes_snapshots
+          },
+          response.data.tenant
+        );
 
-          var modalInstance = $modal.open({
-            windowClass: ['fullscreen'],
-            keyboard: false,
-            templateUrl: hzConfig.static_url + '/dashboard/html/launch_instance.html',
-            resolve: {
-              response: function () {
-                return $http.get('launch');
-              }
-            },
-            controller: function ($scope, $modalInstance, response) {
-              var datas = image_categories(
-                response.data.images,
-                {
-                  volumes: response.data.volumes,
-                  volumes_snapshots: response.data.volumes_snapshots
-                },
-                response.data.tenant
-              );
-
-              $scope.type = 'ephemeral';
-              $scope.datas = datas[$scope.type];
-
-              $scope.$watch('type', function (value) {
-                $scope.datas = datas[value];
-              });
-
-              $scope.ok = function () {
-                $modalInstance.close('ok');
-              };
-
-              $scope.cancel = function () {
-                $modalInstance.dismiss('cancel');
-              };
-            }
-          });
-
-          modalInstance.result.then(function () {
-            console.log('success');
-          }, function (error) {
-            if (error === 'cancel') {
-              console.log(error);
-            } else if (error.status && error.status === 500) {
-              hzMessages.alert(gettext('An error occurs server side'), 'error');
-            }
-          });
+        $scope.ok = function () {
+          $modalInstance.close('ok');
         };
-      }])
-    .config(['$filterProvider', function ($filterProvider) {
+
+        $scope.cancel = function () {
+          $modalInstance.dismiss('cancel');
+        };
+      },
+      'InstancesCtrl': ['$scope', '$modal', '$http', 'hzMessages', 'hzConfig',
+        function ($scope, $modal, $http, hzMessages, hzConfig) {
+          $scope.open = function () {
+
+            var modalInstance = $modal.open({
+              windowClass: ['fullscreen'],
+              keyboard: false,
+              templateUrl: hzConfig.static_url + '/dashboard/html/launch_instance.html',
+              resolve: {
+                response: function () {
+                  return $http.get('launch');
+                }
+              },
+              controller: 'ModalLaunchInstanceCtrl'
+            });
+
+            modalInstance.result.then(function () {
+              console.log('success');
+            }, function (error) {
+              if (error === 'cancel') {
+                console.log(error);
+              } else if (error.status && error.status === 500) {
+                hzMessages.alert(gettext('An error occurs server side'), 'error');
+              }
+            });
+          };
+        }],
+      'SelectSourceCtrl': ['$scope', function ($scope) {
+        $scope.type = 'ephemeral';
+        $scope.elts = $scope.datas[$scope.type];
+
+        $scope.$watch('type', function () {
+          $scope.elts = $scope.datas[$scope.type];
+        });
+
+      }]
+    }).config(['$filterProvider', function ($filterProvider) {
       $filterProvider.register('name', function () {
         return function (obj) {
           return obj.name || obj.display_name || 'Name could not be retrieved';
         };
       });
-    }]);
+    }])
+    .constant('buttonConfig', {
+      activeClass: 'btn-primary'
+    });
 }());

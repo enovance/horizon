@@ -10,7 +10,7 @@
       </div>
 
       <div>
-        <form class="form-horizontal">
+        <form class="form-horizontal" name="SelectSourceForm" ng-controller="SelectSourceCtrl">
           <fieldset class="row-fluid">
 
             <div class="control-group">
@@ -35,25 +35,26 @@
 
             <div class="control-group">
               <div class="btn-group">
-                <button type="button" class="btn btn-default" data-ng-model="type" data-btn-radio="'ephemeral'">Ephemeral Root Disk</button>
-                <button type="button" class="btn btn-default" data-ng-model="type" data-btn-radio="'persistent'">Persistent Root Disk</button>
+                <a href="#" class="btn btn-default" data-ng-model="type" data-btn-radio="'ephemeral'">Ephemeral Root Disk</a>
+                <a href="#" class="btn btn-default" data-ng-model="type" data-btn-radio="'persistent'">Persistent Root Disk</a>
               </div>
             </div>
 
             <div class="control-group">
               <div data-tabset>
-                <div data-tab ng-repeat="data_type in datas">
+                <div data-tab ng-repeat="elt in elts">
                   <div data-tab-heading>
-                    {$ data_type.title $} <span class="badge">{$ data_type.total $}</span>
+                    {$ elt.title $} <span class="badge">{$ elt.total $}</span>
                   </div>
                   <table class="table table-bordered">
-                    <tbody ng-repeat="source_type in data_type">
+                    <tbody ng-repeat="source_type in elt">
                     <tr ng-repeat="value in source_type.values">
                       <td ng-if="$first" rowspan="{$ source_type.total $}" class="span2">
                         <h5>{$ source_type.title $}</h5>
                         <h6>{$ source_type.legend $}</h6>
                       </td>
                       <td>{$ value | name $}</td>
+                      <td class="span2"><a href="#" class="btn btn-primary">Select       »</a></td>
                     </tr>
                     </tbody>
                   </table>
