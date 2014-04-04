@@ -2,28 +2,41 @@
 (function () {
   'use strict';
   function image_categories(images, volumes, tenant_id) {
-    var persistent = {}, ephemeral_sources = {
-      images: {
-        title: gettext('Images'),
-        values: [],
-        instance_type: 'image_id'
+    var persistent = {},
+      ephemeral_sources = {
+        images: {
+          title: gettext('Images'),
+          values: [],
+          instance_type: 'image_id',
+          total: 0
+        },
+        instances_snapshots: {
+          title: gettext('Instances Snapshots'),
+          values: [],
+          instance_type: 'instance_snapshot_id',
+          total: 0
+        },
+        total: 0
       },
-      instances_snapshots: {
-        title: gettext('Instances Snapshots'),
-        values: [],
-        instance_type: 'instance_snapshot_id'
-      }
-    }, ephemeral = {
-      'project': ephemeral_sources,
-      'public': ephemeral_sources,
-      'shared': ephemeral_sources
-    };
+      ephemeral = {
+        'project': angular.copy(ephemeral_sources),
+        'public': angular.copy(ephemeral_sources),
+        'shared': angular.copy(ephemeral_sources)
+      };
+
+    ephemeral['public'].title = gettext('Public');
+    ephemeral.project.title = gettext('Project');
+    ephemeral.shared.title = gettext('Shared with me');
+
     angular.forEach(images, function (image) {
 
       function push(image, type) {
-        var is_snapshot = image.properties.image_type === "snapshot";
-        ephemeral[type][is_snapshot ? 'instances_snapshots' : 'images']
-          .values.push(image);
+        var source_type =
+          image.properties.image_type === "snapshot" ?
+            'instances_snapshots' : 'images';
+        ephemeral[type].total += 1;
+        ephemeral[type][source_type].values.push(image);
+        ephemeral[type][source_type].total += 1;
       }
 
       if (image.is_public) { push(image, 'public'); }
@@ -65,9 +78,6 @@
       function ($scope, $modal, $http, hzMessages, hzConfig) {
         $scope.open = function () {
 
-
-
-
           var modalInstance = $modal.open({
             windowClass: ['fullscreen'],
             keyboard: false,
@@ -78,7 +88,7 @@
               }
             },
             controller: function ($scope, $modalInstance, response) {
-              var elts = image_categories(
+              var datas = image_categories(
                 response.data.images,
                 {
                   volumes: response.data.volumes,
@@ -86,6 +96,13 @@
                 },
                 response.data.tenant
               );
+
+              $scope.type = 'ephemeral';
+              $scope.datas = datas[$scope.type];
+
+              $scope.$watch('type', function (value) {
+                $scope.datas = datas[value];
+              });
 
               $scope.ok = function () {
                 $modalInstance.close('ok');
@@ -97,15 +114,8 @@
             }
           });
 
-
-
           modalInstance.result.then(function () {
-
-
             console.log('success');
-
-
-
           }, function (error) {
             if (error === 'cancel') {
               console.log(error);
@@ -114,5 +124,12 @@
             }
           });
         };
-      }]);
+      }])
+    .config(['$filterProvider', function ($filterProvider) {
+      $filterProvider.register('name', function () {
+        return function (obj) {
+          return obj.name || obj.display_name || 'Name could not be retrieved';
+        };
+      });
+    }]);
 }());
