@@ -77,8 +77,7 @@
     };
   }
 
-  horizonApp
-    .controller({
+  horizonApp.controller({
       'ModalLaunchInstanceCtrl': function ($scope, $modalInstance, response) {
         $scope.datas = image_categories(
           response.data.images,
@@ -89,18 +88,17 @@
           response.data.tenant
         );
 
-          var modalInstance = $modal.open({
-            windowClass: ['fullscreen'],
-            keyboard: false,
-            templateUrl: hzConfig.static_url + '/dashboard/html/launch_instance.html',
-            resolve: {
-              response: function () {
+    var modalInstance = $modal.open({
+        windowClass: ['fullscreen'],
+        keyboard: false,
+        templateUrl: hzConfig.static_url + '/dashboard/html/launch_instance.html',
+        resolve: {
+            response: function () {
                 return $http.get('launch');
-              }
-            },
-            controller: function ($scope, $modalInstance, response) {
-              $scope.datas = image_categories(
-                response.data.images,
+            }
+        },
+        controller: function ($scope, $modalInstance, response) {
+            $scope.datas = image_categories(response.data.images,
                 {
                   volumes: response.data.volumes,
                   volumes_snapshots: response.data.volumes_snapshots
@@ -125,8 +123,8 @@
               hzMessages.alert(gettext('An error occurs server side'), 'error');
             }
           });
-        };
-      }])
+        }
+    })
     .controller('SelectSourceCtrl', ['$scope', function ($scope) {
       $scope.type = 'ephemeral';
       $scope.elts = $scope.datas[$scope.type];
@@ -147,4 +145,4 @@
     .constant('buttonConfig', {
       activeClass: 'btn-primary'
     });
-}());
+}})}());
