@@ -80,17 +80,17 @@ horizon.instances = {
   generate_networklist_html: function() {
     var self = this;
     var updateForm = function() {
-      var lists = $("#networkListId div.input li").attr('data-index',100);
+      var lists = $("ul#id_network li").attr('data-index',100);
       var active_networks = $("#selected_network > li").map(function(){
         return $(this).attr("name");
       });
-      $("#networkListId div.input input:checkbox").removeAttr('checked');
+      $("ul#id_network li label input:checkbox").removeAttr('checked');
       active_networks.each(function(index, value){
-        $("#networkListId div.input input:checkbox[value=" + value + "]")
+        $("ul#id_network li label input:checkbox[value=" + value + "]")
           .attr('checked','checked')
           .parents("li").attr('data-index',index);
       });
-      $("#networkListId div.input ul").html(
+      $("ul#id_network").html(
         lists.sort(function(a,b){
           if( $(a).data("index") < $(b).data("index")) { return -1; }
           if( $(a).data("index") > $(b).data("index")) { return 1; }
@@ -98,8 +98,7 @@ horizon.instances = {
         })
       );
     };
-    $("#networkListSortContainer").show();
-    $("#networkListIdContainer").hide();
+    $("ul#id_network").parent().parent().hide()
     self.init_network_list();
     // Make sure we don't duplicate the networks in the list
     $("#available_network").empty();

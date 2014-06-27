@@ -19,4 +19,19 @@
         }
       };
     });
+
+  horizonApp.directive('draggableNetwork', function() {
+    return function(scope, element, attr){
+      console.log(scope);
+      console.log(element);
+      console.log(attr);
+
+      element.on('mousedown', function(event) {
+        event.preventDefault();
+//        $document.on('mousemove', mousemove);
+//        $document.on('mouseup', mouseup);
+      });
+
+    };
+  });
 }());
