@@ -1,6 +1,6 @@
 {% load i18n %}
-<div data-tab data-active="tabs[0].active" data-select="select(0)" >
-  <div data-tab-heading ng-class="{done: !tabs[0].active && tabs[0].valid}" class="heading">
+<div step active="tabs[0].active">
+  <div step-heading ng-class="{done: !tabs[0].active && tabs[0].valid}" class="heading">
     {% trans "Step 1 " %} - {% trans "Instance & Image" %}
   </div>
   <div class="form-horizontal row-fluid" ng-form="SelectSourceForm" ng-controller="SelectSourceCtrl">

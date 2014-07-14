@@ -7,7 +7,8 @@ var horizonApp = angular.module(
       'ui.bootstrap',
       'ngAnimate',
       'ngSanitize',
-      'ngCookies']
+      'ngCookies',
+      'ui.widget.wizard']
   ).config(['$interpolateProvider', '$httpProvider',
     function ($interpolateProvider, $httpProvider) {
       $interpolateProvider.startSymbol('{$');

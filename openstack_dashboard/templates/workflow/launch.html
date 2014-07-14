@@ -3,7 +3,7 @@
   <h3>{% trans "Launch Instance"%}</h3>
 </div>
 <form class="modal-body" name="LaunchInstanceForm">
-<div data-tabset class="wizard">
+<div wizard name="w">
 
 {% include 'workflow/_launch_select_source.html' %}
 {% include 'workflow/_launch_boot_volume.html' %}

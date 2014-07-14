@@ -4,13 +4,13 @@
   @color: @text-color;
   @background: @gray-lighter;
 
-  & > ul.nav-tabs {
+  & ul.wizard-steps {
 
     border: none;
     background: @body-bg;
     padding: 0;
 
-    li {
+    li.step {
       position: relative;
       display: block;
 
@@ -18,7 +18,7 @@
         display: none;
       }
 
-      a, a:hover {
+      a, > a:hover {
         border:none;
         border-radius: 0;
         background: @background;
@@ -26,6 +26,13 @@
         color: @color;
         padding: 0;
         min-width: 60px;
+      }
+
+      &.active > a, &.active > a:hover {
+        background: @active-background;
+        color:#fff;
+        border: none;
+        font-weight: normal;
       }
 
       a .heading {
@@ -66,18 +73,17 @@
         border-left: 15px solid @active-background;
       }
     }
-
-    .active > a,
-    .active > a:hover {
-      background: @active-background;
-      color:#fff;
-      border: none;
-      font-weight: normal;
-    }
   }
 
-  & > .tab-content {
+  & > .wizard-content {
     border-width: 0;
     margin: 0;
+
+    .step-pane {
+      display: none;
+      &.active {
+        display: block;
+      }
+    }
   }
 }
