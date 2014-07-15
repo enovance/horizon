@@ -3,14 +3,15 @@
 
 angular
 .module('ui.widget.wizard', ['ui.widget.tpls'])
-.service('wizard', ['$timeout', '$q', function($timeout, $q){
+.service('wizard', ['$timeout', function($timeout, $q){
   var wizards = {};
 
   function Wizard(id) {
-    var d = $q.defer();
+    // var d = $q.defer();
+    var that = this;
 
     $timeout(function () {
-      d.resolve(wizards[id]);
+      that.wizard = wizards[id];
     });
 
     function move(index, step, wizard) {
@@ -23,26 +24,27 @@ angular
     }
 
     this.next = function() {
-      d.promise.then(function (wizard) {
-        move(wizard.step.index + 1, 1, wizard);
+      // d.promise.then(function (wizard) {
+      $timeout(function () {
+        move(that.wizard.step.index + 1, 1, that.wizard);
       });
     };
 
     this.previous = function() {
-      d.promise.then(function (wizard) {
-        move(wizard.step.index - 1, -1, wizard);
+      $timeout(function () {
+        move(that.wizard.step.index - 1, -1, that.wizard);
       });
     };
 
     this.first = function() {
-      d.promise.then(function (wizard) {
-        move(0, 1, wizard);
+      $timeout(function () {
+        move(0, 1, that.wizard);
       });
     };
 
     this.last = function () {
-      d.promise.then(function (wizard) {
-        move(wizard.steps.length -1, -1, wizard);
+      $timeout(function () {
+        move(that.wizard.steps.length -1, -1, that.wizard);
       });
     };
   }
@@ -78,8 +80,8 @@ angular
       if(selectedStep.onSelect()) {
         step.scope.active = false;
         step.scope.onDeselect();
-        step.index = index;
 
+        step.index = index;
         step.scope = selectedStep;
         step.scope.active = true;
       }
@@ -93,6 +95,17 @@ angular
       });
       ctrl.select(s || 0);
     });
+
+    ctrl.removeStep = function removeStep(step) {
+      var index = steps.indexOf(step);
+      //Select a new tab if the tab to be removed is selected
+      if (step.active && steps.length > 1) {
+        //If this is the last tab, select the previous tab. else, the next tab.
+        var newActiveIndex = index == steps.length - 1 ? index - 1 : index + 1;
+        ctrl.select(steps[newActiveIndex]);
+      }
+      steps.splice(index, 1);
+    };
   }])
 .directive('wizard', function () {
   return {
@@ -103,16 +116,7 @@ angular
       name: '@'
     },
     controller: 'WizardController',
-    templateUrl: 'template/wizard/wizard.html',
-    link: function (scope, elm, attrs) {
-      if ( !attrs.first) {
-        scope.onFirst = function () { return true; };
-      }
-
-      if ( !attrs.last ) {
-        scope.onLast = function () { return true; };
-      }
-    }
+    templateUrl: 'template/wizard/wizard.html'
   };
 })
 .directive('step', ['$parse',
@@ -144,7 +148,7 @@ angular
         if ( !attrs.select ) {
           scope.onSelect = function () { return true; };
         }
-
+        
         scope.disabled = false;
         if ( attrs.disabled ) {
           scope.$parent.$watch($parse(attrs.disabled), function(value) {

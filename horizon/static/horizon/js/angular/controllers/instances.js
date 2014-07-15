@@ -132,8 +132,8 @@
         };
       }])
     .controller({
-      ModalLaunchInstanceCtrl: ['$scope', '$modalInstance', '$timeout', '$http', 'response',
-        function ($scope, $modalInstance, $timeout, $http, response) {
+      ModalLaunchInstanceCtrl: ['$scope', '$modalInstance', '$timeout', '$http', 'response', 'wizard',
+        function ($scope, $modalInstance, $timeout, $http, response, wizard) {
           $scope.response = response.data;
           $scope.datas = image_categories(
             response.data.images,
@@ -143,34 +143,52 @@
             },
             response.data.tenant
           );
-          $scope.tabs = [
-            {active: false, valid: false},
-            {active: false, valid: false, disabled: true},
-            {active: false, valid: false},
-            {active: false, valid: false}];
-          $scope.index = 0;
-
-          $scope.next = function () {
-            $scope.select($scope.index + 1);
-          };
-          $scope.launchInstance = {};
-
-          $scope.select = function (index) {
-            if ($scope.index === index) {
-              return;
-            }
-
-            $timeout(function () {
-              var i = 0;
-              while (i < $scope.tabs.length &&
-                ($scope.tabs[i].valid || $scope.tabs[i].disabled) &&
-                ($scope.tabs[i].disabled || i < index)) {
-                i += 1;
+          
+          $scope.tabs = {
+            selectSource : {
+              active : false, 
+              valid  : false
+            },
+            bootVolume   : {
+              active     : false, 
+              valid      : false,
+              disabled   : true,
+              validation : function () {
+                var b = $scope.tabs.selectSource.valid = 
+                  $scope.forms.SelectSourceForm && 
+                  $scope.forms.SelectSourceForm.$valid;
+                return b;
               }
-              $scope.tabs[i].active = true;
-              $scope.index = i;
-            });
+            },
+            flavor       : {
+              active     : false, 
+              valid      : false,
+              validation : function () {
+                var b = $scope.tabs.bootVolume.valid = 
+                  $scope.tabs.bootVolume.validation() && 
+                  $scope.forms.BootVolumeForm && 
+                  $scope.forms.BootVolumeForm.$valid;
+                return b;
+              }
+            },
+            access       : {
+              valid      : false,
+              active     : false, 
+              validation : function () {
+                var b = $scope.tabs.flavor.valid =
+                  $scope.tabs.flavor.validation() && 
+                  $scope.forms.FlavorForm && 
+                  $scope.forms.FlavorForm.$valid;
+                return b;
+              }
+            }
           };
+            
+          $scope.index = 0;
+          $scope.wizard = wizard.get('w');
+          $scope.forms = {};
+
+          $scope.launchInstance = {};
 
           $scope.launch = function (launchInstanceForm) {
             if (launchInstanceForm.$invalid) {
@@ -205,10 +223,7 @@
         $scope.launchInstance.count = 1;
         $scope.launchInstance.availability_zone = $scope.zones[0];
 
-        $scope.$watch('SelectSourceForm.$valid', function (value) {
-          $scope.$parent.tabs[0].valid = value;
-        });
-
+        
         $scope.select = function (source_type, source) {
           if (!$scope.SubSelectSourceForm.$valid || $scope.SubSelectSourceForm.$pristine) {
             $scope.SubSelectSourceForm.$pristine = false;
@@ -228,10 +243,9 @@
               $scope.launchInstance.volume_size = 1;
             }
 
-            $scope.$parent.tabs[1].disabled =
+            $scope.$parent.tabs.bootVolume.disabled =
               !($scope.launchInstance.type === 'persistent');
-            $scope.next();
-
+            $scope.wizard.next();
           }
         };
 
@@ -239,20 +253,14 @@
           $scope.elts = $scope.datas[$scope.launchInstance.type];
         });
       }],
+
+
       BootVolumeCtrl: ['$scope', function ($scope) {
         $scope.launchInstance.device_name = 'vda';
-
-        $scope.$watch('BootVolumeForm.$valid', function (value) {
-          $scope.$parent.tabs[1].valid = value;
-        });
       }],
 
       FlavorCtrl: ['$scope', function ($scope) {
         $scope.flavors = $scope.response.flavors.sort(sort_flavors);
-
-        $scope.$watch('FlavorForm.$valid', function (value) {
-          $scope.$parent.tabs[2].valid = value;
-        });
 
         $scope.select = function (flavor) {
           if ($scope.launchInstance.flavor) {
@@ -260,7 +268,7 @@
           }
           flavor.active = true;
           $scope.launchInstance.flavor = flavor;
-          $scope.next();
+          $scope.wizard.next();
         };
       }],
 
@@ -277,9 +285,7 @@
         $scope.launchInstance.create_key_pair = false;
         $scope.launchInstance.import_key_pair = false;
         $scope.launchInstance.disk_partition = 'AUTO';
-        $scope.$watch('AccessAndSecurityForm.$valid', function (value) {
-          $scope.$parent.tabs[3].valid = value;
-        });
+        
       }]
     })
 

@@ -1,9 +1,9 @@
 {% load i18n %}
-<div step active="tabs[0].active">
-  <div step-heading ng-class="{done: !tabs[0].active && tabs[0].valid}" class="heading">
+<div step active="tabs.selectSource.active">
+  <div step-heading ng-class="{done: !tabs.selectSource.active && tabs.selectSource.valid}" class="heading">
     {% trans "Step 1 " %} - {% trans "Instance & Image" %}
   </div>
-  <div class="form-horizontal row-fluid" ng-form="SelectSourceForm" ng-controller="SelectSourceCtrl">
+  <div class="form-horizontal row-fluid" ng-form="forms.SelectSourceForm" ng-controller="SelectSourceCtrl">
     <fieldset class="span8">
 
       <div class="control-group" ng-form="SubSelectSourceForm">

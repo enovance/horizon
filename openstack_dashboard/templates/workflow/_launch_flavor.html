@@ -1,9 +1,9 @@
 {% load i18n %}
-<div step data-active="tabs[2].active" data-select="select(2)">
-  <div step-heading ng-class="{done: !tabs[2].active && tabs[2].valid}" class="heading">
-    {% trans "Step" %} {$ 2 + !tabs[1].disabled $} - {% trans "Flavor" %}
+<div step data-active="tabs.flavor.active" select="tabs.flavor.validation()">
+  <div step-heading ng-class="{done: !tabs.flavor.active && tabs.flavor.valid}" class="heading">
+    {% trans "Step" %} {$ 2 + !tabs.bootVolume.disabled $} - {% trans "Flavor" %}
   </div>
-  <div ng-form="FlavorForm" class="row-fluid" ng-controller="FlavorCtrl">
+  <div ng-form="forms.FlavorForm" class="row-fluid" ng-controller="FlavorCtrl">
     <table class="table table-striped span8">
       <thead><tr>
         <th class="span2">{% trans "Name" %}</th>
@@ -29,7 +29,7 @@
     </table>
 
     <div class="span4">
-      <h3>{% trans "Step" %} {$ 2 + !tabs[1].disabled $} - {% trans "Flavor" %}</h3>
+      <h3>{% trans "Step" %} {$ 2 + !tabs.bootVolume.disabled $} - {% trans "Flavor" %}</h3>
       <p>{% blocktrans %}An instance can be launched with varying types of attached storage. You may select from those options here.{% endblocktrans %}</p>
     </div>
   </div>

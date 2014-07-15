@@ -1,10 +1,10 @@
 {% load i18n %}
-<div step data-active="tabs[3].active" data-select="select(3)">
-  <div step-heading ng-class="{done: !tabs[3].active && tabs[3].valid}" class="heading">
-    {% trans "Step" %} {$ 3 + !tabs[1].disabled $} - {% trans "Access & Security" %}
+<div step data-active="tabs.access.active" select="tabs.access.validation()">
+  <div step-heading ng-class="{done: !tabs.access.active && tabs.access.valid}" class="heading">
+    {% trans "Step" %} {$ 3 + !tabs.bootVolume.disabled $} - {% trans "Access & Security" %}
   </div>
 
-  <div ng-form="AccessAndSecurityForm" class="row-fluid" ng-controller="AccessAndSecurityCtrl">
+  <div ng-form="forms.AccessAndSecurityForm" class="row-fluid" ng-controller="AccessAndSecurityCtrl">
     <div class="control-group span8">
       <div class="row">
         <div class="span6">
@@ -75,7 +75,7 @@
 
     </div>
     <div class="span4">
-      <h3>{% trans "Step" %} {$ 3 + !tabs[1].disabled $} - {% trans "Access & Security" %}</h3>
+      <h3>{% trans "Step" %} {$ 3 + !tabs.bootVolume.disabled $} - {% trans "Access & Security" %}</h3>
       {% blocktrans %}Access & Security help{% endblocktrans %}
     </div>
   </div>
