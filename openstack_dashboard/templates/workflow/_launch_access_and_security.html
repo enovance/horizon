@@ -1,5 +1,5 @@
 {% load i18n %}
-<div step data-active="tabs.access.active" select="tabs.access.validation()">
+<div step data-active="tabs.access.active" select="tabs.access.validation()" deselect="tabs.access.deselect()">
   <div step-heading ng-class="{done: !tabs.access.active && tabs.access.valid}" class="heading">
     {% trans "Step" %} {$ 3 + !tabs.bootVolume.disabled $} - {% trans "Access & Security" %}
   </div>
@@ -15,9 +15,9 @@
             <a href="#" class="btn btn-primary" ng-model="launchInstance.import_key_pair" data-btn-checkbox>{% trans "Import Key Pair" %}</a>
           </div>
 
-          <div class="control-group" ng-show="launchInstance.create_key_pair" ng-class="{'error': AccessAndSecurityForm.new_key_pair_name.$invalid}">
-            <label for="new_key_pair_name" ng-if="AccessAndSecurityForm.new_key_pair_name.$valid">{% trans "Key Pair Name" %}</label>
-            <label for="new_key_pair_name" ng-if="AccessAndSecurityForm.new_key_pair_name.$error.into">{% trans "Key Pair Name already exists" %}</label>
+          <div class="control-group" ng-show="launchInstance.create_key_pair" ng-class="{'error': forms.AccessAndSecurityForm.new_key_pair_name.$invalid}">
+            <label for="new_key_pair_name" ng-if="forms.AccessAndSecurityForm.new_key_pair_name.$valid">{% trans "Key Pair Name" %}</label>
+            <label for="new_key_pair_name" ng-if="forms.AccessAndSecurityForm.new_key_pair_name.$error.into">{% trans "Key Pair Name already exists" %}</label>
 
             <input id="new_key_pair_name" type="text" class="span6" name="new_key_pair_name" ng-model="launchInstance.key_pair_name" data-into="key_pairs_name">
 
@@ -25,11 +25,11 @@
             <a class="btn" ng-model="launchInstance.create_key_pair" data-btn-checkbox ng-click="launchInstance.key_pair_name = '' ">{% trans "Cancel" %}</a>
           </div>
 
-          <div class="control-group" ng-show="launchInstance.import_key_pair" ng-class="{'error': AccessAndSecurityForm.import_key_pair_name.$invalid}">
+          <div class="control-group" ng-show="launchInstance.import_key_pair" ng-class="{'error': forms.AccessAndSecurityForm.import_key_pair_name.$invalid}">
 
 
-            <label for="import_key_pair_name" ng-if="AccessAndSecurityForm.import_key_pair_name.$valid">{% trans "Key Pair Name" %}</label>
-            <label for="import_key_pair_name" ng-if="AccessAndSecurityForm.import_key_pair_name.$error.into">{% trans "Key Pair Name already exists" %}</label>
+            <label for="import_key_pair_name" ng-if="forms.AccessAndSecurityForm.import_key_pair_name.$valid">{% trans "Key Pair Name" %}</label>
+            <label for="import_key_pair_name" ng-if="forms.AccessAndSecurityForm.import_key_pair_name.$error.into">{% trans "Key Pair Name already exists" %}</label>
             <input id="import_key_pair_name" type="text" class="span6" name="import_key_pair_name" ng-model="launchInstance.key_pair_name" data-into="key_pairs_name">
 
             <label for="public_key">{% trans "Public Key" %}</label>
@@ -39,22 +39,22 @@
 
           <label for="admin_pass">{% trans "Admin Pass:" %}</label>
           <input id="admin_pass" class="span6" type="password" name="admin_pass" ng-model="launchInstance.admin_pass" >
-          <div ng-class="{'error': AccessAndSecurityForm.confirm_admin_pass.$invalid}">
-            <label for="confirm_admin_pass" ng-if="AccessAndSecurityForm.confirm_admin_pass.$valid ">{% trans "Confirm Admin Pass:" %}</label>
-            <label for="confirm_admin_pass" ng-if="AccessAndSecurityForm.confirm_admin_pass.$error.identity">{% trans "Admin Pass does not correspond:" %}</label>
+          <div ng-class="{'error': forms.AccessAndSecurityForm.confirm_admin_pass.$invalid}">
+            <label for="confirm_admin_pass" ng-if="forms.AccessAndSecurityForm.confirm_admin_pass.$valid ">{% trans "Confirm Admin Pass:" %}</label>
+            <label for="confirm_admin_pass" ng-if="forms.AccessAndSecurityForm.confirm_admin_pass.$error.identity">{% trans "Admin Pass does not correspond:" %}</label>
             <input id="confirm_admin_pass" class="span6" type="password" ng-model="launchInstance.confirm_admin_pass" data-identity="launchInstance.admin_pass" name="confirm_admin_pass">
           </div>
         </div>
-        <div class="span6" ng-class="{'error': AccessAndSecurityForm.networks.$invalid && !AccessAndSecurityForm.networks.$pristine}">
-          <label for="networks" ng-if="AccessAndSecurityForm.networks.$valid || AccessAndSecurityForm.networks.$pristine">{% trans "Networks" %}</label>
-          <label for="networks" ng-if="AccessAndSecurityForm.networks.$error.notBlank && !AccessAndSecurityForm.networks.$pristine">{% trans "Networks required"  %}</label>
+        <div class="span6" ng-class="{'error': forms.AccessAndSecurityForm.networks.$invalid && !forms.AccessAndSecurityForm.networks.$pristine}">
+          <label for="networks" ng-if="forms.AccessAndSecurityForm.networks.$valid || forms.AccessAndSecurityForm.networks.$pristine">{% trans "Networks" %}</label>
+          <label for="networks" ng-if="forms.AccessAndSecurityForm.networks.$error.notBlank && !forms.AccessAndSecurityForm.networks.$pristine">{% trans "Networks required"  %}</label>
           <div data-selection data-elts="networks_list" data-id="networks" ng-model="launchInstance.networks" data-name="networks" class="control-group" data-not-blank>
             <div><a class="btn btn-primary"></a>{$ elt.name $} <em class="network_id pull-right">({$ elt.id $})</em></div>
           </div>
         </div>
-        <div class="span6" ng-class="{'error': AccessAndSecurityForm.sec_groups.$invalid && !AccessAndSecurityForm.sec_groups.$pristine}">
-          <label for="sec_groups" ng-if="AccessAndSecurityForm.sec_groups.$valid || AccessAndSecurityForm.sec_groups.$pristine">{% trans "Security Groups" %}</label>
-          <label for="sec_groups" ng-if="AccessAndSecurityForm.sec_groups.$error.notBlank && !AccessAndSecurityForm.sec_groups.$pristine">{% trans "Security Groups required" %}</label>
+        <div class="span6" ng-class="{'error': forms.AccessAndSecurityForm.sec_groups.$invalid && !forms.AccessAndSecurityForm.sec_groups.$pristine}">
+          <label for="sec_groups" ng-if="forms.AccessAndSecurityForm.sec_groups.$valid || forms.AccessAndSecurityForm.sec_groups.$pristine">{% trans "Security Groups" %}</label>
+          <label for="sec_groups" ng-if="forms.AccessAndSecurityForm.sec_groups.$error.notBlank && !forms.AccessAndSecurityForm.sec_groups.$pristine">{% trans "Security Groups required" %}</label>
           <div data-selection data-elts="sec_groups_list" data-id="sec_groups" ng-model="launchInstance.sec_groups" data-name="sec_groups" class="control-group" data-not-blank>
             <div><a class="btn btn-primary"></a>{$ elt $}</div>
           </div>

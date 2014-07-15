@@ -180,6 +180,11 @@
                   $scope.forms.FlavorForm && 
                   $scope.forms.FlavorForm.$valid;
                 return b;
+              },
+              deselect   : function () {
+                $scope.tabs.access.valid = 
+                  $scope.forms.AccessAndSecurityForm &&
+                  $scope.forms.AccessAndSecurityForm.$valid;
               }
             }
           };
