@@ -121,6 +121,9 @@
               hzMessages.alert(gettext(
                 'Instance: "' + success.data.name + '" successfully created'
               ), 'success');
+              window.setTimeout(function () {
+                location.reload();
+              }, 3000);
             }, function (error) {
               if (error === 'cancel') {
                 hzMessages.alert(gettext('Launch instance has been aborted'), 'info');
