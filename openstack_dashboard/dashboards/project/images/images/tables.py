@@ -34,21 +34,10 @@ NOT_LAUNCHABLE_FORMATS = ['aki', 'ari']
 class LaunchImage(tables.LinkAction):
     name = "launch_image"
     verbose_name = _("Launch")
-    url = "horizon:project:instances:launch"
-    classes = ("btn-launch", "ajax-modal")
+    url = "#"
+    attrs = {"ng-click": "launch()"}
+    classes = ("btn-launch")
     policy_rules = (("compute", "compute:create"),)
-
-    def get_link_url(self, datum):
-        base_url = reverse(self.url)
-
-        if get_image_type(datum) == "image":
-            source_type = "image_id"
-        else:
-            source_type = "instance_snapshot_id"
-
-        params = urlencode({"source_type": source_type,
-                            "source_id": self.table.get_object_id(datum)})
-        return "?".join([base_url, params])
 
     def allowed(self, request, image=None):
         if image and image.container_format not in NOT_LAUNCHABLE_FORMATS:
