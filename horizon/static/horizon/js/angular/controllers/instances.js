@@ -251,14 +251,14 @@
               $scope.launchInstance.volume_size = 1;
             }
 
-            $scope.$parent.tabs.bootVolume.disabled =
-              !($scope.launchInstance.type === 'persistent');
             $scope.wizard.next();
           }
         };
 
         $scope.$watch('launchInstance.type', function () {
           $scope.elts = $scope.datas[$scope.launchInstance.type];
+          $scope.$parent.tabs.bootVolume.disabled =
+            !($scope.launchInstance.type === 'persistent');
         });
       }],
 
