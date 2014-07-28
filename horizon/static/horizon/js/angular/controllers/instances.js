@@ -19,17 +19,17 @@
         total: 0
       },
       ephemeral = {
-        'project': angular.copy(ephemeral_sources),
-        'public': angular.copy(ephemeral_sources),
-        'shared': angular.copy(ephemeral_sources)
+        '0_public': angular.copy(ephemeral_sources),
+        '1_project': angular.copy(ephemeral_sources),
+        '2_shared': angular.copy(ephemeral_sources)
       };
 
-    ephemeral['public'].title = gettext('Public');
-    ephemeral['public'].empty = gettext('No public image available');
-    ephemeral.project.title = gettext('Project');
-    ephemeral.project.empty = gettext('No project image available');
-    ephemeral.shared.title = gettext('Shared with me');
-    ephemeral.shared.empty = gettext('No shared image available');
+    ephemeral['0_public'].title = gettext('Public');
+    ephemeral['0_public'].empty = gettext('No public image available');
+    ephemeral['1_project'].title = gettext('Project');
+    ephemeral['1_project'].empty = gettext('No project image available');
+    ephemeral['2_shared'].title = gettext('Shared with me');
+    ephemeral['2_shared'].empty = gettext('No shared image available');
 
     angular.forEach(images, function (image) {
 
@@ -41,39 +41,39 @@
         ephemeral[type].source_types[source_type].total += 1;
       }
 
-      if (image.is_public) { push(image, 'public'); }
+      if (image.is_public) { push(image, '0_public'); }
       if (image.owner === tenant_id) {
-        push(image, 'project');
+        push(image, '1_project');
       } else if (!image.is_public) {
-        push(image, 'shared');
+        push(image, '2_shared');
       }
     });
 
     angular.copy(ephemeral, persistent);
-    angular.forEach(['public', 'project', 'shared'], function (type) {
+    angular.forEach(['0_public', '1_project', '2_shared'], function (type) {
       persistent[type].source_types.images.legend = gettext('creates a new volume');
       persistent[type].source_types.instances_snapshots.legend = gettext('creates a new volume');
     });
 
-    persistent.project.source_types.volumes = {
+    persistent['1_project'].source_types.volumes = {
       title: gettext('Volumes'),
       values: volumes.volumes,
       legend: gettext('use this volume'),
       total: volumes.volumes.length
     };
 
-    persistent.project.source_types.volumes_snapshots = {
+    persistent['1_project'].source_types.volumes_snapshots = {
       title: gettext('Volumes Snapshots'),
       values: volumes.volumes_snapshots,
       legend: gettext('creates a new volume'),
       total: volumes.volumes_snapshots.length
     };
 
-    persistent.project.total += persistent.project.source_types.volumes_snapshots.total +
-      persistent.project.source_types.volumes.total;
+    persistent['1_project'].total += persistent['1_project'].source_types.volumes_snapshots.total +
+      persistent['1_project'].source_types.volumes.total;
 
     //remove empty entries
-    angular.forEach(['project', 'public', 'shared'], function (type) {
+    angular.forEach(['1_project', '0_public', '2_shared'], function (type) {
       angular.forEach(ephemeral[type].source_types, function (source_type, key) {
         if (source_type.total === 0) {
           delete ephemeral[type].source_types[key];
