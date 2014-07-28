@@ -1,10 +1,10 @@
 {% load i18n %}
-<div step data-active="tabs.bootVolume.active" data-disabled="tabs.bootVolume.disabled" select="tabs.bootVolume.validation()">
+<div step data-active="tabs.bootVolume.active" data-disabled="tabs.bootVolume.disabled" select="tabs.selectSource.validate()">
   <div step-heading ng-class="{done: !tabs.bootVolume.active && tabs.bootVolume.valid}" class="heading" >
     {% trans "Step 2" %} - {% trans "Boot Volume" %}
   </div>
 
-  <div ng-form="forms.BootVolumeForm" class="row-fluid" ng-controller="BootVolumeCtrl">
+  <div ng-form="forms.BootVolumeForm" class="row-fluid" ng-controller="BootVolumeCtrl" ng-if="tabs.bootVolume.active">
     <fieldset class="span8">
 
       <div class="control-group">

@@ -64,6 +64,29 @@ angular.module('hz').directive({
         });
       }
     };
+  }],
+  sourceSelect: [function () {
+    return {
+      require: ['ngModel', 'sourceSelect'],
+      controller: function (){},
+      link: function (scope, element, attrs, controllers) {
+        controllers[1].modelCtrl = controllers[0];
+      }
+    };
+  }],
+  sourceOption: ['$parse', function ($parse) {
+    return {
+      require: '^sourceSelect',
+      link: function (scope, element, attrs, sourceSelectCtrl) {
+        // sourceSelectCtrl.modelCtrl.$setViewValue(sourceSelectCtrl.modelCtrl.$modelValue);
+        var value = $parse(attrs.sourceOption)(scope);
+        element.bind('click', function () {
+          scope.$apply(function () {
+            sourceSelectCtrl.modelCtrl.$setViewValue(value);
+          });
+        });
+      }
+    };
   }]
 });
 

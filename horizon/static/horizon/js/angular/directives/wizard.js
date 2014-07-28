@@ -3,60 +3,46 @@
 
 angular
 .module('ui.widget.wizard', ['ui.widget.tpls'])
-.service('wizard', ['$timeout', function($timeout, $q){
+.factory('wizard', function(){
   var wizards = {};
 
-  function Wizard(id) {
-    // var d = $q.defer();
-    var that = this;
+  function move(index, step, wizard) {
+    while (-1 < index &&
+      index < wizard.steps.length &&
+      wizard.steps[index].disabled) {
 
-    $timeout(function () {
-      that.wizard = wizards[id];
-    });
-
-    function move(index, step, wizard) {
-      while (-1 < index && index < wizard.steps.length && wizard.steps[index].disabled) {
-        index += step;
-      }
-      if (-1 < index && index < wizard.steps.length) {
-        wizard.select(index);
-      }
+      index += step;
     }
-
-    this.next = function() {
-      // d.promise.then(function (wizard) {
-      $timeout(function () {
-        move(that.wizard.step.index + 1, 1, that.wizard);
-      });
-    };
-
-    this.previous = function() {
-      $timeout(function () {
-        move(that.wizard.step.index - 1, -1, that.wizard);
-      });
-    };
-
-    this.first = function() {
-      $timeout(function () {
-        move(0, 1, that.wizard);
-      });
-    };
-
-    this.last = function () {
-      $timeout(function () {
-        move(that.wizard.steps.length -1, -1, that.wizard);
-      });
-    };
+    if (-1 < index && index < wizard.steps.length) {
+      wizard.select(index);
+    }
   }
 
-  this.register = function (id, wizard) {
-    wizards[id] = wizard;
+  function wizard (id, wizardCtrl) {
+    if (wizardCtrl) {
+      wizards[id] = wizardCtrl;
+      return;
+    }
+
+    return {
+      id: id,
+      next: function () {
+        move(wizards[id].step.index + 1, 1, wizards[id]);
+      },
+      previous: function() {
+        move(wizards[id].step.index - 1, -1, wizards[id]);
+      },
+      first: function() {
+        move(0, 1, wizards[id]);
+      },
+      last: function () {
+        move(wizards[id].steps.length -1, -1, wizards[id]);
+      }
+    };
   };
 
-  this.get = function (id) {
-    return new Wizard(id);
-  };
-}])
+  return wizard;
+})
 .controller('WizardController', ['$scope', 'wizard', '$timeout',
   function($scope, wizard, $timeout) {
     var ctrl = this,
@@ -66,7 +52,7 @@ angular
       index: null
     };
 
-    wizard.register($scope.name, this);
+    wizard($scope.name, this);
 
     ctrl.select = function(selectedStep) {
       var index;

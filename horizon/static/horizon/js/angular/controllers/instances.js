@@ -135,8 +135,8 @@
         };
       }])
     .controller({
-      ModalLaunchInstanceCtrl: ['$scope', '$modalInstance', '$timeout', '$http', 'response', 'wizard',
-        function ($scope, $modalInstance, $timeout, $http, response, wizard) {
+      ModalLaunchInstanceCtrl: ['$scope', '$modalInstance', '$http', 'response', 'wizard',
+        function ($scope, $modalInstance, $http, response, wizard) {
           $scope.response = response.data;
           $scope.datas = image_categories(
             response.data.images,
@@ -146,73 +146,111 @@
             },
             response.data.tenant
           );
-          
+
+          function hasControls(form) {
+            var attr;
+            for (attr in form) {
+              if(form.hasOwnProperty(attr) && attr.charAt(0) !== '$') {
+                return true;
+              }
+            }
+            return false;
+          }
+
           $scope.tabs = {
             selectSource : {
-              active : false, 
-              valid  : false
+              active     : false, 
+              valid      : false,
+              validate: function () {
+                var form = $scope.forms.SelectSourceForm;
+                var tab = $scope.tabs.selectSource;
+
+                if (form && hasControls(form)) {
+                  tab.valid = form.$valid;
+                }
+                return tab.valid;
+              }
             },
             bootVolume   : {
               active     : false, 
               valid      : false,
               disabled   : true,
-              validation : function () {
-                var b = $scope.tabs.selectSource.valid = 
-                  $scope.forms.SelectSourceForm && 
-                  $scope.forms.SelectSourceForm.$valid;
-                return b;
+              validate   : function () {
+                var form = $scope.forms.BootVolumeForm;
+                var tab = $scope.tabs.bootVolume;                
+
+                if (form && hasControls(form)) {
+                  tab.valid = form.$valid;
+                }
+
+                return tab.valid || tab.disabled && 
+                  $scope.tabs.selectSource.validate();
               }
             },
             flavor       : {
               active     : false, 
               valid      : false,
-              validation : function () {
-                var b = $scope.tabs.bootVolume.valid = 
-                  $scope.tabs.bootVolume.validation() && 
-                  $scope.forms.BootVolumeForm && 
-                  $scope.forms.BootVolumeForm.$valid;
-                return b;
+              validate   : function () {
+                var form = $scope.forms.FlavorForm;
+                var tab = $scope.tabs.flavor;                
+
+                if (form && hasControls(form)) {
+                  tab.valid = form.$valid;
+                }
+
+                return tab.valid && 
+                  $scope.tabs.bootVolume.validate();
               }
             },
             access       : {
               valid      : false,
               active     : false, 
-              validation : function () {
-                var b = $scope.tabs.flavor.valid =
-                  $scope.tabs.flavor.validation() && 
-                  $scope.forms.FlavorForm && 
-                  $scope.forms.FlavorForm.$valid;
-                return b;
-              },
-              deselect   : function () {
-                $scope.tabs.access.valid = 
-                  $scope.forms.AccessAndSecurityForm &&
-                  $scope.forms.AccessAndSecurityForm.$valid;
+              validate : function () {
+                var form = $scope.forms.AccessAndSecurityForm;
+                var tab = $scope.tabs.access;
+
+                if (form && hasControls(form)) {
+                  tab.valid = form.$valid;
+                }
+
+                return tab.valid && 
+                  $scope.tabs.flavor.validate();
               }
             }
           };
             
           $scope.index = 0;
-          $scope.wizard = wizard.get('w');
+          $scope.wizard = wizard('w');
           $scope.forms = {};
 
+          //initialize launchInstance
           $scope.launchInstance = {};
+          $scope.launchInstance.type = 'ephemeral';
+          $scope.launchInstance.count = 1;
+          $scope.launchInstance.availability_zone = $scope.response.zones[0];
+          $scope.launchInstance.source = {};
+          $scope.launchInstance.create_key_pair = false;
+          $scope.launchInstance.import_key_pair = false;
+          $scope.launchInstance.disk_partition = 'AUTO';
 
           $scope.launch = function (launchInstanceForm) {
-            if (launchInstanceForm.$invalid) {
-              launchInstanceForm.AccessAndSecurityForm.networks.$pristine = false;
-              launchInstanceForm.AccessAndSecurityForm.sec_groups.$pristine = false;
-              launchInstanceForm.AccessAndSecurityForm.$pristine = false;
-            } else {
-              $modalInstance.close(
-                $http.post('/workflow/launch', angular.toJson($scope.launchInstance))
-              );
-            }
+            $scope.launchInstance.source_type = 
+              $scope.launchInstance.source.type;
+            $scope.launchInstance.source_id = $scope.launchInstance.source.id;
+
+            delete $scope.launchInstance.source;
+            $modalInstance.close(
+              $http.post('/workflow/launch', angular.toJson($scope.launchInstance))
+            );
           };
 
           $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
           };
+
+          $scope.error = function () {
+            $scope.LaunchInstanceForm.$pristine = false;
+          }
         }],
 
       InstancesCtrl: ['$scope', 'launchWorkflow',
@@ -224,42 +262,31 @@
       SelectSourceCtrl: ['$scope', function ($scope) {
         $scope.zones = $scope.response.zones;
         $scope.max_count = $scope.response.count;
-        $scope.display_errors = false;
 
-        $scope.launchInstance.type = 'ephemeral';
         $scope.elts = $scope.datas[$scope.type];
-        $scope.launchInstance.count = 1;
-        $scope.launchInstance.availability_zone = $scope.zones[0];
-
         
-        $scope.select = function (source_type, source) {
-          if (!$scope.SubSelectSourceForm.$valid || $scope.SubSelectSourceForm.$pristine) {
-            $scope.SubSelectSourceForm.$pristine = false;
-            $scope.SubSelectSourceForm.name.$pristine = false;
-          } else {
-            if ($scope.source) {
-              delete $scope.source.active;
-            }
-            source.active = true;
-            $scope.source = source;
 
-            $scope.launchInstance.source_type = source_type;
-            $scope.launchInstance.source_id = source.id;
-            if (source_type === 'volumes' || source_type === 'volumes_snapshot') {
-              $scope.launchInstance.volume_size = source.size;
-            } else {
-              $scope.launchInstance.volume_size = 1;
-            }
 
-            $scope.wizard.next();
-          }
-        };
+        $scope.active = function (valueId) {
+          return $scope.SubSelectSourceForm.$valid && 
+          $scope.launchInstance.source.id === valueId;
+        }
+
+        $scope.next = function () {
+          var type = $scope.launchInstance.source.type;
+          $scope.launchInstance.volume_size = 
+            type === 'volumes' || type === 'volumes_snapshots' ? 
+            $scope.launchInstance.source.size : 
+            1;
+          $scope.wizard.next();
+        }
 
         $scope.$watch('launchInstance.type', function () {
           $scope.elts = $scope.datas[$scope.launchInstance.type];
           $scope.$parent.tabs.bootVolume.disabled =
             !($scope.launchInstance.type === 'persistent');
         });
+
       }],
 
 
@@ -269,15 +296,6 @@
 
       FlavorCtrl: ['$scope', function ($scope) {
         $scope.flavors = $scope.response.flavors.sort(sort_flavors);
-
-        $scope.select = function (flavor) {
-          if ($scope.launchInstance.flavor) {
-            delete $scope.launchInstance.flavor.active;
-          }
-          flavor.active = true;
-          $scope.launchInstance.flavor = flavor;
-          $scope.wizard.next();
-        };
       }],
 
 
@@ -290,9 +308,6 @@
 
         $scope.sec_groups_list = $scope.response.access_security.security_groups;
         $scope.networks_list = $scope.response.access_security.available_networks;
-        $scope.launchInstance.create_key_pair = false;
-        $scope.launchInstance.import_key_pair = false;
-        $scope.launchInstance.disk_partition = 'AUTO';
         
       }]
     })
