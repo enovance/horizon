@@ -249,7 +249,17 @@
           };
 
           $scope.error = function () {
-            $scope.LaunchInstanceForm.$pristine = false;
+            angular.forEach($scope.forms, function (form) {
+              if (angular.isDefined(form)) {
+                form.showError = true;
+              }
+            });
+            return true;
+          }
+
+          $scope.isOnError = function (formField, form) {
+            return formField.$invalid && 
+            (formField.$dirty || form.showError);
           }
         }],
 

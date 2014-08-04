@@ -45,16 +45,16 @@
             <input id="confirm_admin_pass" class="span6" type="password" ng-model="launchInstance.confirm_admin_pass" data-identity="launchInstance.admin_pass" name="confirm_admin_pass">
           </div>
         </div>
-        <div class="span6" ng-class="{'error': forms.AccessAndSecurityForm.networks.$invalid && !forms.AccessAndSecurityForm.networks.$pristine}">
-          <label for="networks" ng-if="forms.AccessAndSecurityForm.networks.$valid || forms.AccessAndSecurityForm.networks.$pristine">{% trans "Networks" %}</label>
-          <label for="networks" ng-if="forms.AccessAndSecurityForm.networks.$error.notBlank && !forms.AccessAndSecurityForm.networks.$pristine">{% trans "Networks required"  %}</label>
+        <div class="span6" ng-class="{'error': isOnError(forms.AccessAndSecurityForm.networks, forms.AccessAndSecurityForm)}">
+          <label for="networks" ng-if="!isOnError(forms.AccessAndSecurityForm.networks, forms.AccessAndSecurityForm)">{% trans "Networks" %}</label>
+          <label for="networks" ng-if="isOnError(forms.AccessAndSecurityForm.networks, forms.AccessAndSecurityForm)">{% trans "Networks required"  %}</label>
           <div data-selection data-elts="networks_list" data-id="networks" ng-model="launchInstance.networks" data-name="networks" class="control-group" data-not-blank>
             <div><a class="btn btn-primary"></a>{$ elt.name $} <em class="network_id pull-right">({$ elt.id $})</em></div>
           </div>
         </div>
-        <div class="span6" ng-class="{'error': forms.AccessAndSecurityForm.sec_groups.$invalid && !forms.AccessAndSecurityForm.sec_groups.$pristine}">
-          <label for="sec_groups" ng-if="forms.AccessAndSecurityForm.sec_groups.$valid || forms.AccessAndSecurityForm.sec_groups.$pristine">{% trans "Security Groups" %}</label>
-          <label for="sec_groups" ng-if="forms.AccessAndSecurityForm.sec_groups.$error.notBlank && !forms.AccessAndSecurityForm.sec_groups.$pristine">{% trans "Security Groups required" %}</label>
+        <div class="span6" ng-class="{'error': isOnError(forms.AccessAndSecurityForm.sec_groups, forms.AccessAndSecurityForm)}">
+          <label for="sec_groups" ng-if="!isOnError(forms.AccessAndSecurityForm.sec_groups, forms.AccessAndSecurityForm)">{% trans "Security Groups" %}</label>
+          <label for="sec_groups" ng-if="isOnError(forms.AccessAndSecurityForm.sec_groups, forms.AccessAndSecurityForm)">{% trans "Security Groups required" %}</label>
           <div data-selection data-elts="sec_groups_list" data-id="sec_groups" ng-model="launchInstance.sec_groups" data-name="sec_groups" class="control-group" data-not-blank>
             <div><a class="btn btn-primary"></a>{$ elt $}</div>
           </div>

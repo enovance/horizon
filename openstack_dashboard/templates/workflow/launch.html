@@ -15,5 +15,5 @@
 
 <div class="modal-footer">
   <a class="btn btn-warning" ng-click="cancel()">{% trans "Cancel" %}</a>
-  <a class="btn btn-info span2" ng-click="tabs.access.validate() && launch(LaunchInstanceForm)" ng-disabled="!tabs.access.validate()">{% trans "Launch" %}</a>
+  <a class="btn btn-info span2" ng-click="error() && tabs.access.validate() && launch(LaunchInstanceForm)" ng-disabled="!tabs.access.validate()">{% trans "Launch" %}</a>
 </div>

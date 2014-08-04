@@ -9,13 +9,13 @@
 
         <div class="control-group" ng-form="SubSelectSourceForm">
           <div class="row">
-            <div class="span4" ng-class="{'error': SubSelectSourceForm.name.$invalid && !SubSelectSourceForm.name.$pristine}">
-              <label for="name" ng-if="SubSelectSourceForm.name.$valid || SubSelectSourceForm.name.$pristine">{% trans "Instance Name" %}</label>
-              <label for="name" ng-if="SubSelectSourceForm.name.$invalid && !SubSelectSourceForm.name.$pristine">{% trans "Instance Name is required" %}</label>
+            <div class="span4" ng-class="{'error': isOnError(SubSelectSourceForm.name, forms.SelectSourceForm)}">
+              <label for="name" ng-if="!isOnError(SubSelectSourceForm.name, forms.SelectSourceForm)">{% trans "Instance Name" %}</label>
+              <label for="name" ng-if="isOnError(SubSelectSourceForm.name, forms.SelectSourceForm)">{% trans "Instance Name is required" %}</label>
               <input id="name" class="span4" type="text" name="name" ng-model="launchInstance.name" required maxlength="80" >
             </div>
-            <div class="span2" ng-class="{'error': SubSelectSourceForm.count.$invalid && !SubSelectSourceForm.count.$pristine}">
-              <label for="count" ng-if="SubSelectSourceForm.count.$valid || SubSelectSourceForm.count.$pristine">{% trans "Instance Count" %}</label>
+            <div class="span2" ng-class="{'error': isOnError(SubSelectSourceForm.count, forms.SelectSourceForm)}">
+              <label for="count" ng-if="!isOnError(SubSelectSourceForm.count, forms.SelectSourceForm)">{% trans "Instance Count" %}</label>
               <label for="count" ng-if="SubSelectSourceForm.count.$error.required">{% trans "Count required" %}</label>
               <label for="count" ng-if="SubSelectSourceForm.count.$error.min">{% trans "Count minimum is 1" %}</label>
               <label for="count" ng-if="SubSelectSourceForm.count.$error.max">{% trans "Count maximum is" %} {$ max_count $}</label>
@@ -54,7 +54,7 @@
                       data-source-option="{type: source_type_entitled, id: value.id, size: value.size}"
                       ng-class="{'btn-primary': !active(value.id)}"
                       data-ng-disabled="SubSelectSourceForm.$invalid"
-                      ng-click="next()">
+                      ng-click="error() && next()">
                       {% trans "Select" %} »
                     </a>
                   </td>
