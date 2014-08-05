@@ -49,14 +49,16 @@
           <label for="networks" ng-if="!isOnError(forms.AccessAndSecurityForm.networks, forms.AccessAndSecurityForm)">{% trans "Networks" %}</label>
           <label for="networks" ng-if="isOnError(forms.AccessAndSecurityForm.networks, forms.AccessAndSecurityForm)">{% trans "Networks required"  %}</label>
           <div data-selection data-elts="networks_list" data-id="networks" ng-model="launchInstance.networks" data-name="networks" class="control-group" data-not-blank>
-            <div><a class="btn btn-primary"></a>{$ elt.name $} <em class="network_id pull-right">({$ elt.id $})</em></div>
+            <div data-selection-element><a class="btn btn-primary"></a>{$ elt.name $} <em class="network_id pull-right">({$ elt.id $})</em></div>
+            <div data-selection-help><div class="alert alert-info" >No network selected. Please add a network from the list below</div></div>
           </div>
         </div>
         <div class="span6" ng-class="{'error': isOnError(forms.AccessAndSecurityForm.sec_groups, forms.AccessAndSecurityForm)}">
           <label for="sec_groups" ng-if="!isOnError(forms.AccessAndSecurityForm.sec_groups, forms.AccessAndSecurityForm)">{% trans "Security Groups" %}</label>
           <label for="sec_groups" ng-if="isOnError(forms.AccessAndSecurityForm.sec_groups, forms.AccessAndSecurityForm)">{% trans "Security Groups required" %}</label>
           <div data-selection data-elts="sec_groups_list" data-id="sec_groups" ng-model="launchInstance.sec_groups" data-name="sec_groups" class="control-group" data-not-blank>
-            <div><a class="btn btn-primary"></a>{$ elt $}</div>
+            <div data-selection-element><a class="btn btn-primary"></a>{$ elt $}</div>
+            <div data-selection-help><div class="alert alert-info" >No security group selected. Please add a security group from the list below</div></div>
           </div>
         </div>
 

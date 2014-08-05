@@ -8,27 +8,28 @@ angular.module('hz').directive({
       transclude: true,
       scope: {
         availables: '=elts',
-        id: '@'
+        id: '@',
+        label: '@'
       },
       controller: function () {},
       template:
           '<div id="{$ id $}" class="selection">\n' +
           '  <label for="selected_{$ id $}">Selected {$ label $}</label>\n' +
           '  <ul id="selected_{$ id $}" class="selected">\n' +
-          '    <li ng-if="!selected.length"><div class="alert alert-info" >No {$ id $} selected. Please add a {$ id $} from the list below</div></li>\n' +
-          '    <li ng-repeat="s in selected"><div data-selection-element data-elt="s"></div></li>\n' +
+          '    <li ng-if="!selected.length" data-selection-help-transclude></li>\n' +
+          '    <li ng-repeat="s in selected"><div data-selection-element-transclude data-elt="s"></div></li>\n' +
           '  </ul>\n' +
           '  <label for="available_{$ id $}">Available {$ label $}</label>\n' +
           '  <ul id="available_{$ id $}" class="available">\n' +
-          '    <li ng-repeat="a in availables"><div data-selection-element data-elt="a"></div></li>\n' +
+          '    <li ng-repeat="a in availables"><div data-selection-element-transclude data-elt="a"></div></li>\n' +
           '  </ul>\n' +
-          '</div>',
-      link: function (scope, element, attrs, controllers, transclude) {
+          '</div>\n' +
+          '<div ng-transclude></div>\n',
+      link: function (scope, element, attrs, controllers) {
         var selectionCtrl = controllers[0];
         var modelCtrl = controllers[1];
 
-        scope.selected = [];
-
+        scope.selected = modelCtrl.$modelValue || [];
         selectionCtrl.toggle = function (elt) {
           var index = scope.availables.indexOf(elt);
           if (index !== -1) {
@@ -37,34 +38,61 @@ angular.module('hz').directive({
           } else {
             index = scope.selected.indexOf(elt);
             scope.selected.splice(index, 1);
-            scope.availables.push(elt);
+            scope.availables.unshift(elt);
           }
           modelCtrl.$setViewValue(scope.selected);
         }
-
-        scope.$transcludeFn = transclude;
       }
     };
   }],
   selectionElement: [function () {
     return {
       require: '^selection',
-      replace: true,
+      transclude: true,
+      link: function (scope, element, attrs, selectionCtrl, transclude) {
+        selectionCtrl.$transcludeElt = transclude;
+      }
+    };
+  }],
+  selectionElementTransclude: ['$compile', function ($compile) {
+    return {
+      scope: {
+        elt: '='
+      },
+      require: '^selection',
       link: function (scope, element, attrs, selectionCtrl) {
-        var isolated = scope.$new(true);
-        isolated.elt = scope.$eval(attrs.elt);
-
-        scope.$transcludeFn(isolated, function (clone) {
-          element.append(clone);
+        scope.$watch('elt', function () {
+          selectionCtrl.$transcludeElt(function (clone) {
+            element.html($compile(clone)(scope));
+          });
         });
-
+        
         element.bind('click', function () {
           scope.$apply(function () {
-            selectionCtrl.toggle(isolated.elt);
+            selectionCtrl.toggle(scope.elt);
           });
         });
       }
-    };
+    }
+  }],
+  selectionHelp: [function () {
+    return {
+      require: '^selection',
+      transclude: true,
+      link: function (scope, element, attrs, selectionCtrl, transclude) {
+        selectionCtrl.$transcludeHelp = transclude;
+      }
+    }
+  }],
+  selectionHelpTransclude: [function () {
+    return {
+      require: '^selection',
+      link: function (scope, element, attrs, selectionCtrl) {
+        selectionCtrl.$transcludeHelp(function (clone) {
+          element.html(clone);
+        });
+      }
+    }
   }],
   sourceSelect: [function () {
     return {
