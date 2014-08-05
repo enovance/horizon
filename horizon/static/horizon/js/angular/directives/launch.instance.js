@@ -28,8 +28,12 @@ angular.module('hz').directive({
       link: function (scope, element, attrs, controllers) {
         var selectionCtrl = controllers[0];
         var modelCtrl = controllers[1];
+      
+        modelCtrl.$render = function () {
+          scope.selected = modelCtrl.$modelValue || [];
+        }
 
-        scope.selected = modelCtrl.$modelValue || [];
+        
         selectionCtrl.toggle = function (elt) {
           var index = scope.availables.indexOf(elt);
           if (index !== -1) {
