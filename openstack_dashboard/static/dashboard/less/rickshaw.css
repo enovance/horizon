@@ -1,3 +1,15 @@
+#customization_script::-webkit-input-placeholder::before {
+  content: "#!/bin/bash\000A\000A echo \"This is optional\"";
+}
+
+#customization_script::-moz-placeholder::before {
+  content: "#!/bin/bash\000A\000A echo \"This is optional\"";
+}
+
+#customization_script:-ms-input-placeholder::before {
+  content: "#!/bin/bash\000A\000A echo \"This is optional\"";
+}
+
 .rickshaw_graph .detail {
     pointer-events: none;
     position: absolute;
