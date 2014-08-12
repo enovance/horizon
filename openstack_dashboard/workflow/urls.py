@@ -26,6 +26,7 @@ from django.conf.urls import patterns  # noqa
 from django.conf.urls import url  # noqa
 from django.views.generic import TemplateView
 from openstack_dashboard.workflow import launch
+from openstack_dashboard.workflow import keypair
 
 urlpatterns = patterns(
     '',
@@ -33,5 +34,13 @@ urlpatterns = patterns(
         name='launch'),
     url(r'^launchTemplate$',
         TemplateView.as_view(template_name="workflow/launch.html"),
-        name="launchTemplate")
+        name="launchTemplate"),
+    url(r'^keypair$', keypair.KeypairView.as_view(),
+        name='keypair'),
+    url(r'^keypairCreateTemplate$',
+        TemplateView.as_view(template_name="workflow/keypairCreate.html"),
+        name="keypairCreateTemplate"),
+    url(r'^keypairImportTemplate$',
+        TemplateView.as_view(template_name="workflow/keypairImport.html"),
+        name="keypairImportTemplate"),
 )

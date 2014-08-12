@@ -229,8 +229,6 @@
           $scope.launchInstance.count = 1;
           $scope.launchInstance.availability_zone = $scope.response.zones[0];
           $scope.launchInstance.source = {};
-          $scope.launchInstance.create_key_pair = false;
-          $scope.launchInstance.import_key_pair = false;
           $scope.launchInstance.disk_partition = 'AUTO';
 
           $scope.launch = function (launchInstanceForm) {
@@ -309,16 +307,35 @@
       }],
 
 
-      AccessAndSecurityCtrl: ['$scope', function ($scope) {
+      AccessAndSecurityCtrl: ['$scope', '$modalStack', '$http', 'keypairCreate', 'keypairImport', 'hzMessages', 
+      function ($scope, $modalStack, $http, keypairCreate, keypairImport, hzMessages) {
         $scope.key_pairs = $scope.response.access_security.key_pairs;
-        $scope.key_pairs_name = [];
-        angular.forEach($scope.key_pairs, function (key_pair) {
-          $scope.key_pairs_name.push(key_pair.name);
-        });
 
         $scope.sec_groups_list = $scope.response.access_security.security_groups;
         $scope.networks_list = $scope.response.access_security.available_networks;
-        
+
+        function keypairHandle (create) {
+          $modalStack.getTop().value.modalDomEl.addClass('ng-hide');
+          (create ? keypairCreate : keypairImport).open().result.then(
+            function (keypair_name) {
+              $http.get('/workflow/keypair').then(function (result) {
+                $scope.key_pairs = result.data.key_pairs;
+                $scope.launchInstance.key_pair_id = keypair_name;
+              });
+            }, function (error) {
+              hzMessages.alert(error.data, 'error');
+            })['finally'](function () {
+              $modalStack.getTop().value.modalDomEl.removeClass('ng-hide');
+            });
+        }
+
+        $scope.createKeypair = function () {
+          keypairHandle(true);
+        };
+
+        $scope.importKeypair = function () {
+          keypairHandle(false);
+        }
       }]
     })
 

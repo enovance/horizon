@@ -1,0 +1,43 @@
+{% load i18n %}
+<form name="form.ImportKeypairForm">
+  <div class="modal-header">
+    <a class="close" ng-click="$dismiss()">×</a>
+    <h3>{% trans "Import Key Pair" %}</h3>
+  </div>
+
+  <div class="modal-body row">
+    <div class="span4">
+      <fieldset>
+        <div class="control-group form-field" ng-class="{'error': isOnError(form.ImportKeypairForm.name)}">
+
+          <label for="name" ng-if="!isOnError(form.ImportKeypairForm.name)">{% trans "Key Pair Name" %}</label>
+          <label for="name" ng-if="isOnError(form.ImportKeypairForm.name)">{% trans "Key Pair Name is required" %}</label>
+          <input id="name" maxlength="255" name="name" type="text" ng-model="form.name" required>
+        </div>
+
+        <div class="control-group form-field" ng-class="{'error': isOnError(form.ImportKeypairForm.public_key)}">
+          <label for="public_key" ng-if="!isOnError(form.ImportKeypairForm.public_key)">{% trans "Public Key" %}</label>
+          <label for="public_key" ng-if="isOnError(form.ImportKeypairForm.public_key)">{% trans "Public Key is required" %}</label>
+          <textarea cols="40" id="public_key" name="public_key" rows="10" required ng-model="form.public_key"></textarea>
+        </div>
+      </fieldset>
+    </div>
+    <div class="span4">
+      <h3>{% trans "Description" %}:</h3>
+      <p>{% blocktrans %}Key Pairs are how you login to your instance after it is launched.{% endblocktrans %}</p>
+      <p>{% blocktrans %}Choose a key pair name you will recognise and paste your SSH public key into the space provided.{% endblocktrans %}</p>
+      <p>{% blocktrans %}SSH key pairs can be generated with the ssh-keygen command:{% endblocktrans %}</p>
+      <p></p><pre>ssh-keygen -t rsa -f cloud.key</pre><p></p>
+      <p>{% blocktrans %}This generates a pair of keys: a key you keep private (cloud.key) and a public key (cloud.key.pub). Paste the contents of the public key file here.{% endblocktrans %}</p>
+      <p>{% blocktrans %}After launching an instance, you login using the private key (the username might be different depending on the image you launched):{% endblocktrans %}</p>
+      <p></p><pre>ssh -i cloud.key ubuntu@&lt;instance_ip&gt;</pre><p></p>
+      <p>{% trans "or" %}:</p>
+      <p></p><pre>ssh -i cloud.key ec2_user@&lt;instance_ip&gt;</pre><p></p>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <a class="btn btn-warning" ng-click="$dismiss()">{% trans "Cancel" %}</a>
+    <a class="btn btn-info span2" ng-click="showError() && import()" ng-disabled="form.ImportKeypairForm.$invalid">{% trans "Import Key Pair" %}</a>
+  </div>
+</form>

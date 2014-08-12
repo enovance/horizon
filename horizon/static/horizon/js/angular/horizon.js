@@ -4,6 +4,7 @@ var horizonApp = angular.module(
     ['hz.conf',
       'hz.utils',
       'hz.messages',
+      'hz.keypair',
       'ui.bootstrap',
       'ngAnimate',
       'ngSanitize',

@@ -1,0 +1,34 @@
+{% load i18n %}
+<form name="form.CreateKeypairForm">
+	<div class="modal-header">
+		<a class="close" ng-click="$dismiss()">×</a>
+		<h3>{% trans "Create Key Pair"%}</h3>
+	</div>
+	<div class="modal-body row">
+		<div class="span4">
+			<fieldset>
+				<div class="control-group form-field" ng-class="{'error': isOnError()}">
+
+					<label for="name" ng-if="!isOnError()">{% trans "Key Pair Name" %}</label>
+					<label for="name" ng-if="isOnError()">{% trans "Key Pair Name is required" %}</label>
+					<input id="name" maxlength="255" name="name" type="text" ng-model="form.name" required>
+				</div>
+				<div class="alert alert-error" ng-if="form.error_message">
+					{$ form.error_message $}
+				</div>
+			</fieldset>
+		</div>
+		<div class="span4">
+			<h3>Description:</h3>
+			<p>Key pairs are ssh credentials which are injected into images when they are launched. Creating a new key pair registers the public key and downloads the private key (a .pem file).</p>
+			<p>Protect and use the key as you would any normal ssh private key.</p>
+		</div>
+	</div>
+
+	<div class="modal-footer">
+		<a class="btn btn-warning" ng-click="$dismiss()">{% trans "Cancel" %}</a>
+		<a class="btn btn-info span2" ng-click="showError() && create()" ng-disabled="form.CreateKeypairForm.$invalid">{% trans "Create Key Pair" %}</a>
+	</div>
+</form>
+<iframe name="keypair" style="display:none" ng-controller="iframeCtrl">
+</iframe>
