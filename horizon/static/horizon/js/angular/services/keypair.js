@@ -40,13 +40,13 @@ angular
 	var i;
 		
 	function bodyRetrieve() {
-		$interval.cancel(i);
 		$cookies.keypairDL = 'true';
 		$scope.$apply(function () {
 			$scope.form.error_message = angular.element(
 				iframe.contentWindow.document.body.innerHTML).text();
 		});
 	}
+
 	i = $interval(function() {
 		if ($cookies.keypairDL === 'false') {
 			$interval.cancel(i);

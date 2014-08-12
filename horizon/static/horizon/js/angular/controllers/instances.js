@@ -147,6 +147,15 @@
             response.data.tenant
           );
 
+          $scope.showError = function () {
+            angular.forEach($scope.forms, function (form) {
+              if (angular.isDefined(form)) {
+                form.showError = true;
+              }
+            });
+            return true;
+          }
+
           function hasControls(form) {
             var attr;
             for (attr in form) {
@@ -168,6 +177,7 @@
                 if (form && hasControls(form)) {
                   tab.valid = form.$valid;
                 }
+                $scope.showError();
                 return tab.valid;
               }
             },
@@ -182,7 +192,7 @@
                 if (form && hasControls(form)) {
                   tab.valid = form.$valid;
                 }
-
+                $scope.showError();
                 return tab.valid || tab.disabled && 
                   $scope.tabs.selectSource.validate();
               }
@@ -197,7 +207,7 @@
                 if (form && hasControls(form)) {
                   tab.valid = form.$valid;
                 }
-
+                $scope.showError();
                 return tab.valid && 
                   $scope.tabs.bootVolume.validate();
               }
@@ -212,7 +222,6 @@
                 if (form && hasControls(form)) {
                   tab.valid = form.$valid;
                 }
-
                 return tab.valid && 
                   $scope.tabs.flavor.validate();
               }
@@ -245,15 +254,6 @@
           $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
           };
-
-          $scope.error = function () {
-            angular.forEach($scope.forms, function (form) {
-              if (angular.isDefined(form)) {
-                form.showError = true;
-              }
-            });
-            return true;
-          }
 
           $scope.isOnError = function (formField, form) {
             return formField.$invalid && 
@@ -323,7 +323,9 @@
                 $scope.launchInstance.key_pair_id = keypair_name;
               });
             }, function (error) {
-              hzMessages.alert(error.data, 'error');
+              if (error) {
+                hzMessages.alert(error.data, 'error');  
+              }
             })['finally'](function () {
               $modalStack.getTop().value.modalDomEl.removeClass('ng-hide');
             });

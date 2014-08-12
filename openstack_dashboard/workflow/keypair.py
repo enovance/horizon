@@ -42,14 +42,12 @@ class KeypairView(generic.View):
 
     def post(self, request):        
         keypair_name = request.POST.get('keypair_name')
-        
-        if not keypair_name:
-            data = json.loads(self.request.body)
-            public_key = data.get('public_key')
-            keypair_name = data.get('keypair_name')
 
         try:
-            if public_key:
+            if not keypair_name:
+                data = json.loads(self.request.body)
+                public_key = data.get('public_key')
+                keypair_name = data.get('keypair_name')
                 keypair = api.nova.keypair_import(
                     request, keypair_name, public_key)
                 response = http.HttpResponse()    
@@ -65,6 +63,6 @@ class KeypairView(generic.View):
                     'keypairDL', 'false', path='/project/instances')
         except nova_exceptions.ClientException as ce:
             return http.HttpResponse(
-                status=ce.code, content=ce.message, content_type='text/plain')
+                status=ce.http_status , content=ce.message, content_type='text/plain')
 
         return response
