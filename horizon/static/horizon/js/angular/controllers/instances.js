@@ -254,6 +254,18 @@
           $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
           };
+          $scope.next = function () {
+            $scope.wizard.next();
+          };
+          $scope.previous = function () {
+            $scope.wizard.previous();
+          };
+          $scope.isFirst = function () {
+            return ($scope.wizard.index() == 0)
+          };
+          $scope.isLast = function () {
+            return ($scope.wizard.index() == ($scope.wizard.length() - 1));
+          };
 
           $scope.isOnError = function (formField, form) {
             return formField.$invalid && 
