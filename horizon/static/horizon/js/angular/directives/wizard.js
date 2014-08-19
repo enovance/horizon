@@ -38,11 +38,8 @@ angular
       last: function () {
         move(wizards[id].steps.length -1, -1, wizards[id]);
       },
-      index: function () {
-        return wizards[id].step.index;
-      },
-      length: function () {
-        return wizards[id].steps.length;
+      wizardController: function () {
+        return wizards[id];
       }
     };
   };
