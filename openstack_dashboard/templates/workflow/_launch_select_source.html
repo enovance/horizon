@@ -19,7 +19,7 @@
               <label for="count" ng-if="SubSelectSourceForm.count.$error.required">{% trans "Count required" %}</label>
               <label for="count" ng-if="SubSelectSourceForm.count.$error.min">{% trans "Count minimum is 1" %}</label>
               <label for="count" ng-if="SubSelectSourceForm.count.$error.max">{% trans "Count maximum is" %} {$ max_count $}</label>
-              <input id="count" class="span2" type="number" name="count" ng-model="launchInstance.count" required min="1" max="{$ max_count $}" >
+              <input id="count" class="span2" type="number" name="count" ng-model="launchInstance.count" required min="1" max="{$ max_count $}" title="{% trans "Number of instances to launch." %}" data-html="true">
             </div>
 
 

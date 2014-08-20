@@ -9,7 +9,7 @@
       <h3>Instance Access</h3>
       <div class="control-group">
         <label for="key_pair_id">{% trans "Keypair" %}</label>
-        <select id="key_pair_id" class="span3" name="key_pair_id" ng-model="launchInstance.key_pair_id" ng-options="key_pair.id as key_pair.name for key_pair in key_pairs" ></select>
+        <select id="key_pair_id" class="span3" name="key_pair_id" ng-model="launchInstance.key_pair_id" ng-options="key_pair.id as key_pair.name for key_pair in key_pairs" title="{% trans "Which key pair to use for authentication." %}" data-html="true"></select>
         <a href="#" class="btn btn-default" ng-click="createKeypair()">{% trans "Create Key Pair" %}</a>
         <a href="#" class="btn btn-default" ng-click="importKeypair()">{% trans "Import Key Pair" %}</a>
       </div>
@@ -39,7 +39,7 @@
     <div class="span4" ng-class="{'error': isOnError(forms.AccessAndSecurityForm.networks, forms.AccessAndSecurityForm)}">
      <label for="networks" ng-if="!isOnError(forms.AccessAndSecurityForm.networks, forms.AccessAndSecurityForm)">{% trans "Networks" %}</label>
      <label for="networks" ng-if="isOnError(forms.AccessAndSecurityForm.networks, forms.AccessAndSecurityForm)">{% trans "Networks required"  %}</label>
-     <div data-selection data-elts="networks_list" data-id="networks" ng-model="launchInstance.networks" data-name="networks" class="control-group" data-not-blank>
+     <div data-selection data-elts="networks_list" data-id="networks" ng-model="launchInstance.networks" data-name="networks" class="control-group" data-not-blank title="{% trans "Launch instance with these networks" %}" data-html="true">
       <div data-selection-element><a class="btn btn-primary"></a>{$ elt.name $} <em class="network_id pull-right">({$ elt.id $})</em></div>
       <div data-selection-help><div class="alert alert-info">Please add a network from the list below.</div></div>
     </div>
@@ -47,7 +47,7 @@
   <div class="span4" ng-class="{'error': isOnError(forms.AccessAndSecurityForm.sec_groups, forms.AccessAndSecurityForm)}">
    <label for="sec_groups" ng-if="!isOnError(forms.AccessAndSecurityForm.sec_groups, forms.AccessAndSecurityForm)">{% trans "Security Groups" %}</label>
    <label for="sec_groups" ng-if="isOnError(forms.AccessAndSecurityForm.sec_groups, forms.AccessAndSecurityForm)">{% trans "Security Groups required" %}</label>
-   <div data-selection data-elts="sec_groups_list" data-id="sec_groups" ng-model="launchInstance.sec_groups" data-name="sec_groups" class="control-group" data-not-blank>
+   <div data-selection data-elts="sec_groups_list" data-id="sec_groups" ng-model="launchInstance.sec_groups" data-name="sec_groups" class="control-group" data-not-blank title="{% trans "Launch instance in these security groups." %}" data-html="true">
     <div data-selection-element><a class="btn btn-primary"></a>{$ elt $}</div>
     <div data-selection-help><div class="alert alert-info" >Please add a security group from the list below.</div></div>
   </div>
@@ -57,7 +57,7 @@
 <div>
 	<h3>Advanced Options</h3>
 	<label for="customization_script">{% trans "Post-creation Script:" %}</label>
-	<textarea id="customization_script" rows="3" ng-model="launchInstance.customization_script" name="customization_script" class="span6" placeholder=" "></textarea>
+	<textarea id="customization_script" rows="3" ng-model="launchInstance.customization_script" name="customization_script" class="span6" placeholder=" " title="{% trans "A script or set of commands to be executed after the instance has been built (max 16kb)." %}" data-html="true"></textarea>
 	
 	<label for="disk_partition">{% trans "Disk Partition:" %}</label>
 	<select id="disk_partition" ng-model="launchInstance.disk_partition" name="disk_partition" class="span6">
