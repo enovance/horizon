@@ -53,18 +53,6 @@
   </div>
 </div>
 </div>
-
-<div>
-	<h3>Advanced Options</h3>
-	<label for="customization_script">{% trans "Post-creation Script:" %}</label>
-	<textarea id="customization_script" rows="3" ng-model="launchInstance.customization_script" name="customization_script" class="span6" placeholder=" "></textarea>
-	
-	<label for="disk_partition">{% trans "Disk Partition:" %}</label>
-	<select id="disk_partition" ng-model="launchInstance.disk_partition" name="disk_partition" class="span6">
-    <option value="AUTO" selected>{% trans "Automatic" %}</option>
-    <option value="MANUAL">{% trans "Manual" %}</option>
-  </select>
-</div>
 </fieldset>
 <div class="span3">
   <h3>{% trans "Step" %} {$ 3 + !tabs.bootVolume.disabled $} - {% trans "Access & Security" %}</h3>

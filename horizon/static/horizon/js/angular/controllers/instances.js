@@ -154,12 +154,16 @@
               }
             });
             return true;
-          }
+          };
 
           function hasControls(form) {
+            function isControl (attr) {
+              return attr.charAt(0) !== '$' && attr !== 'showError';
+            }
+            
             var attr;
             for (attr in form) {
-              if(form.hasOwnProperty(attr) && attr.charAt(0) !== '$') {
+              if (form.hasOwnProperty(attr) && isControl(attr)) {
                 return true;
               }
             }
@@ -168,9 +172,9 @@
 
           $scope.tabs = {
             selectSource : {
-              active     : false, 
-              valid      : false,
-              validate: function () {
+              active   : false,
+              valid    : false,
+              validate : function () {
                 var form = $scope.forms.SelectSourceForm;
                 var tab = $scope.tabs.selectSource;
 
@@ -181,11 +185,11 @@
                 return tab.valid;
               }
             },
-            bootVolume   : {
-              active     : false, 
-              valid      : false,
-              disabled   : true,
-              validate   : function () {
+            bootVolume : {
+              active   : false,
+              valid    : false,
+              disabled : true,
+              validate : function () {
                 var form = $scope.forms.BootVolumeForm;
                 var tab = $scope.tabs.bootVolume;                
 
@@ -197,10 +201,10 @@
                   $scope.tabs.selectSource.validate();
               }
             },
-            flavor       : {
-              active     : false, 
-              valid      : false,
-              validate   : function () {
+            flavor : {
+              active   : false,
+              valid    : false,
+              validate : function () {
                 var form = $scope.forms.FlavorForm;
                 var tab = $scope.tabs.flavor;                
 
@@ -212,9 +216,9 @@
                   $scope.tabs.bootVolume.validate();
               }
             },
-            access       : {
-              valid      : false,
-              active     : false, 
+            access : {
+              valid    : false,
+              active   : false,
               validate : function () {
                 var form = $scope.forms.AccessAndSecurityForm;
                 var tab = $scope.tabs.access;
@@ -225,6 +229,9 @@
                 return tab.valid && 
                   $scope.tabs.flavor.validate();
               }
+            },
+            advanced    : {
+              active    : false
             }
           };
             
@@ -240,9 +247,10 @@
           $scope.launchInstance.source = {};
           $scope.launchInstance.disk_partition = 'AUTO';
 
-          $scope.launch = function (launchInstanceForm) {
-            $scope.launchInstance.source_type = 
+          $scope.launch = function () {
+            $scope.launchInstance.source_type =
               $scope.launchInstance.source.type;
+
             $scope.launchInstance.source_id = $scope.launchInstance.source.id;
 
             delete $scope.launchInstance.source;
@@ -286,7 +294,7 @@
         $scope.active = function (valueId) {
           return $scope.SubSelectSourceForm.$valid && 
           $scope.launchInstance.source.id === valueId;
-        }
+        };
 
         $scope.next = function () {
           var type = $scope.launchInstance.source.type;
@@ -295,7 +303,7 @@
             $scope.launchInstance.source.size : 
             1;
           $scope.wizard.next();
-        }
+        };
 
         $scope.$watch('launchInstance.type', function () {
           $scope.elts = $scope.datas[$scope.launchInstance.type];
@@ -346,6 +354,9 @@
         $scope.importKeypair = function () {
           keypairHandle(false);
         }
+      }],
+
+       AdvancedOptionCtrl: ['$scope', function ($scope) {
       }]
     })
 

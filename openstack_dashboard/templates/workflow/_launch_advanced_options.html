@@ -1,0 +1,26 @@
+{% load i18n %}
+<div step data-active="tabs.advanced.active" data-select="tabs.flavor.validate()">
+  <div data-step-heading class="heading">
+    {% trans "Step" %} {$ 4 + !tabs.bootVolume.disabled $} - {% trans "Advanced Options" %}
+  </div>
+  <div class="form-horizontal row-fluid" ng-form="forms.AdvancedOptionForm" ng-if="tabs.advanced.active">
+    <fieldset class="span9">
+      <div>
+        <h3>Advanced Options</h3>
+        <label for="customization_script">{% trans "Post-creation Script:" %}</label>
+        <textarea id="customization_script" rows="3" data-ng-model="launchInstance.customization_script" name="customization_script" class="span6" placeholder=" " title="{% trans "A script or set of commands to be executed after the instance has been built (max 16kb)." %}" data-html="true"></textarea>
+
+        <label for="disk_partition">{% trans "Disk Partition:" %}</label>
+        <select id="disk_partition" data-ng-model="launchInstance.disk_partition" name="disk_partition" class="span6">
+          <option value="AUTO" selected>{% trans "Automatic" %}</option>
+          <option value="MANUAL">{% trans "Manual" %}</option>
+        </select>
+      </div>
+    </fieldset>
+    <div class="span3">
+      <h3>{% trans "Step" %} {$ 4 + !tabs.bootVolume.disabled $} - {% trans "Advanced Options" %}</h3>
+      {% blocktrans %}Advanced Options help{% endblocktrans %}
+    </div>
+  </div>
+</div>
+
