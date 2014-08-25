@@ -12,10 +12,11 @@
             <div class="span4" ng-class="{'error': isOnError(SubSelectSourceForm.name, forms.SelectSourceForm)}">
               <label for="name" ng-if="!isOnError(SubSelectSourceForm.name, forms.SelectSourceForm)">{% trans "Instance Name" %}</label>
               <label for="name" ng-if="isOnError(SubSelectSourceForm.name, forms.SelectSourceForm)">{% trans "Instance Name is required" %}</label>
+
               <input id="name" class="span4" type="text" name="name" ng-model="launchInstance.name" required maxlength="80" >
             </div>
             <div class="span2" ng-class="{'error': isOnError(SubSelectSourceForm.count, forms.SelectSourceForm)}">
-              <label for="count" ng-if="!isOnError(SubSelectSourceForm.count, forms.SelectSourceForm)">{% trans "Instance Count" %}</label>
+              <label for="count" ng-if="!isOnError(SubSelectSourceForm.count, forms.SelectSourceForm)">{% trans "Instance Count" %} <a href="#" tooltip="{% trans "Number of instances to launch." %}">?</a></label>
               <label for="count" ng-if="SubSelectSourceForm.count.$error.required">{% trans "Count required" %}</label>
               <label for="count" ng-if="SubSelectSourceForm.count.$error.min">{% trans "Count minimum is 1" %}</label>
               <label for="count" ng-if="SubSelectSourceForm.count.$error.max">{% trans "Count maximum is" %} {$ max_count $}</label>
@@ -30,7 +31,8 @@
           </div>
         </div>
         <div class="control-group">
-          <div class="btn-group">
+          <label for="disk-type">{% trans "Operating System Disk Type" %}</label>
+          <div class="btn-group" id="disk-type">
             <a href="#" class="btn btn-default" data-ng-model="launchInstance.type" data-btn-radio="'ephemeral'">{% trans "Ephemeral Root Disk" %}</a>
             <a href="#" class="btn btn-default" data-ng-model="launchInstance.type" data-btn-radio="'persistent'">{% trans "Persistent Root Disk" %}</a>
           </div>

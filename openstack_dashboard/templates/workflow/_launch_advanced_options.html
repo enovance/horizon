@@ -7,7 +7,7 @@
     <fieldset class="span9">
       <div>
         <h3>Advanced Options</h3>
-        <label for="customization_script">{% trans "Post-creation Script:" %}</label>
+        <label for="customization_script">{% trans "Post-creation Script:" %} <a href="#" tooltip="{% trans "A script or set of commands to be executed after the instance has been built (max 16kb)." %}">?</a></label>
         <textarea id="customization_script" rows="3" data-ng-model="launchInstance.customization_script" name="customization_script" class="span6" placeholder=" " title="{% trans "A script or set of commands to be executed after the instance has been built (max 16kb)." %}" data-html="true"></textarea>
 
         <label for="disk_partition">{% trans "Disk Partition:" %}</label>

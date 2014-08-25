@@ -1,15 +1,15 @@
 {% load i18n %}
-<div step data-active="tabs.access.active" select="tabs.flavor.validate()" deselect="tabs.access.validate()">
-  <div step-heading ng-class="{done: !tabs.access.active && tabs.access.valid}" class="heading">
+<div step data-active="tabs.access.active" data-select="tabs.flavor.validate()" data-deselect="tabs.access.validate()">
+  <div data-step-heading ng-class="{done: !tabs.access.active && tabs.access.valid}" class="heading">
     {% trans "Step" %} {$ 3 + !tabs.bootVolume.disabled $} - {% trans "Access & Security" %}
   </div>
 
-  <div class="form-horizontal row-fluid" ng-form="forms.AccessAndSecurityForm" class="row-fluid" ng-controller="AccessAndSecurityCtrl" ng-if="tabs.access.active">
+  <div class="form-horizontal row-fluid" ng-form="forms.AccessAndSecurityForm" ng-controller="AccessAndSecurityCtrl" ng-if="tabs.access.active">
     <fieldset class="span9">
       <h3>Instance Access</h3>
       <div class="control-group">
-        <label for="key_pair_id">{% trans "Keypair" %}</label>
-        <select id="key_pair_id" class="span3" name="key_pair_id" ng-model="launchInstance.key_pair_id" ng-options="key_pair.id as key_pair.name for key_pair in key_pairs" ></select>
+        <label for="key_pair_id">{% trans "Keypair" %} <a href="#" tooltip="{%  trans "Which key pair to use for authentication." %}" data-tooltip-placement="right">?</a></label>
+        <select id="key_pair_id" class="span3" name="key_pair_id" data-ng-model="launchInstance.key_pair_id" ng-options="key_pair.id as key_pair.name for key_pair in key_pairs" ></select>
         <a href="#" class="btn btn-default" ng-click="createKeypair()">{% trans "Create Key Pair" %}</a>
         <a href="#" class="btn btn-default" ng-click="importKeypair()">{% trans "Import Key Pair" %}</a>
       </div>
@@ -37,7 +37,7 @@
    <h3>Networking</h3>
    <div class="row">
     <div class="span4" ng-class="{'error': isOnError(forms.AccessAndSecurityForm.networks, forms.AccessAndSecurityForm)}">
-     <label for="networks" ng-if="!isOnError(forms.AccessAndSecurityForm.networks, forms.AccessAndSecurityForm)">{% trans "Networks" %}</label>
+     <label for="networks" ng-if="!isOnError(forms.AccessAndSecurityForm.networks, forms.AccessAndSecurityForm)">{% trans "Networks" %} </label>
      <label for="networks" ng-if="isOnError(forms.AccessAndSecurityForm.networks, forms.AccessAndSecurityForm)">{% trans "Networks required"  %}</label>
      <div data-selection data-elts="networks_list" data-id="networks" ng-model="launchInstance.networks" data-name="networks" class="control-group" data-not-blank>
       <div data-selection-element><a class="btn btn-primary"></a>{$ elt.name $} <em class="network_id pull-right">({$ elt.id $})</em></div>
@@ -45,7 +45,7 @@
     </div>
   </div>
   <div class="span4" ng-class="{'error': isOnError(forms.AccessAndSecurityForm.sec_groups, forms.AccessAndSecurityForm)}">
-   <label for="sec_groups" ng-if="!isOnError(forms.AccessAndSecurityForm.sec_groups, forms.AccessAndSecurityForm)">{% trans "Security Groups" %}</label>
+   <label for="sec_groups" ng-if="!isOnError(forms.AccessAndSecurityForm.sec_groups, forms.AccessAndSecurityForm)">{% trans "Security Groups" %} <a href="#" tooltip="{% trans "Launch instance in these security groups." %}">?</a></label>
    <label for="sec_groups" ng-if="isOnError(forms.AccessAndSecurityForm.sec_groups, forms.AccessAndSecurityForm)">{% trans "Security Groups required" %}</label>
    <div data-selection data-elts="sec_groups_list" data-id="sec_groups" ng-model="launchInstance.sec_groups" data-name="sec_groups" class="control-group" data-not-blank>
     <div data-selection-element><a class="btn btn-primary"></a>{$ elt $}</div>
