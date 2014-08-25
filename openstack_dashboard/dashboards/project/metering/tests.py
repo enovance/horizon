@@ -17,10 +17,10 @@ from django import http
 from mox import IsA  # noqa
 
 from openstack_dashboard import api
-from openstack_dashboard.dashboards.admin.metering import tabs
+from openstack_dashboard.dashboards.project.metering import tabs
 from openstack_dashboard.test import helpers as test
 
-INDEX_URL = reverse("horizon:admin:metering:index")
+INDEX_URL = reverse("horizon:project:metering:index")
 
 
 class MeteringViewTests(test.APITestCase, test.BaseAdminViewTests):
@@ -34,17 +34,16 @@ class MeteringViewTests(test.APITestCase, test.BaseAdminViewTests):
         self.mox.ReplayAll()
 
         # getting all resources and with statistics
-        res = self.client.get(reverse('horizon:admin:metering:index') +
-            "?tab=ceilometer_overview__stats")
-        self.assertTemplateUsed(res, 'admin/metering/index.html')
-        self.assertTemplateUsed(res, 'admin/metering/stats.html')
+        res = self.client.get(INDEX_URL + "?tab=ceilometer_overview__stats")
+        self.assertTemplateUsed(res, 'project/metering/index.html')
+        self.assertTemplateUsed(res, 'project/metering/stats.html')
 
     def test_report_page(self):
         # getting report page with no api access
-        res = self.client.get(reverse('horizon:admin:metering:index') +
-            "?tab=ceilometer_overview__daily_report")
-        self.assertTemplateUsed(res, 'admin/metering/index.html')
-        self.assertTemplateUsed(res, 'admin/metering/daily.html')
+        res = self.client.get(INDEX_URL +
+                              "?tab=ceilometer_overview__daily_report")
+        self.assertTemplateUsed(res, 'project/metering/index.html')
+        self.assertTemplateUsed(res, 'project/metering/daily.html')
 
     def _verify_series(self, series, value, date, expected_names):
         expected_names.reverse()
@@ -81,7 +80,7 @@ class MeteringViewTests(test.APITestCase, test.BaseAdminViewTests):
         self.mox.ReplayAll()
 
         # get all statistics of project aggregates
-        res = self.client.get(reverse('horizon:admin:metering:samples') +
+        res = self.client.get(reverse('horizon:project:metering:samples') +
             "?meter=memory&group_by=project&stats_attr=avg&date_options=7")
 
         self.assertEqual(res._headers['content-type'],
@@ -112,7 +111,7 @@ class MeteringViewTests(test.APITestCase, test.BaseAdminViewTests):
         self.mox.ReplayAll()
 
         # get all statistics of project aggregates
-        res = self.client.get(reverse('horizon:admin:metering:samples') +
+        res = self.client.get(reverse('horizon:project:metering:samples') +
             "?meter=memory&group_by=project&stats_attr=max&date_options=7")
 
         self.assertEqual(res._headers['content-type'],
@@ -141,7 +140,7 @@ class MeteringViewTests(test.APITestCase, test.BaseAdminViewTests):
 
         # getting all resources and with statistics, I have only
         # 'storage.objects' defined in test data
-        res = self.client.get(reverse('horizon:admin:metering:samples') +
+        res = self.client.get(reverse('horizon:project:metering:samples') +
             "?meter=storage.objects&stats_attr=avg&date_options=7")
 
         self.assertEqual(res._headers['content-type'],
@@ -184,10 +183,10 @@ class MeteringViewTests(test.APITestCase, test.BaseAdminViewTests):
         self.mox.ReplayAll()
 
         # generate report with mock data
-        res = self.client.post(reverse('horizon:admin:metering:report'),
+        res = self.client.post(reverse('horizon:project:metering:report'),
                                data={"date_options": "7"})
 
-        self.assertTemplateUsed(res, 'admin/metering/report.html')
+        self.assertTemplateUsed(res, 'project/metering/report.html')
 
 
 class MeteringStatsTabTests(test.APITestCase):

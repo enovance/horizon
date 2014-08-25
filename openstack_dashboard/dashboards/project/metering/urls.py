@@ -12,16 +12,12 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from django.utils.translation import ugettext_lazy as _  # noqa
+from django.conf.urls import patterns  # noqa
+from django.conf.urls import url  # noqa
 
-import horizon
-from openstack_dashboard.dashboards.admin import dashboard
+from openstack_dashboard.dashboards.project.metering import views
 
-
-class Metering(horizon.Panel):
-    name = _("Resource Usage")
-    slug = 'metering'
-    permissions = ('openstack.services.metering', 'openstack.roles.admin', )
-
-
-dashboard.Admin.register(Metering)
+urlpatterns = patterns('openstack_dashboard.dashboards.project.metering.views',
+    url(r'^$', views.IndexView.as_view(), name='index'),
+    url(r'^samples$', views.SamplesView.as_view(), name='samples'),
+    url(r'^report$', views.ReportView.as_view(), name='report'))
