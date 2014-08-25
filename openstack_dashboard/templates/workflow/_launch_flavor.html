@@ -1,38 +1,43 @@
 {% load i18n %}
 <div step data-active="tabs.flavor.active" select="tabs.bootVolume.validate()">
-  <div step-heading ng-class="{done: !tabs.flavor.active && tabs.flavor.valid}" class="heading">
-    {% trans "Step" %} {$ 2 + !tabs.bootVolume.disabled $} - {% trans "Flavor" %}
-  </div>
-  <div ng-form="forms.FlavorForm" class="row-fluid" ng-controller="FlavorCtrl" ng-if="tabs.flavor.active">
-    <table class="table table-striped span8" ng-model="launchInstance.flavor" name="flavor" required data-source-select>
-      <thead><tr>
-        <th class="span2">{% trans "Name" %}</th>
-        <th class="span2">{% trans "VCPUs" %}</th>
-        <th class="span2">{% trans "Root" %} / Ephemeral</th>
-        <th class="span2">{% trans "RAM" %}</th>
-        <th class="span2"></th>
-      </tr></thead>
-      <tbody>
-      <tr ng-repeat="f in flavors" ng-class="{active: launchInstance.flavor === f}">
-        <td>{$ f.name $}</td>
-        <td>{$ f.vcpus $}</td>
-        <td>{$ f.disk $} GB / {$ f.ephemeral $} GB</td>
-        <td>{$ f.ram $}</td>
-        <td>
-          <a href="#" ng-class="{'btn-primary': launchInstance.flavor !== f}" 
-            class="btn" 
-            data-source-option="f"
-            ng-click="wizard.next()">
-            {% trans "Select" %}»
-          </a>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-
-    <div class="span4">
-      <h3>{% trans "Step" %} {$ 2 + !tabs.bootVolume.disabled $} - {% trans "Flavor" %}</h3>
-      <p>{% blocktrans %}An instance can be launched with varying types of attached storage. You may select from those options here.{% endblocktrans %}</p>
+    <div step-heading ng-class="{done: !tabs.flavor.active && tabs.flavor.valid}" class="heading">
+        {% trans "Step" %} {$ 2 + !tabs.bootVolume.disabled $} - {% trans "Flavor" %}
     </div>
-  </div>
+    <div ng-form="forms.FlavorForm" class="row-fluid" ng-controller="FlavorCtrl" ng-if="tabs.flavor.active">
+        <table class="table table-striped span8" ng-model="launchInstance.flavor" name="flavor" required data-source-select>
+            <thead><tr>
+                <th class="span2">{% trans "Name" %}</th>
+                <th class="span2">{% trans "VCPUs" %}</th>
+                <th class="span2">{% trans "Root" %} / Ephemeral</th>
+                <th class="span2">{% trans "RAM" %}</th>
+                <th class="span2"></th>
+            </tr></thead>
+            <tbody>
+            <tr ng-repeat="f in flavors" ng-class="{active: launchInstance.flavor === f}" ng-mouseenter="displayFlavor(f)">
+                <td>{$ f.name $}</td>
+                <td>{$ f.vcpus $}</td>
+                <td>{$ f.disk $} GB / {$ f.ephemeral $} GB</td>
+                <td>{$ f.ram $}</td>
+                <td>
+                    <a href="#" ng-class="{'btn-primary': launchInstance.flavor !== f}"
+                       class="btn"
+                       data-source-option="f"
+                       ng-click="wizard.next()">
+                        {% trans "Select" %}»
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="span4">
+            <h3>{% trans "Step" %} {$ 2 + !tabs.bootVolume.disabled $} - {% trans "Flavor" %}</h3>
+            <p>{% blocktrans %}An instance can be launched with varying types of attached storage. You may select from those options here.{% endblocktrans %}</p>
+            <div hz-flavor-details></div>
+            <div data-hz-quota
+                 data-vcpus-used="{$ vcpusUsed $}" data-vcpus-quota="{$ vcpusQuota $}"
+                 data-ram-used="{$ ramUsed $}" data-ram-quota="{$ ramQuota $}">
+            </div>
+        </div>
+    </div>
 </div>

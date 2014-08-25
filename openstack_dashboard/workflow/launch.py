@@ -55,6 +55,7 @@ class LaunchInstanceView(generic.View):
                       api.nova.availability_zone_list(self.request)],
             'flavors': [flavor.to_dict() for flavor in
                         api.nova.flavor_list(self.request)],
+            'usages': api.nova.tenant_absolute_limits(self.request),
             'access_security': {
                 'key_pairs': [
                     dict([('id', keypair.id), ('name', keypair.name)])

@@ -58,8 +58,7 @@
       }
     };
   }
-  angular.module('hz.utils.hzUtils', ['hz.conf'])
-    .service('hzUtils', ['hzConfig', '$log', '$rootScope', '$compile', utils]);
+
 
   angular.module('hz.utils.JSONCache', [])
     .provider('JSONCache', function () {
@@ -84,5 +83,17 @@
         };
       }]);
 
-  angular.module('hz.utils', ['hz.utils.hzUtils', 'hz.utils.JSONCache']);
+
+  angular.module('hz.utils', ['hz.utils.JSONCache', 'hz.conf'])
+    .service('hzUtils', ['hzConfig', '$log', '$rootScope', '$compile', utils])
+    .directive('hzTemplate', ['$templateCache', function ($templateCache) {
+       return function(scope, element, attrs) {
+         $templateCache.put(attrs.hzTemplate, element.html());
+      };
+    }])
+    .filter('humanize', ['hzUtils', function (hzUtils) {
+      return function (input) {
+        return input && hzUtils.humanizeNumbers(input);
+      }
+    }]);
 }());

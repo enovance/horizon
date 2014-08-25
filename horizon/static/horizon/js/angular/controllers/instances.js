@@ -318,8 +318,20 @@
         $scope.launchInstance.device_name = 'vda';
       }],
 
-      FlavorCtrl: ['$scope', function ($scope) {
+      FlavorCtrl: ['$scope', 'hzQuota', function ($scope, hzQuota) {
         $scope.flavors = $scope.response.flavors.sort(sort_flavors);
+        angular.forEach($scope.flavors, function (flavor) {
+          hzQuota.flavors[flavor.id] = flavor;
+        });
+        hzQuota.flavor = $scope.flavors[0].id;
+        $scope.vcpusUsed = $scope.response.usages.totalCoresUsed;
+        $scope.vcpusQuota = $scope.response.usages.maxTotalCores;
+        $scope.ramUsed = $scope.response.usages.totalRAMUsed;
+        $scope.ramQuota = $scope.response.usages.maxTotalRAMSize
+
+        $scope.displayFlavor = function (f) {
+          hzQuota.flavor = f.id;
+        };
       }],
 
 
@@ -359,15 +371,11 @@
        AdvancedOptionCtrl: ['$scope', function ($scope) {
       }]
     })
-
-
-    .config(['$filterProvider', function ($filterProvider) {
-      $filterProvider.register('name', function () {
-        return function (obj) {
-          return obj.name || obj.display_name || 'Name could not be retrieved';
-        };
-      });
-    }])
+    .filter('name', function () {
+      return function (obj) {
+        return obj.name || obj.display_name || 'Name could not be retrieved';
+      };
+    })
     .constant('buttonConfig', {
       activeClass: 'btn-primary'
     });

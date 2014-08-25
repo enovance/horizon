@@ -1,16 +1,17 @@
 /*global angular, horizon*/
 var horizonApp = angular.module(
-    'hz',
-    ['hz.conf',
-      'hz.utils',
-      'hz.messages',
-      'hz.keypair',
-      'ui.bootstrap',
-      'ngAnimate',
-      'ngSanitize',
-      'ngCookies',
-      'ui.widget.wizard']
-  ).config(['$interpolateProvider', '$httpProvider',
+  'hz',
+  ['hz.conf',
+    'hz.utils',
+    'hz.messages',
+    'hz.keypair',
+    'hz.quota',
+    'ui.bootstrap',
+    'ngAnimate',
+    'ngSanitize',
+    'ngCookies',
+    'ui.widget.wizard']
+).config(['$interpolateProvider', '$httpProvider',
     function ($interpolateProvider, $httpProvider) {
       $interpolateProvider.startSymbol('{$');
       $interpolateProvider.endSymbol('$}');
