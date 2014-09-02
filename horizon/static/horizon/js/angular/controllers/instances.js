@@ -338,9 +338,20 @@
       AccessAndSecurityCtrl: ['$scope', '$modalStack', '$http', 'keypairCreate', 'keypairImport', 'hzMessages', 
       function ($scope, $modalStack, $http, keypairCreate, keypairImport, hzMessages) {
         $scope.key_pairs = $scope.response.access_security.key_pairs;
-
         $scope.sec_groups_list = $scope.response.access_security.security_groups;
         $scope.networks_list = $scope.response.access_security.available_networks;
+
+        if ($scope.key_pairs.length == 1) {
+          $scope.launchInstance.key_pair_id = $scope.key_pairs[0].name;
+        }
+        if ($scope.sec_groups_list.length == 1) {
+          $scope.launchInstance.sec_groups = [$scope.sec_groups_list[0]];
+          $scope.sec_groups_list = [];
+        }
+        if ($scope.networks_list.length == 1) {
+          $scope.launchInstance.networks = [$scope.networks_list[0]];
+          $scope.networks_list = [];
+        } 
 
         function keypairHandle (create) {
           $modalStack.getTop().value.modalDomEl.addClass('ng-hide');
