@@ -15,13 +15,13 @@
       </div>
 
       <div class="control-group">
-       <div class="row"> 
+       <div class="row">
          <div class="span2">
           <label for="admin_pass">{% trans "Admin Password:" %}</label>
           <input id="admin_pass" class="span2" type="password" name="admin_pass" ng-model="launchInstance.admin_pass" >
         </div>
         <div class="span2">
-         <div ng-class="{'error': forms.AccessAndSecurityForm.confirm_admin_pass.$invalid}">	
+         <div ng-class="{'error': forms.AccessAndSecurityForm.confirm_admin_pass.$invalid}">
            <label for="confirm_admin_pass" ng-if="forms.AccessAndSecurityForm.confirm_admin_pass.$valid ">{% trans "Confirm Password:" %}</label>
            <label for="confirm_admin_pass" ng-if="forms.AccessAndSecurityForm.confirm_admin_pass.$error.identity">{% trans "Admin Pass does not correspond:" %}</label>
            <input id="confirm_admin_pass" class="span2" type="password" ng-model="launchInstance.confirm_admin_pass" data-identity="launchInstance.admin_pass" name="confirm_admin_pass">
@@ -40,7 +40,7 @@
      <label for="networks" ng-if="!isOnError(forms.AccessAndSecurityForm.networks, forms.AccessAndSecurityForm)">{% trans "Networks" %} </label>
      <label for="networks" ng-if="isOnError(forms.AccessAndSecurityForm.networks, forms.AccessAndSecurityForm)">{% trans "Networks required"  %}</label>
      <div data-selection data-elts="networks_list" data-id="networks" ng-model="launchInstance.networks" data-name="networks" class="control-group" data-not-blank>
-      <div data-selection-element><a class="btn btn-primary"></a>{$ elt.name $} <em class="network_id pull-right">({$ elt.id $})</em></div>
+      <div data-selection-element><a class="btn btn-primary pull-right"></a><div>{$ elt.name $} <em class="network_id">({$ elt.id $})</em></div></div>
       <div data-selection-help><div class="alert alert-info">Please add a network from the list below.</div></div>
     </div>
   </div>
@@ -48,7 +48,7 @@
    <label for="sec_groups" ng-if="!isOnError(forms.AccessAndSecurityForm.sec_groups, forms.AccessAndSecurityForm)">{% trans "Security Groups" %} <a href="#" tooltip="{% trans "Launch instance in these security groups." %}">?</a></label>
    <label for="sec_groups" ng-if="isOnError(forms.AccessAndSecurityForm.sec_groups, forms.AccessAndSecurityForm)">{% trans "Security Groups required" %}</label>
    <div data-selection data-elts="sec_groups_list" data-id="sec_groups" ng-model="launchInstance.sec_groups" data-name="sec_groups" class="control-group" data-not-blank>
-    <div data-selection-element><a class="btn btn-primary"></a>{$ elt $}</div>
+    <div data-selection-element><a class="btn btn-primary pull-right"></a>{$ elt $}</div>
     <div data-selection-help><div class="alert alert-info" >Please add a security group from the list below.</div></div>
   </div>
 </div>
