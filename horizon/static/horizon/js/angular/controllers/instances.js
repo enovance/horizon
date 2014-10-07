@@ -127,6 +127,9 @@
             }, function (error) {
               if (error === 'cancel') {
                 hzMessages.alert(gettext('Launch instance has been aborted'), 'info');
+              } else if (error.status && error.status === 401) {
+                hzMessages.alert(gettext('You are not logged anymore, disconnecting'), 'error');
+                location.reload();
               } else {
                 hzMessages.alert(error.data, 'error');
               }
@@ -160,7 +163,7 @@
             function isControl (attr) {
               return attr.charAt(0) !== '$' && attr !== 'showError';
             }
-            
+
             var attr;
             for (attr in form) {
               if (form.hasOwnProperty(attr) && isControl(attr)) {
@@ -191,13 +194,13 @@
               disabled : true,
               validate : function () {
                 var form = $scope.forms.BootVolumeForm;
-                var tab = $scope.tabs.bootVolume;                
+                var tab = $scope.tabs.bootVolume;
 
                 if (form && hasControls(form)) {
                   tab.valid = form.$valid;
                 }
                 $scope.showError();
-                return tab.valid || tab.disabled && 
+                return tab.valid || tab.disabled &&
                   $scope.tabs.selectSource.validate();
               }
             },
@@ -206,13 +209,13 @@
               valid    : false,
               validate : function () {
                 var form = $scope.forms.FlavorForm;
-                var tab = $scope.tabs.flavor;                
+                var tab = $scope.tabs.flavor;
 
                 if (form && hasControls(form)) {
                   tab.valid = form.$valid;
                 }
                 $scope.showError();
-                return tab.valid && 
+                return tab.valid &&
                   $scope.tabs.bootVolume.validate();
               }
             },
@@ -226,7 +229,7 @@
                 if (form && hasControls(form)) {
                   tab.valid = form.$valid;
                 }
-                return tab.valid && 
+                return tab.valid &&
                   $scope.tabs.flavor.validate();
               }
             },
@@ -234,7 +237,7 @@
               active    : false
             }
           };
-            
+
           $scope.index = 0;
           $scope.wizard = wizard('w');
           $scope.forms = {};
@@ -272,7 +275,7 @@
           };
 
           $scope.isOnError = function (formField, form) {
-            return formField.$invalid && 
+            return formField.$invalid &&
             (formField.$dirty || form.showError);
           }
         }],
@@ -288,19 +291,19 @@
         $scope.max_count = $scope.response.count;
 
         $scope.elts = $scope.datas[$scope.type];
-        
+
 
 
         $scope.active = function (valueId) {
-          return $scope.SubSelectSourceForm.$valid && 
+          return $scope.SubSelectSourceForm.$valid &&
           $scope.launchInstance.source.id === valueId;
         };
 
         $scope.next = function () {
           var type = $scope.launchInstance.source.type;
-          $scope.launchInstance.volume_size = 
-            type === 'volumes' || type === 'volumes_snapshots' ? 
-            $scope.launchInstance.source.size : 
+          $scope.launchInstance.volume_size =
+            type === 'volumes' || type === 'volumes_snapshots' ?
+            $scope.launchInstance.source.size :
             1;
           $scope.wizard.next();
         };
@@ -335,7 +338,7 @@
       }],
 
 
-      AccessAndSecurityCtrl: ['$scope', '$modalStack', '$http', 'keypairCreate', 'keypairImport', 'hzMessages', 
+      AccessAndSecurityCtrl: ['$scope', '$modalStack', '$http', 'keypairCreate', 'keypairImport', 'hzMessages',
       function ($scope, $modalStack, $http, keypairCreate, keypairImport, hzMessages) {
         $scope.key_pairs = $scope.response.access_security.key_pairs;
         $scope.sec_groups_list = $scope.response.access_security.security_groups;
@@ -351,7 +354,7 @@
         if ($scope.networks_list.length == 1) {
           $scope.launchInstance.networks = [$scope.networks_list[0]];
           $scope.networks_list = [];
-        } 
+        }
 
         function keypairHandle (create) {
           $modalStack.getTop().value.modalDomEl.addClass('ng-hide');
@@ -363,7 +366,7 @@
               });
             }, function (error) {
               if (error) {
-                hzMessages.alert(error.data, 'error');  
+                hzMessages.alert(error.data, 'error');
               }
             })['finally'](function () {
               $modalStack.getTop().value.modalDomEl.removeClass('ng-hide');

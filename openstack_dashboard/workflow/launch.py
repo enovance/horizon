@@ -36,45 +36,50 @@ from openstack_dashboard.usage import quotas
 class LaunchInstanceView(generic.View):
 
     def get(self, request):
-        return http.HttpResponse(json.dumps({
-            'images': [
-                image.to_dict() for image in
-                api.glance.image_list_detailed(self.request)[0]
-            ],
-            'volumes': [volume.to_dict() for volume in
-                        api.cinder.volume_list(
-                            self.request,
-                            search_opts={'status': 'available'})],
-            'volumes_snapshots': [
-                volume.to_dict() for volume in
-                api.cinder.volume_snapshot_list(self.request)],
-            'tenant': self.request.user.tenant_id,
-            'count': quotas.tenant_quota_usages(self.request)
-            ['instances']['available'],
-            'zones': [zone.zoneName for zone in
-                      api.nova.availability_zone_list(self.request)],
-            'flavors': [flavor.to_dict() for flavor in
-                        api.nova.flavor_list(self.request)],
-            'usages': api.nova.tenant_absolute_limits(self.request),
-            'access_security': {
-                'key_pairs': [
-                    dict([('id', keypair.id), ('name', keypair.name)])
-                    for keypair in api.nova.keypair_list(self.request)],
-
-                'security_groups': [
-                    sg.name
-                    for sg in api.network.security_group_list(self.request)
+        try:
+            return http.HttpResponse(json.dumps({
+                'images': [
+                    image.to_dict() for image in
+                    api.glance.image_list_detailed(self.request)[0]
                 ],
-                'available_networks': [
-                    dict([
-                        ('id', network.id),
-                        ('name', network.name_or_id)
-                    ]) for network in api.neutron.network_list_for_tenant(
-                        request, self.request.user.tenant_id
-                    )
-                ]
-            }
-        }), "application/json")
+                'volumes': [volume.to_dict() for volume in
+                            api.cinder.volume_list(
+                                self.request,
+                                search_opts={'status': 'available'})],
+                'volumes_snapshots': [
+                    volume.to_dict() for volume in
+                    api.cinder.volume_snapshot_list(self.request)],
+                'tenant': self.request.user.tenant_id,
+                'count': quotas.tenant_quota_usages(self.request)
+                ['instances']['available'],
+                'zones': [zone.zoneName for zone in
+                          api.nova.availability_zone_list(self.request)],
+                'flavors': [flavor.to_dict() for flavor in
+                            api.nova.flavor_list(self.request)],
+                'usages': api.nova.tenant_absolute_limits(self.request),
+                'access_security': {
+                    'key_pairs': [
+                        dict([('id', keypair.id), ('name', keypair.name)])
+                        for keypair in api.nova.keypair_list(self.request)],
+
+                    'security_groups': [
+                        sg.name
+                        for sg in api.network.security_group_list(self.request)
+                    ],
+                    'available_networks': [
+                        dict([
+                            ('id', network.id),
+                            ('name', network.name_or_id)
+                        ]) for network in api.neutron.network_list_for_tenant(
+                            request, self.request.user.tenant_id
+                        )
+                    ]
+                }
+            }), "application/json")
+        except Exception as ce:
+            return http.HttpResponse(
+                status=ce.code, content=ce.message, content_type='text/plain')
+
 
     def post(self, request):
         data = json.loads(self.request.body)
