@@ -7,6 +7,25 @@
   @li-background: @body-bg;
   @border: @border-color;
   @em-color: @gray;
+
+  #selected_networks {
+    counter-reset:v1 0;
+    li {
+      margin-left: 35px;
+      padding-left: 15px;
+      div > div:before {
+        content:"NIC:"counter(v1);
+        counter-increment:v1;
+        margin: 0 5px 0 -45px;
+        background: #666;
+        color:#fff;
+        font-size: 90%;
+        padding: 0 5px;
+        .border-radius(2px);
+      }
+    }
+  }
+
   ul {
     min-height: 20px;
   }
@@ -55,100 +74,3 @@
     content: "-";
   }
 }
-
-
-// #networkListSortContainer {
-//   display: none;
-// }
-
-// .control-group ul.available {
-//   padding: 6px;
-//   min-height: 2em;
-//   width: auto !important;
-// }
-// .control-group ul.available li {
-//   width: 226px;
-//   list-style-type: none;
-//   margin: 6px auto;
-//   padding: 3px;
-//   background: #ffffff;
-//   border: 1px solid #aaaaaa;
-//   line-height: 18px;
-//   border-radius: 3px;
-//   cursor: move;
-//   padding-left: 23px;
-//   background: white url('/static/dashboard/img/drag.png?93ec7e23f795') no-repeat 11px 50%;
-// }
-// .control-group ul.available li em {
-//   font-size: 0.5em;
-//   line-height: 1em;
-//   color: #999999;
-//   font-style: normal;
-//   margin-left: 0.8em;
-// }
-// .control-group ul.available li i {
-//   margin-right: 5px;
-//   vertical-align: middle;
-// }
-// .control-group ul.available li a.btn {
-//   -webkit-box-sizing: border-box;
-//   -moz-box-sizing: border-box;
-//   box-sizing: border-box;
-//   font-size: 11px;
-//   line-height: 12px;
-//   padding: 2px 5px 3px;
-//   margin-right: 1px;
-//   width: 18px;
-//   text-align: center;
-//   right: 5px;
-//   vertical-align: middle;
-//   float: right;
-// }
-// .control-group ul.available li a.btn:before {
-//   content: "+";
-// }
-// .control-group ul.available li.ui-state-highlight {
-//   border: 1px dotted #cccccc;
-//   background: #efefef;
-//   height: 0.5em;
-// }
-// .control-group ul.available li:after {
-//   visibility: hidden;
-//   display: block;
-//   font-size: 0;
-//   content: " ";
-//   clear: both;
-//   height: 0;
-// }
-// .control-group ul.selected {
-//   margin-bottom: 1.5em;
-// }
-// .control-group ul.selected li {
-//   position: relative;
-// }
-// .control-group ul.selected li a.btn:before {
-//   content: "-";
-// }
-/**
-.control-group ul.selected li:before {
-  counter-increment: v1;
-  display: inline-block;
-  margin-right: 5px;
-  background: #666666;
-  color: #ffffff;
-  font-size: 90%;
-  padding: 0px 4px;
-  vertical-align: middle;
-  border-radius: 2px;
-  position: absolute;
-  left: -2em;
-}
-*/
-// .control-group ul.selected.dragging li:before {
-//   background-color: rgba(102,102,102,0.5);
-//   padding-right: 10px;
-// }
-// .control-group ul.selected.dragging li.ui-state-highlight:before {
-//   content: "";
-//   background: transparent;
-// }
