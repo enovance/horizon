@@ -111,7 +111,7 @@
   }
 
   angular.module('hz.messages', ['hz.conf', 'hz.utils'])
-    .service('hzMessages', ['hzConfig', '$rootScope', '$document', messages])
+    .factory('hzMessages', ['hzConfig', '$rootScope', '$document', messages])
     .controller('messagesCtrl',
       ['$scope', '$timeout', 'hzConfig', 'JSONCache', ctrl]);
 }());

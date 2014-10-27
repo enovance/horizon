@@ -65,8 +65,8 @@ angular
       } else {
         index = steps.indexOf(selectedStep);
       }
-
-      if(selectedStep.onSelect()) {
+      var r = selectedStep.onSelect();
+      if(!angular.isDefined(r) || r) {
         step.scope.active = false;
         step.scope.onDeselect();
 
@@ -137,7 +137,7 @@ angular
         if ( !attrs.select ) {
           scope.onSelect = function () { return true; };
         }
-        
+
         scope.disabled = false;
         if ( attrs.disabled ) {
           scope.$parent.$watch($parse(attrs.disabled), function(value) {

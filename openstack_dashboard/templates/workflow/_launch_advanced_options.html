@@ -1,9 +1,9 @@
 {% load i18n %}
-<div step data-active="tabs.advanced.active" data-select="tabs.flavor.validate()">
+<div step data-active="tabs.advanced.active" data-select="tabs.advanced.select()">
   <div data-step-heading class="heading">
     {% trans "Step 4 " %} - {% trans "Advanced Options" %}
   </div>
-  <div class="form-horizontal row-fluid" ng-form="forms.AdvancedOptionForm" ng-if="tabs.advanced.active">
+  <div class="form-horizontal row-fluid" ng-form="tabs.advanced.form" ng-if="tabs.advanced.active">
     <fieldset class="span9">
       <div>
         <h3>Advanced Options</h3>

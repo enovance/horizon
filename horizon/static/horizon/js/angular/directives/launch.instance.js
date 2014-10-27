@@ -150,7 +150,6 @@ angular.module('hz').directive({
     return {
       require: '^sourceSelect',
       link: function (scope, element, attrs, sourceSelectCtrl) {
-        // sourceSelectCtrl.modelCtrl.$setViewValue(sourceSelectCtrl.modelCtrl.$modelValue);
         var value = $parse(attrs.sourceOption)(scope);
         element.bind('click', function () {
           scope.$apply(function () {

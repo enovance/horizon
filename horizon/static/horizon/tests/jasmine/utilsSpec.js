@@ -5,7 +5,7 @@ describe('hz.utils', function () {
 
     beforeEach(function () {
       angular.mock.module('hz.conf');
-      angular.mock.module('hz.utils.hzUtils');
+      angular.mock.module('hz.utils');
     });
 
     describe('hzUtils', function () {

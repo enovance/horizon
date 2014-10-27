@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  
+
   function hzD3Bar(d3, config) {
     return {
       scope: {
@@ -71,7 +71,7 @@
 
   angular
     .module('hz.d3.lib', [])
-    .service('hzD3', ['$window', function ($window) {
+    .factory('hzD3', ['$window', function ($window) {
       return $window.d3;
     }]);
 

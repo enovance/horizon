@@ -85,7 +85,7 @@
 
 
   angular.module('hz.utils', ['hz.utils.JSONCache', 'hz.conf'])
-    .service('hzUtils', ['hzConfig', '$log', '$rootScope', '$compile', utils])
+    .factory('hzUtils', ['hzConfig', '$log', '$rootScope', '$compile', utils])
     .directive('hzTemplate', ['$templateCache', function ($templateCache) {
        return function(scope, element, attrs) {
          $templateCache.put(attrs.hzTemplate, element.html());

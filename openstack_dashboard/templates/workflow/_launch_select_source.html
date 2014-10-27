@@ -1,22 +1,26 @@
 {% load i18n %}
-<div step active="tabs.selectSource.active">
-  <div step-heading ng-class="{done: !tabs.selectSource.active && tabs.selectSource.valid}" class="heading">
+<div step active="steps.selectSource.active">
+  <div step-heading ng-class="{done: !steps.selectSource.active && steps.selectSource.valid}" class="heading">
     {% trans "Step 1 " %} - {% trans "Instance & Image" %}
   </div>
-  <div ng-if="tabs.selectSource.active">
-    <div class="form-horizontal row-fluid" ng-form="forms.SelectSourceForm" ng-controller="SelectSourceCtrl">
+  <div ng-if="steps.selectSource.active">
+    <div class="form-horizontal row-fluid" ng-form="steps.selectSource.form" ng-controller="SelectSourceCtrl">
       <fieldset class="span8">
 
         <div class="control-group" ng-form="SubSelectSourceForm">
           <div class="row">
-            <div class="span4" ng-class="{'error': isOnError(SubSelectSourceForm.name, forms.SelectSourceForm)}">
-              <label for="name" ng-if="!isOnError(SubSelectSourceForm.name, forms.SelectSourceForm)">{% trans "Instance Name" %}</label>
-              <label for="name" ng-if="isOnError(SubSelectSourceForm.name, forms.SelectSourceForm)">{% trans "Instance Name is required" %}</label>
+            <div class="span4" ng-class="{'error': isOnError(SubSelectSourceForm.name)}">
+              <label for="name" ng-if="!isOnError(SubSelectSourceForm.name)">
+                {% trans "Instance Name" %}
+              </label>
+              <label for="name" ng-if="isOnError(SubSelectSourceForm.name)">
+                {% trans "Instance Name is required" %}
+              </label>
 
               <input id="name" class="span4" type="text" name="name" ng-model="launchInstance.name" required maxlength="80" >
             </div>
-            <div class="span2" ng-class="{'error': isOnError(SubSelectSourceForm.count, forms.SelectSourceForm)}">
-              <label for="count" ng-if="!isOnError(SubSelectSourceForm.count, forms.SelectSourceForm)">{% trans "Instance Count" %} <a href="#" tooltip="{% trans "Number of instances to launch." %}">?</a></label>
+            <div class="span2" ng-class="{'error': isOnError(SubSelectSourceForm.count)}">
+              <label for="count" ng-if="!isOnError(SubSelectSourceForm.count)">{% trans "Instance Count" %} <a href="#" tooltip="{% trans "Number of instances to launch." %}">?</a></label>
               <label for="count" ng-if="SubSelectSourceForm.count.$error.required">{% trans "Count required" %}</label>
               <label for="count" ng-if="SubSelectSourceForm.count.$error.min">{% trans "Count minimum is 1" %}</label>
               <label for="count" ng-if="SubSelectSourceForm.count.$error.max">{% trans "Count maximum is" %} {$ max_count $}</label>

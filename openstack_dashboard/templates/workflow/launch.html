@@ -15,7 +15,7 @@
 
 <div class="modal-footer">
   <a class="btn btn-warning" ng-click="cancel()">{% trans "Cancel" %}</a>
-  <a class="btn btn-info span2" ng-click="showError() && tabs.access.validate() && launch()" data-ng-disabled="!tabs.access.validate()">{% trans "Launch" %}</a>
-  <a class="btn btn-primary" ng-click="wizard.next()" ng-hide="isLast()">{% trans "Next" %} &gt;&gt;</a>
-  <a class="btn btn-primary" ng-click="wizard.previous()" ng-hide="isFirst()">&lt;&lt; {% trans "Previous" %}</a>
+  <a class="btn btn-info span2" ng-click="launch()" data-ng-disabled="!steps.access.validate()">{% trans "Launch" %}</a>
+  <a class="btn btn-primary" ng-click="wizard.next()" ng-hide="currentStep === steps.advanced">{% trans "Next" %} &gt;&gt;</a>
+  <a class="btn btn-primary" ng-click="wizard.previous()" ng-hide="currentStep === steps.selectSource">&lt;&lt; {% trans "Previous" %}</a>
 </div>
