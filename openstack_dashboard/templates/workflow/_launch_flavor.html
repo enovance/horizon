@@ -13,7 +13,7 @@
                 <th class="span2"></th>
             </tr></thead>
             <tbody>
-            <tr ng-repeat="f in flavors" ng-class="{active: launchInstance.flavor === f}" ng-mouseenter="displayFlavor(f)">
+            <tr ng-repeat="f in flavors" ng-class="{active: launchInstance.flavor === f}" ng-mouseenter="displayFlavor(f)" data-source-option="f">
                 <td>{$ f.name $}</td>
                 <td>{$ f.vcpus $}</td>
                 <td>{$ f.disk $} GB / {$ f.ephemeral $} GB</td>
