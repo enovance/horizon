@@ -30,11 +30,37 @@
             </div>
           </div>
         </div>
-        <div class="control-group">
+        <div class="control-group" ng-form="BootVolumeForm">
           <label for="disk-type">{% trans "Operating System Disk Type" %}</label>
           <div class="btn-group" id="disk-type">
             <a href="#" class="btn btn-default" data-ng-model="launchInstance.type" data-btn-radio="'ephemeral'">{% trans "Ephemeral Root Disk" %}</a>
             <a href="#" class="btn btn-default" data-ng-model="launchInstance.type" data-btn-radio="'persistent'">{% trans "Persistent Root Disk" %}</a>
+          </div>
+          <div ng-show="launchInstance.showBootVolume">
+            <div class="control-group">
+              <div class="row">
+                <div class="span5" ng-class="{'error': BootVolumeForm.name.$invalid && !BootVolumeForm.name.$pristine}">
+                  <label for="device_name" ng-if="BootVolumeForm.name.$valid || BootVolumeForm.name.$pristine">{% trans "Volume Mount Point" %} <a href="#" tooltip="{% trans "Volume mount point (e.g. 'vda' mounts at '/dev/vda')." %}">?</a></label>
+                  <label for="device_name" ng-if="BootVolumeForm.name.$invalid && !BootVolumeForm.name.$pristine">{% trans "Volume Mount Point required" %}</label>
+                  <input id="device_name" class="span5" type="text" name="name" ng-model="launchInstance.device_name" maxlength="80" ng-required="launchInstance.showBootVolume">
+                </div>
+
+                <div class="span3" ng-class="{'error': BootVolumeForm.volume_size.$invalid && !BootVolumeForm.volume_size.$pristine}">
+                  <label for="volume_size" ng-if="BootVolumeForm.volume_size.$valid || BootVolumeForm.volume_size.$pristine">{% trans "Device Size (GB)" %} <a href="#" tooltip="{% trans "Volume size in gigabytes (integer value)." %}">?</a></label>
+                  <label for="volume_size" ng-if="BootVolumeForm.volume_size.$error.required">{% trans "Device Size required" %}</label>
+                  <label for="volume_size" ng-if="BootVolumeForm.volume_size.$error.min">{% trans "Device Size minimum is 1" %}</label>
+                  <input id="volume_size" class="span3" type="number" name="volume_size" ng-model="launchInstance.volume_size" ng-required="launchInstance.showBootVolume" min="1" ng-disabled="launchInstance.source_type === 'volumes' || launchInstance.source_type === 'volumes_snapshot' ">
+                </div>
+              </div>
+              <div class="row-fluid form-inline">
+                <hr class="span12">
+                <label for="delete" class="checkbox"><input id="delete" type="checkbox" name="delete" >{% trans "Delete on Terminate" %}</label>
+              </div>
+
+              <div class="alert alert-warning"><strong>{% trans "Warning!" %}</strong>{% trans "By checking this option, the operating system root disk will be deleted on instance termination." %}
+              </div>
+
+            </div>
           </div>
         </div>
         <div class="control-group">
