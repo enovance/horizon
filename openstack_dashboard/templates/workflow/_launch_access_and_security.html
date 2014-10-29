@@ -1,7 +1,7 @@
 {% load i18n %}
 <div step data-active="tabs.access.active" data-select="tabs.flavor.validate()" data-deselect="tabs.access.validate()">
   <div data-step-heading ng-class="{done: !tabs.access.active && tabs.access.valid}" class="heading">
-    {% trans "Step" %} {$ 3 + !tabs.bootVolume.disabled $} - {% trans "Access & Security" %}
+    {% trans "Step 3 " %} - {% trans "Access & Security" %}
   </div>
 
   <div class="form-horizontal row-fluid" ng-form="forms.AccessAndSecurityForm" ng-controller="AccessAndSecurityCtrl" ng-if="tabs.access.active">
@@ -55,7 +55,7 @@
 </div>
 </fieldset>
 <div class="span3">
-  <h3>{% trans "Step" %} {$ 3 + !tabs.bootVolume.disabled $} - {% trans "Access & Security" %}</h3>
+  <h3>{% trans "Step 3 " %} - {% trans "Access & Security" %}</h3>
   {% blocktrans %}Access & Security help{% endblocktrans %}
 </div>
 </div>

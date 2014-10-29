@@ -1,7 +1,7 @@
 {% load i18n %}
-<div step data-active="tabs.flavor.active" select="tabs.bootVolume.validate()">
+<div step data-active="tabs.flavor.active" select="tabs.selectSource.validate()">
     <div step-heading ng-class="{done: !tabs.flavor.active && tabs.flavor.valid}" class="heading">
-        {% trans "Step" %} {$ 2 + !tabs.bootVolume.disabled $} - {% trans "Flavor" %}
+        {% trans "Step 2 " %} - {% trans "Flavor" %}
     </div>
     <div ng-form="forms.FlavorForm" class="row-fluid" ng-controller="FlavorCtrl" ng-if="tabs.flavor.active">
         <table class="table table-striped span8" ng-model="launchInstance.flavor" name="flavor" required data-source-select>
@@ -31,7 +31,7 @@
         </table>
 
         <div class="span4">
-            <h3>{% trans "Step" %} {$ 2 + !tabs.bootVolume.disabled $} - {% trans "Flavor" %}</h3>
+            <h3>{% trans "Step 2 " %} - {% trans "Flavor" %}</h3>
             <p>{% blocktrans %}An instance can be launched with varying types of attached storage. You may select from those options here.{% endblocktrans %}</p>
             <div hz-flavor-details></div>
             <div data-hz-quota

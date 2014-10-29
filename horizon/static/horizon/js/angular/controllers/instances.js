@@ -188,22 +188,6 @@
                 return tab.valid;
               }
             },
-            bootVolume : {
-              active   : false,
-              valid    : false,
-              disabled : true,
-              validate : function () {
-                var form = $scope.forms.BootVolumeForm;
-                var tab = $scope.tabs.bootVolume;
-
-                if (form && hasControls(form)) {
-                  tab.valid = form.$valid;
-                }
-                $scope.showError();
-                return tab.valid || tab.disabled &&
-                  $scope.tabs.selectSource.validate();
-              }
-            },
             flavor : {
               active   : false,
               valid    : false,
@@ -216,7 +200,7 @@
                 }
                 $scope.showError();
                 return tab.valid &&
-                  $scope.tabs.bootVolume.validate();
+                  $scope.tabs.selectSource.validate();
               }
             },
             access : {
@@ -257,6 +241,7 @@
             $scope.launchInstance.source_id = $scope.launchInstance.source.id;
 
             delete $scope.launchInstance.source;
+            delete $scope.launchInstance.showBootVolume;
             $modalInstance.close(
               $http.post('/workflow/launch', angular.toJson($scope.launchInstance))
             );
@@ -310,15 +295,16 @@
 
         $scope.$watch('launchInstance.type', function () {
           $scope.elts = $scope.datas[$scope.launchInstance.type];
-          $scope.$parent.tabs.bootVolume.disabled =
-            !($scope.launchInstance.type === 'persistent');
+          $scope.launchInstance.showBootVolume = $scope.launchInstance.type === 'persistent';
+          if ($scope.launchInstance.showBootVolume) {
+            $scope.launchInstance.device_name = 'vda';
+            $scope.launchInstance.volume_size = 1;
+          } else {
+            delete $scope.launchInstance.device_name;
+            delete $scope.launchInstance.volume_size;
+          }
         });
 
-      }],
-
-
-      BootVolumeCtrl: ['$scope', function ($scope) {
-        $scope.launchInstance.device_name = 'vda';
       }],
 
       FlavorCtrl: ['$scope', 'hzQuota', function ($scope, hzQuota) {
