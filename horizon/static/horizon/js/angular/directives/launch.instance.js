@@ -15,10 +15,12 @@ angular.module('hz').directive({
       template:
         '<div id="{$ id $}" class="selection">\n' +
         '  <label for="selected_{$ id $}">Selected {$ label $}</label>\n' +
-        '  <div class="help" ng-if="!selected.length" data-selection-help-transclude></div>\n' +
-        '  <ul id="selected_{$ id $}" class="selected">\n' +
-        '    <li ng-repeat="s in selected"><div data-selection-element-transclude data-elt="s"></div></li>\n' +
-        '  </ul>\n' +
+        '  <div class="selected">\n' +
+        '    <div class="help" ng-if="!selected.length" data-selection-help-transclude></div>\n' +
+        '    <ul id="selected_{$ id $}">\n' +
+        '      <li ng-repeat="s in selected"><div data-selection-element-transclude data-elt="s"></div></li>\n' +
+        '    </ul>\n' +
+        '  </div>\n'+
         '  <label for="available_{$ id $}">Available {$ label $}</label>\n' +
         '  <ul id="available_{$ id $}" class="available">\n' +
         '    <li ng-repeat="a in availables" data-index="$index"><div data-selection-element-transclude data-elt="a"></div></li>\n' +

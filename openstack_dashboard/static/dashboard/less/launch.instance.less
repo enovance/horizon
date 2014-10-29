@@ -1,0 +1,26 @@
+
+.selection {
+  .help-selection {
+    background: transparent;
+    color: @brand-primary;
+    text-align: center;
+  }
+
+  #selected_networks {
+    counter-reset:v1 0;
+    li {
+      margin-left: 35px;
+      padding-left: 15px;
+      div > div:before {
+        content:"NIC:"counter(v1);
+        counter-increment:v1;
+        margin: 0 5px 0 -45px;
+        background: #666;
+        color:#fff;
+        font-size: 90%;
+        padding: 0 5px;
+        .border-radius(2px);
+      }
+    }
+  }
+}
