@@ -7,6 +7,26 @@
   @li-background: @body-bg;
   @border: @border-color;
   @em-color: @gray;
+  @selected-border: #cde;
+  @selected-background: #eefaff;
+  @available-border: #ddd;
+  @available-background: #eee;
+
+  .selected, .available {
+    border:1px solid;
+    padding: 6px;
+    margin-bottom: 1.5em;
+  }
+
+  .selected {
+    background: @selected-background;
+    border-color: @selected-border;
+  }
+
+  .available{
+    background: @available-background;
+    border-color: @available-border;
+  }
 
   #selected_networks {
     counter-reset:v1 0;

@@ -15,7 +15,6 @@ angular.module('hz').directive({
       template:
         '<div id="{$ id $}" class="selection">\n' +
         '  <label for="selected_{$ id $}">Selected {$ label $}</label>\n' +
-        '  <div class="help" ng-if="!selected.length" data-selection-help-transclude></div>\n' +
         '  <ul id="selected_{$ id $}" class="selected">\n' +
         '    <li ng-repeat="s in selected"><div data-selection-element-transclude data-elt="s"></div></li>\n' +
         '  </ul>\n' +
@@ -112,25 +111,6 @@ angular.module('hz').directive({
           scope.$apply(function () {
             selectionCtrl.toggle(scope.elt);
           });
-        });
-      }
-    }
-  }],
-  selectionHelp: [function () {
-    return {
-      require: '^selection',
-      transclude: true,
-      link: function (scope, element, attrs, selectionCtrl, transclude) {
-        selectionCtrl.$transcludeHelp = transclude;
-      }
-    }
-  }],
-  selectionHelpTransclude: [function () {
-    return {
-      require: '^selection',
-      link: function (scope, element, attrs, selectionCtrl) {
-        selectionCtrl.$transcludeHelp(function (clone) {
-          element.html(clone);
         });
       }
     }
