@@ -241,7 +241,6 @@
             $scope.launchInstance.source_id = $scope.launchInstance.source.id;
 
             delete $scope.launchInstance.source;
-            delete $scope.launchInstance.showBootVolume;
             $modalInstance.close(
               $http.post('/workflow/launch', angular.toJson($scope.launchInstance))
             );
@@ -293,10 +292,10 @@
           $scope.wizard.next();
         };
 
-        $scope.$watch('launchInstance.type', function () {
+        $scope.$watch('launchInstance.type', function (type) {
           $scope.elts = $scope.datas[$scope.launchInstance.type];
-          $scope.launchInstance.showBootVolume = $scope.launchInstance.type === 'persistent';
-          if ($scope.launchInstance.showBootVolume) {
+          $scope.showBootVolume = type === 'persistent';
+          if ($scope.showBootVolume) {
             $scope.launchInstance.device_name = 'vda';
             $scope.launchInstance.volume_size = 1;
           } else {
