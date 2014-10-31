@@ -5,7 +5,7 @@ describe('hz.utils', function () {
 
     beforeEach(function () {
       angular.mock.module('hz.conf');
-      angular.mock.module('hz.utils.hzUtils');
+      angular.mock.module('hz.utils');
     });
 
     describe('hzUtils', function () {
@@ -123,5 +123,31 @@ describe('hz.utils', function () {
         });
       });
     });
+
+    describe('hzTemplate', function () {
+      var $rootScope, $compile, $templateCache;
+
+      function createTemplate (templateStr, url) {
+        $compile(
+          ['<div hz-template="', url, '">', templateStr, '</div>'].join('')
+        )($rootScope);
+      }
+
+      beforeEach(angular.mock.inject(
+        function (_$rootScope_, _$compile_, _$templateCache_) {
+          $rootScope = _$rootScope_;
+          $compile = _$compile_;
+          $templateCache = _$templateCache_;
+        }));
+
+      it('should inject in the $templateCache everything contained in the ' +
+        'directive ', function () {
+        var elm = '<div>foo<div>bar</div></div>';
+        var url = 'some/url';
+
+        createTemplate(elm, url);
+        expect($templateCache.get('some/url')).toBe(elm);
+      });
+    })
   });
 });

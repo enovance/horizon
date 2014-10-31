@@ -1,0 +1,12 @@
+{% extends "horizon/client_side/angular_templates.html" %}
+
+{% block templateUrl %}template/messages/messages.html{% endblock %}
+
+{% block template %}
+<div data-alert data-ng-repeat="alert in alerts" data-type="{$ alert.type $}" data-close="closeAlert($index)" class="alert-block">
+    <p>
+    <strong>{$ alert.type_msg $}: </strong>
+    <span ng-bind-html="alert.msg"></span>
+    </p>
+</div>
+{%  endblock %}

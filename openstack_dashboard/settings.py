@@ -22,12 +22,16 @@ import sys
 import warnings
 
 from django.utils.translation import ugettext_lazy as _
+
 import xstatic.main
 import xstatic.pkg.angular
+import xstatic.pkg.angular_animate
+import xstatic.pkg.angular_bootstrap
 import xstatic.pkg.angular_cookies
 import xstatic.pkg.angular_mock
 import xstatic.pkg.bootstrap_datepicker
 import xstatic.pkg.bootstrap_scss
+import xstatic.pkg.angular_sanitize
 import xstatic.pkg.d3
 import xstatic.pkg.font_awesome
 import xstatic.pkg.hogan
@@ -77,8 +81,8 @@ HORIZON_CONFIG = {
     'ajax_queue_limit': 10,
     'auto_fade_alerts': {
         'delay': 3000,
-        'fade_duration': 1500,
-        'types': ['alert-success', 'alert-info']
+        'fade_duration': 1.5,
+        'types': ['success', 'info']
     },
     'help_url': "http://docs.openstack.org",
     'exceptions': {'recoverable': exceptions.RECOVERABLE,
@@ -153,6 +157,10 @@ STATICFILES_FINDERS = (
 STATICFILES_DIRS = [
     ('horizon/lib/angular',
         xstatic.main.XStatic(xstatic.pkg.angular).base_dir),
+    ('horizon/lib/angular', xstatic.main.XStatic(xstatic.pkg.angular_animate)
+        .base_dir),
+    ('horizon/lib/angular', xstatic.main.XStatic(xstatic.pkg.angular_bootstrap)
+        .base_dir),
     ('horizon/lib/angular',
         xstatic.main.XStatic(xstatic.pkg.angular_cookies).base_dir),
     ('horizon/lib/angular',
@@ -161,6 +169,8 @@ STATICFILES_DIRS = [
         xstatic.main.XStatic(xstatic.pkg.bootstrap_datepicker).base_dir),
     ('bootstrap',
         xstatic.main.XStatic(xstatic.pkg.bootstrap_scss).base_dir),
+    ('horizon/lib/angular', xstatic.main.XStatic(xstatic.pkg.angular_sanitize)
+        .base_dir),
     ('horizon/lib',
         xstatic.main.XStatic(xstatic.pkg.d3).base_dir),
     ('horizon/lib',

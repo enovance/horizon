@@ -1,7 +1,7 @@
 /*global angular*/
 (function () {
   'use strict';
-  function utils(hzConfig, $log, $rootScope, $compile) {
+  function utils (hzConfig, $log, $rootScope, $compile) {
     return {
       /*
        Use the log levels of http://docs.angularjs.org/api/ng.$log
@@ -45,6 +45,16 @@
 
         return string;
       },
+      find: function (array, obj) {
+        var i = 0;
+        var l = array.length;
+        for (i; i < l; i += 1 ) {
+          if (angular.equals(obj, array[i])) {
+            return i;
+          }
+        }
+        return -1;
+      },
       loadAngular: function (element) {
         try {
           $compile(element)($rootScope);
@@ -58,8 +68,12 @@
       }
     };
   }
-  angular.module('hz.utils.hzUtils', ['hz.conf'])
-    .service('hzUtils', ['hzConfig', '$log', '$rootScope', '$compile', utils]);
 
-  angular.module('hz.utils', ['hz.utils.hzUtils']);
+  angular.module('hz.utils', ['hz.conf'])
+    .service('hzUtils', ['hzConfig', '$log', '$rootScope', '$compile', utils])
+    .directive('hzTemplate', ['$templateCache', function ($templateCache) {
+       return function(scope, element, attrs) {
+         $templateCache.put(attrs.hzTemplate, element.html());
+      };
+    }]);
 }());

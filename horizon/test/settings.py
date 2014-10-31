@@ -24,10 +24,13 @@ import django
 from django.utils import html_parser
 import xstatic.main
 import xstatic.pkg.angular
+import xstatic.pkg.angular_animate
+import xstatic.pkg.angular_bootstrap
 import xstatic.pkg.angular_cookies
 import xstatic.pkg.angular_mock
 import xstatic.pkg.bootstrap_datepicker
 import xstatic.pkg.bootstrap_scss
+import xstatic.pkg.angular_sanitize
 import xstatic.pkg.d3
 import xstatic.pkg.font_awesome
 import xstatic.pkg.hogan
@@ -159,6 +162,10 @@ STATICFILES_FINDERS = (
 STATICFILES_DIRS = [
     ('horizon/lib/angular',
         xstatic.main.XStatic(xstatic.pkg.angular).base_dir),
+    ('horizon/lib/angular', xstatic.main.XStatic(xstatic.pkg.angular_animate)
+        .base_dir),
+    ('horizon/lib/angular', xstatic.main.XStatic(xstatic.pkg.angular_bootstrap)
+        .base_dir),
     ('horizon/lib/angular',
         xstatic.main.XStatic(xstatic.pkg.angular_cookies).base_dir),
     ('horizon/lib/angular',

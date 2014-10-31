@@ -27,8 +27,12 @@ horizon.instances = {
       },
       error: function(response) {
         if(via_user_submit) {
-          horizon.clearErrorMessages();
-          horizon.alert('error', gettext('There was a problem communicating with the server, please try again.'));
+          horizon.msg.clearErrorMessages();
+          horizon.msg.alert(
+            gettext('There was a problem communicating with the server, ' +
+              'please try again.'),
+            'error'
+          );
         }
       }
     });
@@ -260,14 +264,17 @@ horizon.addInitFunction(horizon.instances.init = function () {
         $("#id_private_key").val(event.target.result);
       };
       reader.onerror = function(event) {
-        horizon.clearErrorMessages();
-        horizon.alert('error', gettext('Could not read the file'));
+        horizon.msg.clearErrorMessages();
+        horizon.msg.alert(
+          gettext('Could not read the file.'),
+          'error'
+        );
       };
       reader.readAsText(file);
     }
     else {
-      horizon.clearErrorMessages();
-      horizon.alert('error', gettext('Could not decrypt the password'));
+      horizon.msg.clearErrorMessages();
+      horizon.msg.alert(gettext('Could not decrypt the password.'), 'error');
     }
   });
   /*
@@ -293,8 +300,9 @@ horizon.addInitFunction(horizon.instances.init = function () {
         evt.preventDefault();
         decrypted_password = horizon.instances.decrypt_password(encrypted_password, private_key);
         if (decrypted_password === false || decrypted_password === null) {
-          horizon.clearErrorMessages();
-          horizon.alert('error', gettext('Could not decrypt the password'));
+          horizon.msg.clearErrorMessages();
+          horizon.msg.alert(
+            gettext('Could not decrypt the password.'), 'error');
         }
         else {
           $("#id_decrypted_password").val(decrypted_password);

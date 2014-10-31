@@ -17,11 +17,10 @@ class ServicesTests(test.JasmineTests):
     sources = [
         'horizon/js/horizon.js',
         'horizon/js/angular/horizon.conf.js',
-        'horizon/js/angular/horizon.js',
         'horizon/js/angular/services/horizon.utils.js',
         'horizon/js/angular/controllers/metadata-widget-controller.js'
     ]
     specs = [
         'horizon/tests/jasmine/utilsSpec.js',
         'horizon/tests/jasmine/metadataWidgetControllerSpec.js'
-    ]
+        'horizon/tests/jasmine/messagesSpec.js']

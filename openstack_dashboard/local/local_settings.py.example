@@ -56,8 +56,8 @@ HORIZON_CONFIG = {
     'ajax_queue_limit': 10,
     'auto_fade_alerts': {
         'delay': 3000,
-        'fade_duration': 1500,
-        'types': ['alert-success', 'alert-info']
+        'fade_duration': 1.5,
+        'types': ['success', 'info']
     },
     'help_url': "http://docs.openstack.org",
     'exceptions': {'recoverable': exceptions.RECOVERABLE,

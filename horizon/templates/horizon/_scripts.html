@@ -14,12 +14,16 @@
     <script src='{{ STATIC_URL }}{{ file }}' type='text/javascript' charset='utf-8'></script>
 {% endfor %}
 <script src='{{ STATIC_URL }}horizon/lib/angular/angular-cookies.js' type='text/javascript' charset='utf-8'></script>
+<script src='{{ STATIC_URL }}horizon/lib/angular/angular-sanitize.js' type='text/javascript' charset='utf-8'></script>
+<script src='{{ STATIC_URL }}horizon/lib/angular/angular-animate.js' type='text/javascript' charset='utf-8'></script>
+<script src='{{ STATIC_URL }}horizon/lib/angular/angular-bootstrap.js' type='text/javascript' charset='utf-8'></script>
 
 <script src='{{ STATIC_URL }}horizon/js/angular/controllers/dummy.js' type='text/javascript' charset='utf-8'></script>
 <script src='{{ STATIC_URL }}horizon/js/angular/directives/forms.js' type='text/javascript' charset='utf-8'></script>
 <script src='{{ STATIC_URL }}horizon/js/angular/horizon.conf.js' type='text/javascript' charset='utf-8'></script>
 <script src='{{ STATIC_URL }}horizon/js/angular/services/horizon.utils.js' type='text/javascript' charset='utf-8'></script>
 <script src='{{ STATIC_URL }}horizon/js/angular/controllers/metadata-widget-controller.js'></script>
+<script src='{{ STATIC_URL }}horizon/js/angular/services/horizon.messages.js' type='text/javascript' charset='utf-8'></script>
 
 <script src='{{ STATIC_URL }}horizon/lib/jquery/jquery.quicksearch.js' type='text/javascript' charset="utf-8"></script>
 <script src="{{ STATIC_URL }}horizon/lib/jquery/jquery.tablesorter.js" type="text/javascript" charset="utf-8"></script>
@@ -40,7 +44,6 @@
 <script src='{{ STATIC_URL }}horizon/js/horizon.forms.js' type='text/javascript' charset='utf-8'></script>
 <script src='{{ STATIC_URL }}horizon/js/horizon.formset_table.js' type='text/javascript' charset='utf-8'></script>
 <script src='{{ STATIC_URL }}horizon/js/horizon.instances.js' type='text/javascript' charset='utf-8'></script>
-<script src='{{ STATIC_URL }}horizon/js/horizon.messages.js' type='text/javascript' charset='utf-8'></script>
 <script src='{{ STATIC_URL }}horizon/js/horizon.modals.js' type='text/javascript' charset='utf-8'></script>
 <script src='{{ STATIC_URL }}horizon/js/horizon.quota.js' type='text/javascript' charset='utf-8'></script>
 <script src='{{ STATIC_URL }}horizon/js/horizon.tables.js' type='text/javascript' charset='utf-8'></script>

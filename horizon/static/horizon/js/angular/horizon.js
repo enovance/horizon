@@ -1,4 +1,5 @@
-var horizon_dependencies = ['hz.conf', 'hz.utils', 'ngCookies'];
+var horizon_dependencies = ['hz.conf', 'hz.utils', 'hz.messages', 'ngCookies'];
+
 dependencies = horizon_dependencies.concat(angularModuleExtension);
 var horizonApp = angular.module('hz', dependencies)
   .config(['$interpolateProvider', '$httpProvider',
@@ -9,11 +10,12 @@ var horizonApp = angular.module('hz', dependencies)
       $httpProvider.defaults.xsrfCookieName = 'csrftoken';
       $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
     }])
-  .run(['hzConfig', 'hzUtils', '$cookieStore',
-    function (hzConfig, hzUtils, $cookieStore) {
+  .run(['hzConfig', 'hzUtils', 'hzMessages', '$cookieStore',
+    function (hzConfig, hzUtils, hzMessages, $cookieStore) {
       //expose the configuration for horizon legacy variable
       horizon.conf = hzConfig;
       horizon.utils = hzUtils;
+      horizon.msg = hzMessages;
       angular.extend(horizon.cookies = {}, $cookieStore);
       horizon.cookies.put = function (key, value) {
         //cookies are updated at the end of current $eval, so for the horizon

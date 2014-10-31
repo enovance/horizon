@@ -256,7 +256,11 @@ horizon.addInitFunction(horizon.modals.init = function() {
         } else {
           $('.ajax-modal, .dropdown-toggle').removeAttr("disabled");
           $form.closest(".modal").modal("hide");
-          horizon.alert("danger", gettext("There was an error submitting the form. Please try again."));
+          horizon.msg.alert(
+            gettext("There was an error submitting the form. " +
+              "Please try again."),
+            "danger"
+          );
         }
       }
     };
@@ -325,7 +329,10 @@ horizon.addInitFunction(horizon.modals.init = function() {
         else {
           if (!horizon.ajax.get_messages(jqXHR)) {
             // Generic error handler. Really generic.
-            horizon.alert("danger", gettext("An error occurred. Please try again later."));
+            horizon.msg.alert(
+              gettext("An error occurred. Please try again later."),
+              "danger"
+            );
           }
         }
       },
