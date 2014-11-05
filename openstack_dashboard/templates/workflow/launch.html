@@ -1,0 +1,21 @@
+{% load i18n %}
+<div class="modal-header">
+  <a class="close" ng-click="cancel()">×</a>
+  <h3>{% trans "Launch Instance"%}</h3>
+</div>
+<form class="modal-body" name="LaunchInstanceForm">
+<div wizard name="w">
+
+{% include 'workflow/_launch_select_source.html' %}
+{% include 'workflow/_launch_flavor.html' %}
+{% include 'workflow/_launch_access_and_security.html' %}
+{% include 'workflow/_launch_advanced_options.html' %}
+</div>
+</form>
+
+<div class="modal-footer">
+  <button class="btn btn-warning" ng-click="cancel()">{% trans "Cancel" %}</button>
+  <button class="btn btn-info" ng-click="launch()" data-ng-disabled="!steps.access.validate()">{% trans "Launch" %}</button>
+  <button class="btn btn-primary" ng-click="wizard.next()" ng-hide="currentStep === steps.advanced">{% trans "Next" %} &gt;&gt;</button>
+  <button class="btn btn-primary" ng-click="wizard.previous()" ng-hide="currentStep === steps.selectSource">&lt;&lt; {% trans "Previous" %}</button>
+</div>

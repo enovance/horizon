@@ -300,18 +300,15 @@ class ToggleSuspend(tables.BatchAction):
             self.current_past_action = SUSPEND
 
 
-class LaunchLink(tables.LinkAction):
+class LaunchAction(tables.BaseAction):
     name = "launch"
+    method = "GET"
     verbose_name = _("Launch Instance")
-    url = "horizon:project:instances:launch"
-    classes = ("ajax-modal", "btn-launch")
+    url = "#"
+    classes = ("btn-launch")
     icon = "cloud-upload"
     policy_rules = (("compute", "compute:create"),)
-    ajax = True
-
-    def __init__(self, attrs=None, **kwargs):
-        kwargs['preempt'] = True
-        super(LaunchLink, self).__init__(attrs, **kwargs)
+    attrs = {'data-ng-click': 'open()'}
 
     def allowed(self, request, datum):
         try:
@@ -923,7 +920,7 @@ class InstancesTable(tables.DataTable):
         verbose_name = _("Instances")
         status_columns = ["status", "task"]
         row_class = UpdateRow
-        table_actions = (LaunchLink, SoftRebootInstance, TerminateInstance,
+        table_actions = (LaunchAction, SoftRebootInstance, TerminateInstance,
                          InstancesFilterAction)
         row_actions = (StartInstance, ConfirmResize, RevertResize,
                        CreateSnapshot, SimpleAssociateIP, AssociateIP,

@@ -2932,7 +2932,7 @@ class InstanceTests(helpers.TestCase):
 
         self.mox.ReplayAll()
 
-        launch = tables.LaunchLink()
+        launch = tables.LaunchAction()
         url = launch.get_link_url()
         classes = list(launch.get_default_classes()) + list(launch.classes)
         link_name = "%s (%s)" % (unicode(launch.verbose_name),

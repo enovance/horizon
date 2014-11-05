@@ -35,9 +35,6 @@ def dispatcher(request, test_name):
             if cls_name == test_name:
                 template = cls.template_name
 
-                if not template:
-                    template = "horizon/jasmine/jasmine.html"
-
                 return django.shortcuts.render(
                     request,
                     template,

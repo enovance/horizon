@@ -1,0 +1,116 @@
+{% load i18n %}
+<div step active="steps.selectSource.active">
+  <div step-heading ng-class="{done: !steps.selectSource.active && steps.selectSource.valid}" class="heading">
+    {% trans "Step 1 " %} - {% trans "Instance & Image" %}
+  </div>
+  <div ng-if="steps.selectSource.active" class="row">
+
+    <div ng-form="steps.selectSource.form" ng-controller="SelectSourceCtrl" class="col-md-8">
+      <div ng-form="SubSelectSourceForm" class="row">
+        <div class="form-group col-md-5" ng-class="{'has-error': isOnError(SubSelectSourceForm.name)}">
+          <label for="name" class="control-label">
+            <span ng-if="!isOnError(SubSelectSourceForm.name)">{% trans "Instance Name" %}</span>
+            <span ng-if="isOnError(SubSelectSourceForm.name)">{% trans "Instance Name is required" %}</span>
+          </label>
+          <input id="name" class="form-control" type="text" name="name" ng-model="launchInstance.name" required maxlength="80" >
+        </div>
+
+        <div class="form-group col-md-3" ng-class="{'has-error': isOnError(SubSelectSourceForm.count)}">
+          <label for="count" class="control-label">
+            <span ng-if="!isOnError(SubSelectSourceForm.count)">{% trans "Instance Count" %}</span>
+            <span ng-if="SubSelectSourceForm.count.$error.min">{% trans "Count minimum is 1" %}</span>
+            <span ng-if="SubSelectSourceForm.count.$error.max">{% trans "Count maximum is" %} {$ max_count $}</span>
+            <span ng-if="SubSelectSourceForm.count.$error.required">{% trans "Count required" %}</span>
+
+            <span class="badge" tooltip="{% trans "Number of instances to launch." %}">?</span>
+          </label>
+
+          <input id="count" class="form-control" type="number" name="count" ng-model="launchInstance.count" required min="1" max="{$ max_count $}" >
+        </div>
+
+        <div class="form-group col-md-4">
+          <label for="availability_zone">{% trans "Availability Zone" %}</label>
+          <select id="availability_zone" class="form-control" name="availability_zone" ng-model="launchInstance.availability_zone" required ng-options="zone for zone in zones"></select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-4">
+          <label for="disk-type">{% trans "Operating System Disk Type" %}</label>
+          <div class="btn-group form-control-static" id="disk-type">
+            <a href="#" class="btn btn-default" data-ng-model="launchInstance.type" data-btn-radio="'ephemeral'">{% trans "Ephemeral Root Disk" %}</a>
+            <a href="#" class="btn btn-default" data-ng-model="launchInstance.type" data-btn-radio="'persistent'">{% trans "Persistent Root Disk" %}</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" ng-form="BootVolumeForm" ng-if="showBootVolume">
+        <div class="form-group col-md-5" ng-class="{'has-error': BootVolumeForm.name.$invalid && !BootVolumeForm.name.$pristine}">
+          <label class="control-label" for="device_name">
+            <span ng-if="BootVolumeForm.name.$valid || BootVolumeForm.name.$pristine">{% trans "Volume Mount Point" %}</span>
+            <span ng-if="BootVolumeForm.name.$invalid && !BootVolumeForm.name.$pristine">{% trans "Volume Mount Point required" %}</span>
+            <span class="badge" tooltip="{% trans "Volume mount point (e.g. 'vda' mounts at '/dev/vda')." %}">?</span>
+          </label>
+          <input id="device_name" class="form-control" type="text" name="name" ng-model="launchInstance.device_name" maxlength="80" ng-required="showBootVolume">
+        </div>
+
+        <div class="form-group col-md-3" ng-class="{'has-error': BootVolumeForm.volume_size.$invalid && !BootVolumeForm.volume_size.$pristine}">
+          <label for="volume_size" class="control-label">
+            <span ng-if="BootVolumeForm.volume_size.$valid || BootVolumeForm.volume_size.$pristine">{% trans "Device Size (GB)" %}</span>
+            <span ng-if="BootVolumeForm.volume_size.$error.required">{% trans "Device Size required" %}</span>
+            <span ng-if="BootVolumeForm.volume_size.$error.min">{% trans "Device Size minimum is 1" %}</span>
+
+            <span class="badge" tooltip="{% trans "Volume size in gigabytes (integer value)." %}">?</span></label>
+          </label>
+          <input id="volume_size" class="form-control" type="number" name="volume_size" ng-model="launchInstance.volume_size" ng-required="showBootVolume" min="1" ng-disabled="launchInstance.source_type === 'volumes' || launchInstance.source_type === 'volumes_snapshot' ">
+        </div>
+        <div class="col-md-12">
+          <hr>
+        </div>
+        <div class="checkbox col-md-2"><label for="delete"><input id="delete" type="checkbox" name="delete" >{% trans "Delete on Terminate" %}</label></div>
+        <div class="col-md-12">
+          <div class="alert alert-warning"><strong>{% trans "Warning!" %}</strong>{% trans "By checking this option, the operating system root disk will be deleted on instance termination." %}
+          </div>
+        </div>
+
+
+      </div>
+
+      <div class="form-group image-table">
+        <div data-tabset ng-model="launchInstance.source" not-blank data-source-select>
+          <div data-tab ng-repeat="elt in elts" >
+            <div data-tab-heading>
+              {$ elt.title $} <span class="badge">{$ elt.total $}</span>
+            </div>
+            <table class="table table-bordered source-table" ng-show="elt.total">
+              <tbody ng-repeat="(source_type_entitled, source_type) in elt.source_types" ng-init="odd = $odd">
+                <tr ng-repeat="value in source_type.values" ng-class="{odd: odd}">
+                  <td ng-if="$first" rowspan="{$ source_type.total $}" class="col-md-2">
+                    <h5>{$ source_type.title $}</h5>
+                    <h6>{$ source_type.legend $}</h6>
+                  </td>
+                  <td ng-class="{active: active(value.id)}">{$ value | name $}</td>
+                  <td class="col-md-2" ng-class="{active: active(value.id)}">
+                    <a href="#" class="btn" data-source-option="{type: source_type_entitled, id: value.id, size: value.size}" ng-class="{'btn-primary': !active(value.id), 'btn-default': active(value.id)}" data-ng-disabled="SubSelectSourceForm.$invalid" ng-click="next()">
+                      {% trans "Select" %} »
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <h4 ng-show="!elt.total">{$ elt.empty $}</h4>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-md-4">
+
+      <h3>{% trans "Step 1" %} - {% trans "Instance Details" %}</h3>
+      {% blocktrans %} Select source help{% endblocktrans %}
+    </div>
+  </div>
+</div>
+
+
+
+

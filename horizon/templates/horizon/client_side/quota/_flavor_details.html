@@ -1,0 +1,17 @@
+{% extends "horizon/client_side/angular_templates.html" %}
+{% load i18n %}
+{% block templateUrl %}template/quota/flavor-details.html{% endblock %}
+
+{% block template %}
+    <h4>Flavor Details</h4>
+    <table class="flavor_table table-striped">
+        <tbody>
+        <tr><td class="flavor_name">{% trans "Name" %}</td><td><span ng-bind="flavor.name"></span></td></tr>
+        <tr><td class="flavor_name">{% trans "VCPUs" %}</td><td><span ng-bind="flavor.vcpus"></span></td></tr>
+        <tr><td class="flavor_name">{% trans "Root Disk" %}</td><td><span ng-bind="flavor.disk"></span> {% trans "GB" %}</td></tr>
+        <tr><td class="flavor_name">{% trans "Ephemeral Disk" %}</td><td><span ng-bind="flavor.ephemeral"></span> {% trans "GB" %}</td></tr>
+        <tr><td class="flavor_name">{% trans "Total Disk" %}</td><td><span ng-bind="flavor.diskTotal"></span> {% trans "GB" %}</td></tr>
+        <tr><td class="flavor_name">{% trans "RAM" %}</td><td><span ng-bind="flavor.ram"></span> {% trans "MB" %}</td></tr>
+        </tbody>
+    </table>
+{%  endblock %}

@@ -1,0 +1,63 @@
+{% load i18n %}
+
+<div step data-active="steps.access.active" data-select="steps.access.select()" data-deselect="steps.access.validate()">
+  <div data-step-heading ng-class="{done: !steps.access.active && steps.access.valid}" class="heading">
+    {% trans "Step 3 " %} - {% trans "Access & Security" %}
+  </div>
+
+  <div class="row" ng-if="steps.access.active">
+    <div class="col-md-9" ng-form="steps.access.form" ng-controller="AccessAndSecurityCtrl">
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <h3>
+            {% trans "Keypair" %}
+            <span tooltip="{%  trans "Which key pair to use for authentication." %}" data-tooltip-placement="right" class="badge">?</span>
+          </h3>
+
+          <select id="key_pair_id" name="key_pair_id" data-ng-model="launchInstance.key_pair_id" ng-options="key_pair.id as key_pair.name for key_pair in key_pairs" class="form-control"></select>
+        </div>
+
+        <button class="btn btn-default" ng-click="createKeypair()">Create Key Pair
+        </button>
+
+        <button class="btn btn-default" ng-click="importKeypair()">Import Key Pair
+        </button>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <h3>Networking</h3>
+          <div ng-class="{'has-error': isOnError(steps.access.form.networks, steps.access.form)}">
+            <label for="networks" class="control-label">
+              <span ng-if="!isOnError(steps.access.form.networks, steps.access.form)">{% trans "Networks" %}</span>
+              <span ng-if="isOnError(steps.access.form.networks, steps.access.form)">{% trans "Networks required"  %}</span>
+            </label>
+            <div data-selection data-elts="networks_list" data-id="networks" ng-model="launchInstance.networks" data-name="networks" class="form-control-static" data-not-blank>
+              <div data-selection-element><a class="btn btn-primary pull-right"></a><div>{$ elt.name $} <em class="network_id">({$ elt.id $})</em></div></div>
+              <div data-selection-help><div class="help-selection">Please add a network from the list below.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <h3>Security Groups</h3>
+          <div ng-class="{'has-error': isOnError(steps.access.form.sec_groups, steps.access.form)}">
+            <label for="sec_groups" class="control-label">
+              <span ng-if="!isOnError(steps.access.form.sec_groups, steps.access.form)">{% trans "Security Groups" %}</span>
+              <span ng-if="isOnError(steps.access.form.sec_groups, steps.access.form)">{% trans "Security Groups required"  %}</span>
+            </label>
+            <div data-selection data-elts="sec_groups_list" data-id="sec_groups" ng-model="launchInstance.sec_groups" data-name="sec_groups" class="form-control-static" data-not-blank>
+              <div data-selection-element><a class="btn btn-primary pull-right"></a>{$ elt $}</div>
+              <div data-selection-help><div class="help-selection">Please add a security group from the list below.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <h3>{% trans "Step 3 " %} - {% trans "Access & Security" %}</h3>
+      {% blocktrans %}Access & Security help{% endblocktrans %}
+    </div>
+  </div>
+</div>

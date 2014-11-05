@@ -1,0 +1,76 @@
+/* Styling for draged network object */
+.modal-body fieldset .selection ul{
+  width: inherit;
+}
+
+.selection {
+  $li-background: $body-bg;
+  $border: $border-color;
+  $em-color: $gray;
+  $selected-border: #cde;
+  $selected-background: #eefaff;
+  $available-border: #ddd;
+  $available-background: #eee;
+
+  .selected, .available {
+    border:1px solid;
+    padding: 6px;
+    margin-bottom: 1.5em;
+  }
+  .selected {
+    background: $selected-background;
+    border-color: $selected-border;
+  }
+  .available{
+    background: $available-background;
+    border-color: $available-border;
+  }
+
+  ul {
+    min-height: 20px;
+  }
+
+  .help {
+    margin: 5px;
+  }
+
+  li {
+    list-style-type: none;
+    margin: 0 auto;
+    padding: 10px;
+    background: $li-background;
+    cursor: pointer;
+    border-radius: 3px;
+    border: 1px solid $border;
+    margin: 5px;
+
+    &.ui-state-highlight {
+      border: 1px dotted #cccccc;
+      background: #efefef;
+      height: 0.5em;
+    }
+
+    em {
+      font-size: 0.7em;
+      color: $em-color;
+      font-style: normal;
+      display: block;
+    }
+
+    a.btn {
+      .box-sizing(border-box);
+      font-size: 11px;
+      line-height: 12px;
+      padding: 2px 5px;
+      margin: 0 6px 1px 0;
+      width: 18px;
+    }
+  }
+  .available a.btn:before {
+    content: "+";
+  }
+
+  .selected a.btn:before {
+    content: "-";
+  }
+}

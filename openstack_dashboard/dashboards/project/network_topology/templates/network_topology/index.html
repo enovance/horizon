@@ -17,6 +17,7 @@
 {% include "project/network_topology/client_side/_balloon_device.html" %}
 {% include "project/network_topology/client_side/_balloon_port.html" %}
 
+<div ng-controller="networkTopologyCtrl">
 <div class="topologyNavi">
   <div class="toggleView btn-group" data-toggle="buttons-radio">
     <button type="button" class="btn small" data-value="small"><i class="icon-th"></i>{%trans "Small" %}</button>
@@ -25,7 +26,7 @@
 
   <div class="launchButtons">
   {% if launch_instance_allowed %}
-  <a href="{% url 'horizon:project:network_topology:launchinstance' %}" id="instances__action_launch" class="btn btn-default btn-sm btn-launch ajax-modal {% if instance_quota_exceeded %}disabled{% endif %}"><span class="glyphicon glyphicon-cloud-upload"></span> {% if instance_quota_exceeded %}{% trans "Launch Instance (Quota exceeded)"%}{% else %}{% trans "Launch Instance"%}{% endif %}</a>
+  <a href="#" id="instances__action_launch" class="btn btn-default btn-sm btn-launch {% if instance_quota_exceeded %}disabled{% endif %}" ng-click="launch()"><span class="glyphicon glyphicon-cloud-upload"></span> {% if instance_quota_exceeded %}{% trans "Launch Instance (Quota exceeded)"%}{% else %}{% trans "Launch Instance"%}{% endif %}</a>
   {% endif %}
   {% if create_network_allowed %}
       <a href="{% url 'horizon:project:network_topology:createnetwork' %}" id="networks__action_create" class="btn btn-default btn-sm ajax-modal {% if network_quota_exceeded %}disabled{% endif %}"><span class="glyphicon glyphicon-plus"></span> {% if network_quota_exceeded %}{% trans "Create Network (Quota exceeded)"%}{% else %}{% trans "Create Network"%}{% endif %}</a>
@@ -52,4 +53,5 @@
     });
   }
 </script>
+</div>
 {% endblock %}

@@ -1,0 +1,12 @@
+{% extends "horizon/client_side/angular_templates.html" %}
+{% load i18n %}
+
+{% block templateUrl %}template/quota/quota-bar.html{% endblock %}
+
+{% block template %}
+    <div class="quota_title clearfix">
+        <strong ng-bind="title"></strong>
+        <p>{% blocktrans %}{$ used|humanize $} of {$ limit|humanize $} Used{% endblocktrans %}</p>
+    </div>
+    <div data-hz-d3-bar data-limit="{$ limit $}" data-used="{$ used $}" data-added="added"></div>
+{%  endblock %}

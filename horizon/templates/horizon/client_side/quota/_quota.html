@@ -1,0 +1,15 @@
+{% extends "horizon/client_side/angular_templates.html" %}
+{% load i18n %}
+{% block templateUrl %}template/quota/quota.html{% endblock %}
+
+{% block template %}
+    <div class="quota-dynamic">
+        <h4>{% trans "Project Limits" %}</h4>
+        <div data-hz-quota-bar title="{% trans "Number of VCPUs" %}"
+             data-used="{$ vcpusUsed $}" data-limit="{$ vcpusQuota $}" data-added="vcpusAdded ">
+        </div>
+        <div data-hz-quota-bar title="{% trans "Total RAM" %}"
+             data-used="{$ ramUsed $}" data-limit="{$ ramQuota $}" data-added="ramAdded">
+        </div>
+    </div>
+{%  endblock %}

@@ -1,0 +1,89 @@
+.launch-instance {
+  $table-hover: #f5f5f5;
+
+
+  // bring back the initial behaviour in order to display information when
+  // disabled element are clicked
+  .btn {
+    &.disabled,
+    &[disabled],
+    fieldset[disabled] & {
+      pointer-events: auto;
+    }
+  }
+
+
+  tbody tr:hover td,
+  tbody tr:hover th {
+    background-color: $table-hover;
+    cursor: pointer;
+  }
+
+  tbody tr:hover td.active,
+  tbody tr td.active,
+  tbody tr.active td,
+  tbody tr.active:hover td
+  {
+    background-color: $brand-primary;
+    color: $body-bg;
+    border-left-color: $brand-primary;
+  }
+
+  .image-table {
+    .tab-content {
+      padding-top: 30px;
+      max-height: 300px;
+      min-height: 300px;
+      overflow-y: scroll;
+    }
+  }
+
+  .flavor-table {
+    margin-top: 20px;
+    max-height: 450px;
+    min-height: 450px;
+
+    table {
+      border: 1px solid $table-border-color;
+    }
+  }
+
+  .selection {
+    .help-selection {
+      background: transparent;
+      color: $brand-primary;
+      text-align: center;
+    }
+
+    #selected_networks {
+      counter-reset:v1 0;
+      li {
+        margin-left: 35px;
+        padding-left: 15px;
+        div > div:before {
+          content:"NIC:"counter(v1);
+          counter-increment:v1;
+          margin: 0 5px 0 -45px;
+          background: #666;
+          color:#fff;
+          font-size: 90%;
+          padding: 0 5px;
+          border-radius: 2px;
+        }
+      }
+    }
+  }
+
+  // Due to some issue with sass, we must use this syntax for content
+  #customization_script::-webkit-input-placeholder::before {
+    content: "#!/bin/bash\000A\000A echo \"This is optional\"";
+  }
+
+  #customization_script::-moz-placeholder::before {
+    content: "#!/bin/bash\000A\000A echo \"This is optional\"";
+  }
+
+  #customization_script:-ms-input-placeholder::before {
+    content: "#!/bin/bash\000A\000A echo \"This is optional\"";
+  }
+}

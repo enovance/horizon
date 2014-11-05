@@ -1,11 +1,13 @@
-var horizon_dependencies = ['hz.conf', 'hz.utils', 'hz.messages', 'ngCookies'];
+var horizon_dependencies = ['hz.conf', 'hz.utils', 'hz.messages', 'hz.keypair', 'hz.quota', 'ui.widget.wizard', 'ngCookies', 'ngSanitize', 'ui.bootstrap', 'ngAnimate'];
 
 dependencies = horizon_dependencies.concat(angularModuleExtension);
 var horizonApp = angular.module('hz', dependencies)
-  .config(['$interpolateProvider', '$httpProvider',
-    function ($interpolateProvider, $httpProvider) {
+  .config(['$interpolateProvider', '$httpProvider', '$animateProvider',
+    function ($interpolateProvider, $httpProvider, $animateProvider) {
+
       $interpolateProvider.startSymbol('{$');
       $interpolateProvider.endSymbol('$}');
+
       $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
       $httpProvider.defaults.xsrfCookieName = 'csrftoken';
       $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';

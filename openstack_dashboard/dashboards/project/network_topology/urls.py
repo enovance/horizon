@@ -31,8 +31,6 @@ urlpatterns = patterns(
     url(r'^router/(?P<router_id>[^/]+)/$', views.RouterDetailView.as_view(),
         name='detail'),
     url(r'^json$', views.JSONView.as_view(), name='json'),
-    url(r'^launchinstance$', views.NTLaunchInstanceView.as_view(),
-        name='launchinstance'),
     url(r'^createnetwork$', views.NTCreateNetworkView.as_view(),
         name='createnetwork'),
     url(r'^createrouter$', views.NTCreateRouterView.as_view(),

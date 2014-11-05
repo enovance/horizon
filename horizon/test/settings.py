@@ -25,6 +25,7 @@ from django.utils import html_parser
 import xstatic.main
 import xstatic.pkg.angular
 import xstatic.pkg.angular_animate
+import xstatic.pkg.angular_sanitize
 import xstatic.pkg.angular_bootstrap
 import xstatic.pkg.angular_cookies
 import xstatic.pkg.angular_mock
@@ -170,6 +171,8 @@ STATICFILES_DIRS = [
         xstatic.main.XStatic(xstatic.pkg.angular_cookies).base_dir),
     ('horizon/lib/angular',
         xstatic.main.XStatic(xstatic.pkg.angular_mock).base_dir),
+    ('horizon/lib/angular',
+        xstatic.main.XStatic(xstatic.pkg.angular_sanitize).base_dir),
     ('horizon/lib/bootstrap_datepicker',
         xstatic.main.XStatic(xstatic.pkg.bootstrap_datepicker).base_dir),
     ('bootstrap',
