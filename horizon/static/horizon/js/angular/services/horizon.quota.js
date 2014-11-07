@@ -11,18 +11,6 @@
       this.images = {};
     })
     .directive({
-      hzFlavorDetails: ['hzQuota', function (hzQuota) {
-        return {
-          scope: {},
-          templateUrl: 'template/quota/flavor-details.html',
-          link: function (scope) {
-            scope.quota = hzQuota;
-            scope.$watch('quota.flavor', function (flavorId) {
-              scope.flavor = hzQuota.flavors[flavorId];
-            });
-          }
-        }
-      }],
       hzQuota: ['hzQuota', function (hzQuota) {
         return {
           scope: {

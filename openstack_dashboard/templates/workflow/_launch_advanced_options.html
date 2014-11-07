@@ -6,11 +6,11 @@
   <div class="row" ng-if="tabs.advanced.active">
     <div ng-form="tabs.advanced.form" class="col-md-9">
       <div class="col-md-5 form-group" >
-        <label for="customization_script">{% trans "Post-creation Script" %} <span class="badge" tooltip="{% trans "A script or set of commands to be executed after the instance has been built (max 16kb)." %}">?</span>:</label>
+        <label for="customization_script">{% trans "Post-creation Script" %} <span class="badge" tooltip="{% trans "A script or set of commands to be executed after the instance has been built (max 16kb)." %}">?</span></label>
         <textarea id="customization_script" rows="10" data-ng-model="launchInstance.customization_script" name="customization_script" class="form-control" placeholder=" "></textarea>
       </div>
       <div class="col-md-5 form-group" >
-        <label for="disk_partition">{% trans "Disk Partition:" %}</label>
+        <label for="disk_partition">{% trans "Disk Partition" %}</label>
         <select id="disk_partition" data-ng-model="launchInstance.disk_partition" name="disk_partition" class="form-control">
           <option value="AUTO" selected>{% trans "Automatic" %}</option>
           <option value="MANUAL">{% trans "Manual" %}</option>

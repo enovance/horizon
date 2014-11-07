@@ -5,9 +5,10 @@
     </div>
     <div ng-form="steps.flavor.form" class="row" ng-controller="FlavorCtrl" ng-if="steps.flavor.active">
         <div class="col-md-8 row">
-            <div ng-if="steps.flavor.showError && !launchInstance.flavor" class="col-md-4 has-error">
+            <div  class="col-md-4" ng-class="{'has-error': steps.flavor.showError && !launchInstance.flavor}">
                 <label class="control-label">
-                {% trans "You need to select a flavor below" %}
+                    <span ng-if="steps.flavor.showError && !launchInstance.flavor">{% trans "You need to select a flavor below" %}</span>
+                    <span ng-if="!steps.flavor.showError || launchInstance.flavor">{% trans "Select a flavor below" %}</span>
                 </label>
             </div>
             <div class="col-md-12 flavor-table">
@@ -41,7 +42,6 @@
         <div class="col-md-4">
             <h3>{% trans "Step 2 " %} - {% trans "Flavor" %}</h3>
             <p>{% blocktrans %}An instance can be launched with varying types of attached storage. You may select from those options here.{% endblocktrans %}</p>
-            <div hz-flavor-details></div>
             <div data-hz-quota
                  data-vcpus-used="{$ vcpusUsed $}" data-vcpus-quota="{$ vcpusQuota $}"
                  data-ram-used="{$ ramUsed $}" data-ram-quota="{$ ramQuota $}">
