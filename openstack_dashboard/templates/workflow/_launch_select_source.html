@@ -82,34 +82,17 @@
           </div>
         </div>
       </div>
-
-      <div class="form-group image-table">
-        <div data-tabset ng-model="launchInstance.source" not-blank data-source-select>
-          <div data-tab ng-repeat="elt in elts" >
-            <div data-tab-heading>
-              {$ elt.title $} <span class="badge">{$ elt.total $}</span>
-            </div>
-            <table class="table table-bordered source-table" ng-show="elt.total">
-              <tbody ng-repeat="(source_type_entitled, source_type) in elt.source_types" ng-init="odd = $odd">
-                <tr ng-repeat="value in source_type.values" ng-class="{odd: odd}">
-                  <td ng-if="$first" rowspan="{$ source_type.total $}" class="col-md-2">
-                    <h5>{$ source_type.title $}</h5>
-                    <h6>{$ source_type.legend $}</h6>
-                  </td>
-                  <td ng-class="{active: active(value.id)}">{$ value | name $}</td>
-                  <td class="col-md-2" ng-class="{active: active(value.id)}">
-                    <a href="#" class="btn" data-source-option="{type: source_type_entitled, id: value.id, size: value.size}" ng-class="{'btn-primary': !active(value.id), 'btn-default': active(value.id)}" data-ng-disabled="SubSelectSourceForm.$invalid" ng-click="next()">
-                      {% trans "Select" %} »
-                    </a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <h4 ng-show="!elt.total">{$ elt.empty $}</h4>
-          </div>
-        </div>
-      </div>
-
+      <div ng-form="BootSourceForm" ng-class="{'has-error':isOnError(BootSourceForm.source)}">
+        <div class="form-group col-md-4">
+          <label for="image_options">{% trans "Instance Boot Source" %}</label>
+          <select id="image_options" class="form-control" name="image_options" ng-model="image_option" required ng-options="option.id as option.label for option in options"></select>
+          <label for="source" class="control-label">
+          <span ng-if="!isOnError(BootSourceForm.source)">{% trans "Select Image" %}</span>
+          <span ng-if="isOnError(BootSourceForm.source)">{% trans "Image name is required" %}</span>
+          </label>
+          <select id="source" class="form-control" name="source" ng-model="image_obj" required ng-options="elt.name for elt in elts"></select>
+       </div>
+     </div>
     </div>
     <div class="col-md-4">
 

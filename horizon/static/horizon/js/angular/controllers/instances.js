@@ -181,6 +181,25 @@ horizonApp
 
         var steps = $scope.steps = {};
         var stepFactory = $injector.get('stepFactory');
+        var image_list = [];
+        var snapshot_list = [];
+        $scope.image_options = {ephemeral:[{id:'images', label:'Images'},
+                                           {id:'instances_snapshots', label:'Snapshots'},
+                                           {id:'volumes', label:'Volumes'}],
+                                persistent:[{id:'images', label:'Images'},
+                                            {id:'volumes_snapshots', label:'Volume Snapshots'}]};
+        for (i=0; i< $scope.response.images.length; i++) {
+          if ($scope.response.images[i].properties.image_type === "snapshot") {
+            snapshot_list.push($scope.response.images[i]);
+          } else {
+            image_list.push($scope.response.images[i]);
+          }
+        }
+        $scope.source_category = {ephemeral:{images:image_list,
+                                             snapshots:snapshot_list,
+                                             volumes:$scope.response.volumes},
+                                 persistent:{images:image_list,
+                                             volumes_snapshots:$scope.response.volumes_snapshots}};
 
         function select(validateFn) {
           return function() {
@@ -277,7 +296,6 @@ horizonApp
       function($scope) {
         $scope.zones = $scope.response.zones;
         $scope.max_count = $scope.response.count;
-        $scope.elts = $scope.datas[$scope.type];
 
         $scope.active = function(valueId) {
           return $scope.SubSelectSourceForm.$valid &&
@@ -294,15 +312,42 @@ horizonApp
         };
 
         $scope.$watch('launchInstance.type', function (type) {
-          $scope.elts = $scope.datas[$scope.launchInstance.type];
           $scope.showBootVolume = type === 'persistent';
           if ($scope.showBootVolume) {
             $scope.launchInstance.device_name = 'vda';
             $scope.launchInstance.volume_size = 1;
+            $scope.options = $scope.image_options.persistent
           } else {
             delete $scope.launchInstance.device_name;
             delete $scope.launchInstance.volume_size;
+            $scope.options = $scope.image_options.ephemeral
           }
+          $scope.image_option = $scope.options[0].id;
+        });
+
+        $scope.$watch('image_option', function (opt) {
+          $scope.launchInstance.source.type = opt;
+          if ($scope.launchInstance.type === 'persistent'){
+            if (opt === 'images') {
+              $scope.elts = $scope.source_category['persistent']['images'];
+            } else if (opt === 'volumes_snapshots') {
+              $scope.elts = $scope.source_category['persistent']['volumes_snapshots'];
+            }
+          } else {
+            if (opt === 'images') {
+              $scope.elts = $scope.source_category['ephemeral']['images'];
+            } else if (opt === 'instances_snapshots') {
+              $scope.elts = $scope.source_category['ephemeral']['snapshots'];
+            } else if (opt === 'volumes') {
+              $scope.elts = $scope.source_category['ephemeral']['volumes'];
+            }
+          }
+          $scope.image_obj = $scope.elts[0];
+        });
+
+        $scope.$watch('image_obj', function (obj) {
+          $scope.launchInstance.source.id = obj.id;
+          $scope.launchInstance.source.size = obj.size;
         });
       }
     ],
