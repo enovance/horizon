@@ -3,97 +3,18 @@
 
 horizonApp
   .factory('launchHelper', function() {
-    function imageCategories(images, volumes, tenant_id) {
-      var persistent = {},
-        ephemeral_sources = {
-          source_types: {
-            images: {
-              title: gettext('Images'),
-              values: [],
-              total: 0
-            },
-            instances_snapshots: {
-              title: gettext('Instances Snapshots'),
-              values: [],
-              total: 0
-            }
-          },
-          total: 0
-        },
-        ephemeral = {
-          '0_public': angular.copy(ephemeral_sources),
-          '1_project': angular.copy(ephemeral_sources),
-          '2_shared': angular.copy(ephemeral_sources)
-        };
-
-      ephemeral['0_public'].title = gettext('Public');
-      ephemeral['0_public'].empty = gettext('No public image available');
-      ephemeral['1_project'].title = gettext('Project');
-      ephemeral['1_project'].empty = gettext('No project image available');
-      ephemeral['2_shared'].title = gettext('Shared with me');
-      ephemeral['2_shared'].empty = gettext('No shared image available');
-
-      angular.forEach(images, function(image) {
-
-        function push(image, type) {
-          var source_type =
-            image.properties.image_type === "snapshot" ? 'instances_snapshots' : 'images';
-          ephemeral[type].total += 1;
-          ephemeral[type].source_types[source_type].values.push(image);
-          ephemeral[type].source_types[source_type].total += 1;
+    function imageCategories(images, volumes) {
+      var image_list = [];
+      var snapshot_list = [];
+      for (i=0; i< images.length; i++) {
+        if (images[i].properties.image_type === "snapshot") {
+          snapshot_list.push(images[i]);
+        } else {
+          image_list.push(images[i]);
         }
-
-        if (image.is_public) {
-          push(image, '0_public');
-        }
-        if (image.owner === tenant_id) {
-          push(image, '1_project');
-        } else if (!image.is_public) {
-          push(image, '2_shared');
-        }
-      });
-
-      angular.copy(ephemeral, persistent);
-      angular.forEach(['0_public', '1_project', '2_shared'], function(type) {
-        persistent[type].source_types.images.legend = gettext('creates a new volume');
-        persistent[type].source_types.instances_snapshots.legend = gettext('creates a new volume');
-      });
-
-      persistent['1_project'].source_types.volumes = {
-        title: gettext('Volumes'),
-        values: volumes.volumes,
-        legend: gettext('use this volume'),
-        total: volumes.volumes.length
-      };
-
-      persistent['1_project'].source_types.volumes_snapshots = {
-        title: gettext('Volumes Snapshots'),
-        values: volumes.volumes_snapshots,
-        legend: gettext('creates a new volume'),
-        total: volumes.volumes_snapshots.length
-      };
-
-      persistent['1_project'].total += persistent['1_project'].source_types.volumes_snapshots.total +
-        persistent['1_project'].source_types.volumes.total;
-
-      //remove empty entries
-      angular.forEach(['1_project', '0_public', '2_shared'], function(type) {
-        angular.forEach(ephemeral[type].source_types, function(source_type, key) {
-          if (source_type.total === 0) {
-            delete ephemeral[type].source_types[key];
-          }
-        });
-        angular.forEach(persistent[type].source_types, function(source_type, key) {
-          if (source_type.total === 0) {
-            delete persistent[type].source_types[key];
-          }
-        });
-      });
-
-      return {
-        ephemeral: ephemeral,
-        persistent: persistent
-      };
+      }
+      return {images:image_list, snapshots:snapshot_list,
+              volumes:volumes['volumes'], volumes_snapshots:volumes['volumes_snapshots']};
     }
 
     return {
@@ -175,10 +96,7 @@ horizonApp
           data.images, {
             volumes: data.volumes,
             volumes_snapshots: data.volumes_snapshots
-          },
-          data.tenant
-        );
-
+          });
         var steps = $scope.steps = {};
         var stepFactory = $injector.get('stepFactory');
 
@@ -277,7 +195,6 @@ horizonApp
       function($scope) {
         $scope.zones = $scope.response.zones;
         $scope.max_count = $scope.response.count;
-        $scope.elts = $scope.datas[$scope.type];
 
         $scope.active = function(valueId) {
           return $scope.SubSelectSourceForm.$valid &&
@@ -294,7 +211,6 @@ horizonApp
         };
 
         $scope.$watch('launchInstance.type', function (type) {
-          $scope.elts = $scope.datas[$scope.launchInstance.type];
           $scope.showBootVolume = type === 'persistent';
           if ($scope.showBootVolume) {
             $scope.launchInstance.device_name = 'vda';
@@ -303,6 +219,25 @@ horizonApp
             delete $scope.launchInstance.device_name;
             delete $scope.launchInstance.volume_size;
           }
+          $scope.launchInstance.source.type = "images";
+        });
+
+        $scope.$watch('launchInstance.source.type', function (opt) {
+          if (opt === 'images') {
+            $scope.elts = $scope.datas['images'];
+          } else if (opt === 'volumes_snapshots') {
+            $scope.elts = $scope.datas['volumes_snapshots'];
+          } else if (opt === 'instances_snapshots') {
+            $scope.elts = $scope.datas['snapshots'];
+          } else if (opt === 'volumes') {
+            $scope.elts = $scope.datas['volumes'];
+          }
+          $scope.image_obj = $scope.elts[0];
+        });
+
+        $scope.$watch('image_obj', function (obj) {
+          $scope.launchInstance.source.id = obj.id;
+          $scope.launchInstance.source.size = obj.size;
         });
       }
     ],
