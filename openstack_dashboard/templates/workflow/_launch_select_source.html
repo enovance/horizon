@@ -82,13 +82,18 @@
           </div>
         </div>
       </div>
-      <div ng-form="BootSourceForm" ng-class="{'has-error':isOnError(BootSourceForm.source)}">
+      <div ng-form="SelectImageForm" ng-class="{'has-error':isOnError(SelectImageForm.source)}">
         <div class="form-group col-md-4">
           <label for="image_options">{% trans "Instance Boot Source" %}</label>
-          <select id="image_options" class="form-control" name="image_options" ng-model="image_option" required ng-options="option.id as option.label for option in options"></select>
+          <select id="image_options" class="form-control" name="image_options" ng-model="launchInstance.source.type" required>
+            <option value="images">{% trans "Images" %}</option>
+            <option value="instances_snapshots" ng-if="!showBootVolume">{% trans "Snapshots" %}</option>
+            <option value="volumes" ng-if="!showBootVolume">{% trans "Volumes" %}</option>
+            <option value="volumes_snapshots" ng-if="showBootVolume">{% trans "Volumes Snapshots" %}</option>
+          </select>
           <label for="source" class="control-label">
-          <span ng-if="!isOnError(BootSourceForm.source)">{% trans "Select Image" %}</span>
-          <span ng-if="isOnError(BootSourceForm.source)">{% trans "Image name is required" %}</span>
+          <span ng-if="!isOnError(SelectImageForm.source)">{% trans "Select Image" %}</span>
+          <span ng-if="isOnError(SelectImageForm.source)">{% trans "Image is required" %}</span>
           </label>
           <select id="source" class="form-control" name="source" ng-model="image_obj" required ng-options="elt.name for elt in elts"></select>
        </div>
