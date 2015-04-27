@@ -43,5 +43,5 @@ urlpatterns = patterns(
     url(INSTANCES % 'rdp', 'rdp', name='rdp'),
     url(INSTANCES % 'resize', views.ResizeView.as_view(), name='resize'),
     url(INSTANCES_KEYPAIR % 'decryptpassword',
-        views.DecryptPasswordView.as_view(), name='decryptpassword'),
+        views.DecryptPasswordView.as_view(), name='decryptpassword')
 )

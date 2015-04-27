@@ -11,13 +11,24 @@
 #   WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #   License for the specific language governing permissions and limitations
 #   under the License.
-
+from django.core import urlresolvers
 
 from django.utils.translation import pgettext_lazy
 from django.utils.translation import ugettext_lazy as _
 
 from horizon import tables
 from horizon.utils import filters
+
+
+class MoreInfo(tables.LinkAction):
+    name = "MoreInfo"
+    verbose_name = _("Event Details")
+    url = "horizon:project:instances:event_details"
+    classes = ("ajax-modal", "btn-primary")
+
+    def get_link_url(self, datum=None):
+        instance_id = self.table.get_object_id(datum)
+        return urlresolvers.reverse(self.url, args=[instance_id, ])
 
 
 class AuditTable(tables.DataTable):
@@ -51,3 +62,20 @@ class AuditTable(tables.DataTable):
 
     def get_object_id(self, datum):
         return datum.request_id
+
+
+class EventDetails(tables.DataTable):
+    host = tables.Column('host', verbose_name=_('Host server'))
+    request_id = tables.Column('request_id', verbose_name=_('Request ID'))
+    timestamp = tables.Column('timestamp', verbose_name=_('Time Stamp'))
+    event_type = tables.Column('event_type', verbose_name=_('Type'))
+    service = tables.Column('service', verbose_name=_('Service'))
+    message = tables.Column('message', verbose_name=_('Message'))
+    priority = tables.Column('priority', verbose_name=_('Priority'))
+
+    class Meta(object):
+        name = 'event'
+        verbose_name = _('Event Details')
+
+    def get_object_id(self, datum):
+        return datum.get('id')

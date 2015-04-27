@@ -1304,3 +1304,38 @@ class Meters(object):
                 'description': _("System IO Utility Reading"),
             }),
         ])
+
+
+class Events(object):
+    def __init__(self, request):
+        self.client = ceilometerclient(request)
+
+    def list(self, resource_id):
+        param = [{'field': 'resource_id', 'value': resource_id}]
+        events = self.client.events.list(param)
+        traits = []
+        for event in events:
+            tmp = {}
+            tmp['id'] = event.message_id
+            tmp['event_type'] = event.event_type
+            tmp['timestamp'] = event.raw.get('timestamp')
+            tmp['message'] = event.raw.get('payload', []).get('message')
+            tmp['priority'] = event.raw.get('priority')
+            tmp['']
+            for trait in event.traits:
+                if trait['type'] == 'integer':
+                    tmp[trait['name']] = int(trait['value'])
+                else:
+                    tmp[trait['name']] = trait['value']
+            try:
+                exc = event.raw['payload']['exception']
+                tmp['message'] = exc['cmd'] + ' | ' + exc['stderr']
+            except (KeyError, TypeError):
+                pass
+            try:
+                tmp['message'] = event.raw['payload']['reason']['kwargs']['reason']
+            except (KeyError, TypeError):
+                pass
+
+            traits.append(tmp)
+        return traits

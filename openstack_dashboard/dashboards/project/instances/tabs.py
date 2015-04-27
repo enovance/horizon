@@ -89,7 +89,7 @@ class ConsoleTab(tabs.Tab):
 class AuditTab(tabs.TableTab):
     name = _("Action Log")
     slug = "audit"
-    table_classes = (a_tables.AuditTable,)
+    table_classes = (a_tables.AuditTable, a_tables.EventDetails)
     template_name = "project/instances/_detail_audit.html"
     preload = False
 
@@ -103,6 +103,10 @@ class AuditTab(tabs.TableTab):
                               _('Unable to retrieve instance action list.'))
 
         return sorted(actions, reverse=True, key=lambda y: y.start_time)
+
+    def get_event_data(self):
+        return api.ceilometer.Events(self.request).list(
+            self.tab_group.kwargs['instance_id'])
 
 
 class InstanceDetailTabs(tabs.TabGroup):
